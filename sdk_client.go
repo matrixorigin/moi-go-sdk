@@ -27,8 +27,11 @@ func NewSDKClient(raw *RawClient) *SDKClient {
 type TablePrivInfo struct {
 	// TableID is the table ID
 	TableID TableID
-	// PrivCodes are the privilege codes for this table
+	// PrivCodes are the privilege codes for this table (deprecated, use AuthorityCodeList instead)
 	PrivCodes []PrivCode
+	// AuthorityCodeList contains privilege codes with optional rules for this table
+	// If both PrivCodes and AuthorityCodeList are provided, AuthorityCodeList takes precedence
+	AuthorityCodeList []*AuthorityCodeAndRule
 }
 
 // CreateTableRole creates a role for table privileges, or returns the existing role if it already exists.
@@ -37,7 +40,11 @@ type TablePrivInfo struct {
 // Parameters:
 //   - roleName: the name of the role (required)
 //   - comment: the description/comment of the role
-//   - tablePrivs: the list of table privilege information, each element contains a table ID and its privilege codes
+//   - tablePrivs: the list of table privilege information, each element contains:
+//   - TableID: the table ID
+//   - AuthorityCodeList: privilege codes with optional rules (recommended)
+//   - PrivCodes: simple privilege codes without rules (deprecated, for backward compatibility)
+//     If both AuthorityCodeList and PrivCodes are provided, AuthorityCodeList takes precedence.
 //
 // Returns:
 //   - roleID: the ID of the role (existing or newly created)
@@ -123,13 +130,24 @@ func (c *SDKClient) CreateTableRole(ctx context.Context, roleName string, commen
 	// Step 3: Convert table privilege info to ObjPrivResponse
 	objPrivList := make([]ObjPrivResponse, 0, len(tablePrivs))
 	for _, tablePriv := range tablePrivs {
-		// Convert PrivCode slice to AuthorityCodeAndRule slice
-		authorityCodeList := make([]*AuthorityCodeAndRule, 0, len(tablePriv.PrivCodes))
-		for _, privCode := range tablePriv.PrivCodes {
-			authorityCodeList = append(authorityCodeList, &AuthorityCodeAndRule{
-				Code:     string(privCode),
-				RuleList: nil, // No rules by default
-			})
+		var authorityCodeList []*AuthorityCodeAndRule
+
+		// Use AuthorityCodeList if provided, otherwise fall back to PrivCodes for backward compatibility
+		if len(tablePriv.AuthorityCodeList) > 0 {
+			// Use the provided AuthorityCodeList with rules
+			authorityCodeList = tablePriv.AuthorityCodeList
+		} else if len(tablePriv.PrivCodes) > 0 {
+			// Convert PrivCode slice to AuthorityCodeAndRule slice (backward compatibility)
+			authorityCodeList = make([]*AuthorityCodeAndRule, 0, len(tablePriv.PrivCodes))
+			for _, privCode := range tablePriv.PrivCodes {
+				authorityCodeList = append(authorityCodeList, &AuthorityCodeAndRule{
+					Code:     string(privCode),
+					RuleList: nil, // No rules by default
+				})
+			}
+		} else {
+			// Skip if neither is provided
+			continue
 		}
 
 		objPrivList = append(objPrivList, ObjPrivResponse{

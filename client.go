@@ -102,7 +102,6 @@ func (c *RawClient) doJSON(ctx context.Context, method, path string, body interf
 			return fmt.Errorf("marshal request body: %w", err)
 		}
 		reader = bytes.NewReader(payload)
-		panic(string(payload))
 	}
 
 	resp, err := c.doRaw(ctx, method, path, reader, callOpts, func(req *http.Request) {
