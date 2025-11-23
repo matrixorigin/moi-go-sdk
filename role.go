@@ -70,6 +70,12 @@ func (c *RawClient) UpdateRoleCodeList(ctx context.Context, req *RoleUpdateCodeL
 	return &resp, nil
 }
 
+// UpdateRoleInfo updates role information including privileges.
+// The request can include:
+//   - PrivList: global privilege codes (string array)
+//   - ObjPrivList: object privileges with optional rules (ObjPrivResponse array)
+//     Each ObjPrivResponse contains AuthorityCodeList which is []*AuthorityCodeAndRule,
+//     where each AuthorityCodeAndRule can have RuleList for row/column level permissions.
 func (c *RawClient) UpdateRoleInfo(ctx context.Context, req *RoleUpdateInfoRequest, opts ...CallOption) (*RoleUpdateInfoResponse, error) {
 	if req == nil {
 		return nil, ErrNilRequest

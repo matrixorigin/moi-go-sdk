@@ -247,6 +247,108 @@ func (c *SDKClient) CreateTableRole(ctx context.Context, roleName string, commen
 	return createResp.RoleID, true, nil
 }
 
+// UpdateTableRole updates an existing role with table privileges.
+// It updates the role's object-level privileges (table privileges) while preserving or updating global privileges.
+// Parameters:
+//   - roleID: the ID of the role to update (required)
+//   - comment: the description/comment of the role (optional, empty string to keep existing)
+//   - tablePrivs: the list of table privilege information, each element contains:
+//   - TableID: the table ID
+//   - AuthorityCodeList: privilege codes with optional rules (recommended)
+//   - PrivCodes: simple privilege codes without rules (deprecated, for backward compatibility)
+//     If both AuthorityCodeList and PrivCodes are provided, AuthorityCodeList takes precedence.
+//   - globalPrivs: global privilege codes (optional, nil to keep existing, empty slice to remove all)
+//
+// Returns:
+//   - error: any error that occurred
+//
+// Note: If comment is empty, the existing comment will be preserved. If globalPrivs is nil, existing global
+// privileges will be preserved. If globalPrivs is an empty slice, all global privileges will be removed.
+func (c *SDKClient) UpdateTableRole(ctx context.Context, roleID RoleID, comment string, tablePrivs []TablePrivInfo, globalPrivs []string) error {
+	if roleID == 0 {
+		return fmt.Errorf("role_id is required")
+	}
+
+	// Step 1: Get current role info if needed (to preserve comment or global privileges)
+	var currentComment string
+	var privList []string
+	if comment == "" || globalPrivs == nil {
+		roleInfo, err := c.raw.GetRole(ctx, &RoleInfoRequest{RoleID: roleID})
+		if err != nil {
+			return fmt.Errorf("failed to get role info: %w", err)
+		}
+
+		// Preserve comment if not provided
+		if comment == "" {
+			currentComment = roleInfo.Comment
+		} else {
+			currentComment = comment
+		}
+
+		// Preserve global privileges if not provided
+		if globalPrivs == nil {
+			// Extract global privilege codes from AuthorityList
+			privList = make([]string, 0, len(roleInfo.AuthorityList))
+			for _, priv := range roleInfo.AuthorityList {
+				privList = append(privList, priv.PrivCode)
+			}
+		} else {
+			// Use provided global privileges
+			privList = globalPrivs
+		}
+	} else {
+		// Both comment and globalPrivs are provided, no need to fetch role info
+		currentComment = comment
+		privList = globalPrivs
+	}
+
+	// Step 3: Convert table privilege info to ObjPrivResponse
+	objPrivList := make([]ObjPrivResponse, 0, len(tablePrivs))
+	for _, tablePriv := range tablePrivs {
+		var authorityCodeList []*AuthorityCodeAndRule
+
+		// Use AuthorityCodeList if provided, otherwise fall back to PrivCodes for backward compatibility
+		if len(tablePriv.AuthorityCodeList) > 0 {
+			// Use the provided AuthorityCodeList with rules
+			authorityCodeList = tablePriv.AuthorityCodeList
+		} else if len(tablePriv.PrivCodes) > 0 {
+			// Convert PrivCode slice to AuthorityCodeAndRule slice (backward compatibility)
+			authorityCodeList = make([]*AuthorityCodeAndRule, 0, len(tablePriv.PrivCodes))
+			for _, privCode := range tablePriv.PrivCodes {
+				authorityCodeList = append(authorityCodeList, &AuthorityCodeAndRule{
+					Code:     string(privCode),
+					RuleList: nil, // No rules by default
+				})
+			}
+		} else {
+			// Skip if neither is provided
+			continue
+		}
+
+		objPrivList = append(objPrivList, ObjPrivResponse{
+			ObjID:             fmt.Sprintf("%d", tablePriv.TableID),
+			ObjType:           ObjTypeTable.String(), // "table"
+			ObjName:           "",                    // Table name is optional, can be left empty
+			AuthorityCodeList: authorityCodeList,
+		})
+	}
+
+	// Step 4: Update role
+	updateReq := &RoleUpdateInfoRequest{
+		RoleID:      roleID,
+		PrivList:    privList,
+		ObjPrivList: objPrivList,
+		Comment:     currentComment,
+	}
+
+	_, err := c.raw.UpdateRoleInfo(ctx, updateReq)
+	if err != nil {
+		return fmt.Errorf("failed to update role: %w", err)
+	}
+
+	return nil
+}
+
 // ImportLocalFileToTable imports a local file (already uploaded via UploadLocalFile) to a table.
 // This is a high-level convenience method that simplifies the process of importing a file to a table.
 // The method automatically determines whether to create a new table or import to an existing table
