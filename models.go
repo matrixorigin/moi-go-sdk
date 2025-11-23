@@ -349,11 +349,30 @@ func IntToPrivObjectID(id int64) PrivObjectID {
 	return PrivObjectID(fmt.Sprintf("%d", id))
 }
 
+// AuthorityCodeAndRule represents a privilege code with its associated rules.
+type AuthorityCodeAndRule struct {
+	Code     string             `json:"code"`
+	RuleList []*TableRowColRule `json:"rule_list"`
+}
+
+// TableRowColRule represents a table row/column rule with expressions.
+type TableRowColRule struct {
+	Column         string                   `json:"column"`
+	Relation       string                   `json:"relation"` // and or
+	ExpressionList []*TableRowColExpression `json:"expression_list"`
+}
+
+// TableRowColExpression represents a single expression in a table row/column rule.
+type TableRowColExpression struct {
+	Operator   string `json:"operator"` // = != like > >= < <=
+	Expression string `json:"expression"`
+}
+
 type ObjPrivResponse struct {
-	ObjID             string   `json:"id"`
-	ObjType           string   `json:"category"`
-	ObjName           string   `json:"name"`
-	AuthorityCodeList []string `json:"authority_code_list"`
+	ObjID             string                  `json:"id"`
+	ObjType           string                  `json:"category"`
+	ObjName           string                  `json:"name"`
+	AuthorityCodeList []*AuthorityCodeAndRule `json:"authority_code_list"`
 }
 
 type PrivObjectIDAndName struct {

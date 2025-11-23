@@ -23,9 +23,14 @@ func TestRoleLiveFlow(t *testing.T) {
 	require.NotNil(t, listResp)
 
 	objPriv := ObjPrivResponse{
-		ObjID:             "test-catalog",
-		ObjType:           ObjTypeCatalog.String(),
-		AuthorityCodeList: []string{string(PrivCode_UpdateCatalog)},
+		ObjID:   "test-catalog",
+		ObjType: ObjTypeCatalog.String(),
+		AuthorityCodeList: []*AuthorityCodeAndRule{
+			{
+				Code:     string(PrivCode_UpdateCatalog),
+				RuleList: nil,
+			},
+		},
 	}
 	_, err = client.UpdateRoleInfo(ctx, &RoleUpdateInfoRequest{
 		RoleID:      roleID,

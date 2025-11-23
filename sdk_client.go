@@ -123,17 +123,20 @@ func (c *SDKClient) CreateTableRole(ctx context.Context, roleName string, commen
 	// Step 3: Convert table privilege info to ObjPrivResponse
 	objPrivList := make([]ObjPrivResponse, 0, len(tablePrivs))
 	for _, tablePriv := range tablePrivs {
-		// Convert PrivCode slice to string slice
-		privCodeStrs := make([]string, 0, len(tablePriv.PrivCodes))
+		// Convert PrivCode slice to AuthorityCodeAndRule slice
+		authorityCodeList := make([]*AuthorityCodeAndRule, 0, len(tablePriv.PrivCodes))
 		for _, privCode := range tablePriv.PrivCodes {
-			privCodeStrs = append(privCodeStrs, string(privCode))
+			authorityCodeList = append(authorityCodeList, &AuthorityCodeAndRule{
+				Code:     string(privCode),
+				RuleList: nil, // No rules by default
+			})
 		}
 
 		objPrivList = append(objPrivList, ObjPrivResponse{
 			ObjID:             fmt.Sprintf("%d", tablePriv.TableID),
 			ObjType:           ObjTypeTable.String(), // "table"
 			ObjName:           "",                    // Table name is optional, can be left empty
-			AuthorityCodeList: privCodeStrs,
+			AuthorityCodeList: authorityCodeList,
 		})
 	}
 
