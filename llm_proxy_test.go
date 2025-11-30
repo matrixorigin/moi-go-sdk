@@ -220,6 +220,13 @@ func TestLLMSessionMessagesLiveFlow(t *testing.T) {
 	require.NotNil(t, latestResp)
 	require.Equal(t, session.ID, latestResp.SessionID)
 	require.Equal(t, message.ID, latestResp.MessageID)
+
+	// Get latest message (regardless of status)
+	latestResp2, err := client.GetLLMSessionLatestMessage(ctx, session.ID)
+	require.NoError(t, err)
+	require.NotNil(t, latestResp2)
+	require.Equal(t, session.ID, latestResp2.SessionID)
+	require.Equal(t, message.ID, latestResp2.MessageID)
 }
 
 // TestLLMChatMessageLiveFlow tests the complete chat message management flow with a real backend.
@@ -485,4 +492,85 @@ func TestLLMChatMessageListWithFiltersLiveFlow(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, listResp3)
 	require.Greater(t, listResp3.Total, int64(0))
+}
+
+// TestLLMSessionLatestMessageLiveFlow tests getting the latest message (regardless of status) with a real backend.
+func TestLLMSessionLatestMessageLiveFlow(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	// Create a session
+	createReq := &LLMSessionCreateRequest{
+		Title:  randomName("sdk-session-"),
+		Source: "sdk-test",
+		UserID: randomName("user-"),
+	}
+
+	session, err := client.CreateLLMSession(ctx, createReq)
+	require.NoError(t, err)
+	require.NotNil(t, session)
+	t.Logf("Created session ID: %d", session.ID)
+
+	// Cleanup
+	t.Cleanup(func() {
+		if _, err := client.DeleteLLMSession(ctx, session.ID); err != nil {
+			t.Logf("cleanup delete session failed: %v", err)
+		}
+	})
+
+	// Create a message with success status
+	message1, err := client.CreateLLMChatMessage(ctx, &LLMChatMessageCreateRequest{
+		UserID:    createReq.UserID,
+		SessionID: int64Ptr(session.ID),
+		Source:    createReq.Source,
+		Role:      LLMMessageRoleUser,
+		Content:   "First message",
+		Model:     "gpt-4",
+		Status:    LLMMessageStatusSuccess,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, message1)
+	t.Logf("Created message ID: %d (status: success)", message1.ID)
+
+	// Cleanup message
+	t.Cleanup(func() {
+		if _, err := client.DeleteLLMChatMessage(ctx, message1.ID); err != nil {
+			t.Logf("cleanup delete message failed: %v", err)
+		}
+	})
+
+	// Create a message with failed status
+	message2, err := client.CreateLLMChatMessage(ctx, &LLMChatMessageCreateRequest{
+		UserID:    createReq.UserID,
+		SessionID: int64Ptr(session.ID),
+		Source:    createReq.Source,
+		Role:      LLMMessageRoleUser,
+		Content:   "Second message",
+		Model:     "gpt-4",
+		Status:    LLMMessageStatusFailed,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, message2)
+	t.Logf("Created message ID: %d (status: failed)", message2.ID)
+
+	// Cleanup message
+	t.Cleanup(func() {
+		if _, err := client.DeleteLLMChatMessage(ctx, message2.ID); err != nil {
+			t.Logf("cleanup delete message failed: %v", err)
+		}
+	})
+
+	// Get latest completed message (should return message1 with success status)
+	latestCompletedResp, err := client.GetLLMSessionLatestCompletedMessage(ctx, session.ID)
+	require.NoError(t, err)
+	require.NotNil(t, latestCompletedResp)
+	require.Equal(t, session.ID, latestCompletedResp.SessionID)
+	require.Equal(t, message1.ID, latestCompletedResp.MessageID, "Latest completed should be message1 (success)")
+
+	// Get latest message (regardless of status, should return message2 as it's the latest)
+	latestResp, err := client.GetLLMSessionLatestMessage(ctx, session.ID)
+	require.NoError(t, err)
+	require.NotNil(t, latestResp)
+	require.Equal(t, session.ID, latestResp.SessionID)
+	require.Equal(t, message2.ID, latestResp.MessageID, "Latest message (any status) should be message2 (the most recent)")
 }

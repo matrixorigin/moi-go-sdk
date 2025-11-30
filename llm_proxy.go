@@ -279,6 +279,28 @@ func (c *RawClient) GetLLMSessionLatestCompletedMessage(ctx context.Context, ses
 	return &resp, nil
 }
 
+// GetLLMSessionLatestMessage retrieves the latest message ID for a session (regardless of status).
+//
+// This method differs from GetLLMSessionLatestCompletedMessage:
+// - GetLLMSessionLatestCompletedMessage: only returns messages with status "success"
+// - GetLLMSessionLatestMessage: returns the latest message regardless of status (success, failed, retry, aborted, etc.)
+//
+// Example:
+//
+//	resp, err := client.GetLLMSessionLatestMessage(ctx, 1)
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Latest message ID: %d\n", resp.MessageID)
+func (c *RawClient) GetLLMSessionLatestMessage(ctx context.Context, sessionID int64, opts ...CallOption) (*LLMLatestCompletedMessageResponse, error) {
+	var resp LLMLatestCompletedMessageResponse
+	path := fmt.Sprintf("/api/sessions/%d/messages/latest", sessionID)
+	if err := c.doLLMJSON(ctx, http.MethodGet, path, nil, &resp, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
 // ============ Chat Message Management APIs ============
 
 // CreateLLMChatMessage creates a new chat message record.
