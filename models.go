@@ -1633,6 +1633,8 @@ type LLMSessionMessagesListRequest struct {
 	Role   LLMMessageRole   `json:"role,omitempty"`   // Filter by role
 	Status LLMMessageStatus `json:"status,omitempty"` // Filter by status
 	Model  string           `json:"model,omitempty"`  // Filter by model
+	After  *int64           `json:"after,omitempty"`  // Get messages after this message ID (exclusive, > relation)
+	Limit  *int             `json:"limit,omitempty"`  // Limit number of messages to return (default 20, max 100)
 }
 
 // LLMLatestCompletedMessageResponse represents a response from getting the latest completed message ID.

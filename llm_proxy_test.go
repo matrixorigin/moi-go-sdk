@@ -49,16 +49,6 @@ func TestCreateLLMChatMessage_NilRequest(t *testing.T) {
 	require.ErrorIs(t, err, ErrNilRequest)
 }
 
-func TestListLLMChatMessages_NilRequest(t *testing.T) {
-	t.Parallel()
-	ctx := context.Background()
-	client := &RawClient{}
-
-	resp, err := client.ListLLMChatMessages(ctx, nil)
-	require.Nil(t, resp)
-	require.ErrorIs(t, err, ErrNilRequest)
-}
-
 func TestUpdateLLMChatMessage_NilRequest(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -194,6 +184,8 @@ func TestLLMSessionMessagesLiveFlow(t *testing.T) {
 	})
 
 	// List session messages
+	// Note: The messages list endpoint does not return original_content and content fields
+	// to reduce data transfer. Use GetLLMChatMessage to get full message content.
 	messages, err := client.ListLLMSessionMessages(ctx, session.ID, &LLMSessionMessagesListRequest{})
 	require.NoError(t, err)
 	require.NotEmpty(t, messages)
@@ -201,7 +193,10 @@ func TestLLMSessionMessagesLiveFlow(t *testing.T) {
 	for _, m := range messages {
 		if m.ID == message.ID {
 			foundMessage = true
-			require.Equal(t, "Test message", m.Content)
+			// Verify message metadata (content fields are not returned by list endpoint)
+			require.Equal(t, message.Role, m.Role)
+			require.Equal(t, message.Status, m.Status)
+			require.Equal(t, message.Model, m.Model)
 			break
 		}
 	}
@@ -272,24 +267,8 @@ func TestLLMChatMessageLiveFlow(t *testing.T) {
 	require.Equal(t, message.ID, gotMessage.ID)
 	require.Equal(t, message.Content, gotMessage.Content)
 
-	// List messages
-	listResp, err := client.ListLLMChatMessages(ctx, &LLMChatMessageListRequest{
-		UserID:   userID,
-		Source:   source,
-		Page:     1,
-		PageSize: 20,
-	})
-	require.NoError(t, err)
-	require.NotNil(t, listResp)
-	require.Greater(t, listResp.Total, int64(0))
-	found := false
-	for _, m := range listResp.Messages {
-		if m.ID == message.ID {
-			found = true
-			break
-		}
-	}
-	require.True(t, found, "Created message should be in the list")
+	// Note: ListLLMChatMessages API has been removed.
+	// Use ListLLMSessionMessages to get messages for a session instead.
 
 	// Update the message Response (backend appends for streaming, so we test with initial empty response)
 	updatedResponse := "Updated AI response"
@@ -461,37 +440,9 @@ func TestLLMChatMessageListWithFiltersLiveFlow(t *testing.T) {
 		}
 	})
 
-	// List messages by user ID
-	listResp, err := client.ListLLMChatMessages(ctx, &LLMChatMessageListRequest{
-		UserID:   userID,
-		Page:     1,
-		PageSize: 20,
-	})
-	require.NoError(t, err)
-	require.NotNil(t, listResp)
-	require.Greater(t, listResp.Total, int64(0))
-
-	// List messages by role
-	listResp2, err := client.ListLLMChatMessages(ctx, &LLMChatMessageListRequest{
-		UserID:   userID,
-		Role:     LLMMessageRoleUser,
-		Page:     1,
-		PageSize: 20,
-	})
-	require.NoError(t, err)
-	require.NotNil(t, listResp2)
-	require.Greater(t, listResp2.Total, int64(0))
-
-	// List messages by status
-	listResp3, err := client.ListLLMChatMessages(ctx, &LLMChatMessageListRequest{
-		UserID:   userID,
-		Status:   LLMMessageStatusSuccess,
-		Page:     1,
-		PageSize: 20,
-	})
-	require.NoError(t, err)
-	require.NotNil(t, listResp3)
-	require.Greater(t, listResp3.Total, int64(0))
+	// Note: ListLLMChatMessages API has been removed.
+	// To list messages, use ListLLMSessionMessages with a session ID instead.
+	// This test verifies message creation and deletion only.
 }
 
 // TestLLMSessionLatestMessageLiveFlow tests getting the latest message (regardless of status) with a real backend.

@@ -257,17 +257,22 @@ func (c *RawClient) DeleteLLMSession(ctx context.Context, sessionID int64, opts 
 
 // ListLLMSessionMessages lists messages for a specific session with optional filtering.
 //
+// The messages list endpoint does not return original_content and content fields
+// to reduce data transfer. Use GetLLMChatMessage to get full message content.
+//
 // Example:
 //
 //	messages, err := client.ListLLMSessionMessages(ctx, 1, &sdk.LLMSessionMessagesListRequest{
 //		Role:   sdk.LLMMessageRoleUser,
 //		Status: sdk.LLMMessageStatusSuccess,
+//		After:  int64Ptr(5),  // Get messages after message ID 5
+//		Limit:  intPtr(50),   // Limit to 50 messages
 //	})
 //	if err != nil {
 //		return err
 //	}
 //	for _, msg := range messages {
-//		fmt.Printf("Message: %s\n", msg.Content)
+//		fmt.Printf("Message ID: %d\n", msg.ID)
 //	}
 func (c *RawClient) ListLLMSessionMessages(ctx context.Context, sessionID int64, req *LLMSessionMessagesListRequest, opts ...CallOption) ([]LLMChatMessage, error) {
 	if req == nil {
@@ -287,6 +292,12 @@ func (c *RawClient) ListLLMSessionMessages(ctx context.Context, sessionID int64,
 	}
 	if req.Model != "" {
 		query.Set("model", req.Model)
+	}
+	if req.After != nil {
+		query.Set("after", strconv.FormatInt(*req.After, 10))
+	}
+	if req.Limit != nil {
+		query.Set("limit", strconv.Itoa(*req.Limit))
 	}
 
 	var resp []LLMChatMessage
@@ -365,65 +376,6 @@ func (c *RawClient) CreateLLMChatMessage(ctx context.Context, req *LLMChatMessag
 	}
 	var resp LLMChatMessage
 	if err := c.doLLMJSON(ctx, http.MethodPost, "/api/chat-messages", req, &resp, opts...); err != nil {
-		return nil, err
-	}
-	return &resp, nil
-}
-
-// ListLLMChatMessages lists chat messages with optional filtering and pagination.
-//
-// Example:
-//
-//	resp, err := client.ListLLMChatMessages(ctx, &sdk.LLMChatMessageListRequest{
-//		UserID:   "user123",
-//		SessionID: int64Ptr(1),
-//		Page:     1,
-//		PageSize: 20,
-//	})
-//	if err != nil {
-//		return err
-//	}
-//	for _, msg := range resp.Messages {
-//		fmt.Printf("Message: %s\n", msg.Content)
-//	}
-func (c *RawClient) ListLLMChatMessages(ctx context.Context, req *LLMChatMessageListRequest, opts ...CallOption) (*LLMChatMessageListResponse, error) {
-	if req == nil {
-		return nil, ErrNilRequest
-	}
-
-	// Build query parameters
-	query := url.Values{}
-	if req.UserID != "" {
-		query.Set("user_id", req.UserID)
-	}
-	if req.SessionID != nil {
-		query.Set("session_id", strconv.FormatInt(*req.SessionID, 10))
-	}
-	if req.Source != "" {
-		query.Set("source", req.Source)
-	}
-	if req.Role != "" {
-		query.Set("role", string(req.Role))
-	}
-	if req.Status != "" {
-		query.Set("status", string(req.Status))
-	}
-	if len(req.Tags) > 0 {
-		query.Set("tags", strings.Join(req.Tags, ","))
-	}
-	if req.Page > 0 {
-		query.Set("page", strconv.Itoa(req.Page))
-	}
-	if req.PageSize > 0 {
-		query.Set("page_size", strconv.Itoa(req.PageSize))
-	}
-
-	var resp LLMChatMessageListResponse
-	path := "/api/chat-messages"
-	if len(query) > 0 {
-		path += "?" + query.Encode()
-	}
-	if err := c.doLLMJSON(ctx, http.MethodGet, path, nil, &resp, opts...); err != nil {
 		return nil, err
 	}
 	return &resp, nil
@@ -536,6 +488,10 @@ func stringPtr(s string) *string {
 }
 
 func int64Ptr(i int64) *int64 {
+	return &i
+}
+
+func intPtr(i int) *int {
 	return &i
 }
 
