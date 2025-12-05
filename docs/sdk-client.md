@@ -20,6 +20,9 @@ sdkClient := sdk.NewSDKClient(rawClient)
 - [CreateTableRole](#createtablerole) - 创建表角色（自动检查是否存在）
 - [UpdateTableRole](#updatetablerole) - 更新表角色权限
 - [ImportLocalFileToTable](#importlocalfiletotable) - 导入本地文件到表
+- [ImportLocalFileToVolume](#importlocalfiletovolume) - 上传单个本地文件到卷
+- [ImportLocalFilesToVolume](#importlocalfilestovolume) - 上传多个本地文件到卷
+- [RunSQL](#runsql) - 执行 SQL 语句
 
 ## CreateTableRole
 
@@ -447,6 +450,162 @@ func main() {
 }
 ```
 
+## ImportLocalFileToVolume
+
+上传单个本地非结构化文件到目标卷。这是一个便捷方法，用于将本地文件直接上传到卷中。
+
+### 方法签名
+
+```go
+func (c *SDKClient) ImportLocalFileToVolume(ctx context.Context, filePath string, volumeID VolumeID, meta FileMeta, dedup *DedupConfig, opts ...CallOption) (*UploadFileResponse, error)
+```
+
+### 参数说明
+
+| 参数 | 类型 | 必需 | 说明 |
+|------|------|------|------|
+| filePath | string | 是 | 本地文件路径 |
+| volumeID | VolumeID | 是 | 目标卷 ID |
+| meta | FileMeta | 是 | 文件元数据，描述文件在目标卷中的位置 |
+| dedup | *DedupConfig | 否 | 去重配置 |
+
+**FileMeta 结构**:
+- `Filename`: 文件名
+- `Path`: 文件在目标卷中的路径
+
+**DedupConfig 结构**:
+- `By`: 去重依据数组，如 `[]string{"name", "md5"}`
+- `Strategy`: 去重策略，如 `"skip"`（跳过重复文件）
+
+### 返回值
+
+- `*UploadFileResponse`: 上传响应，包含任务 ID
+- `error`: 错误信息
+
+### 示例
+
+```go
+ctx := context.Background()
+
+resp, err := sdkClient.ImportLocalFileToVolume(ctx, "/path/to/file.docx", "123456", sdk.FileMeta{
+    Filename: "研发过程安全分析 202504.docx",
+    Path:     "研发过程安全分析 202504.docx",
+}, &sdk.DedupConfig{
+    By:       []string{"name", "md5"},
+    Strategy: "skip",
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+fmt.Printf("Uploaded file, task_id: %d\n", resp.TaskId)
+```
+
+## ImportLocalFilesToVolume
+
+上传多个本地非结构化文件到目标卷。支持批量上传多个文件。
+
+### 方法签名
+
+```go
+func (c *SDKClient) ImportLocalFilesToVolume(ctx context.Context, filePaths []string, volumeID VolumeID, metas []FileMeta, dedup *DedupConfig, opts ...CallOption) (*UploadFileResponse, error)
+```
+
+### 参数说明
+
+| 参数 | 类型 | 必需 | 说明 |
+|------|------|------|------|
+| filePaths | []string | 是 | 本地文件路径数组（至少一个） |
+| volumeID | VolumeID | 是 | 目标卷 ID |
+| metas | []FileMeta | 否 | 文件元数据数组。如果提供，长度必须与 filePaths 相同；如果为空或 nil，将自动从文件路径生成 |
+| dedup | *DedupConfig | 否 | 去重配置（应用于所有文件） |
+
+### 返回值
+
+- `*UploadFileResponse`: 上传响应，包含任务 ID
+- `error`: 错误信息
+
+### 示例
+
+#### 使用提供的元数据
+
+```go
+ctx := context.Background()
+
+resp, err := sdkClient.ImportLocalFilesToVolume(ctx, []string{
+    "/path/to/file1.docx",
+    "/path/to/file2.docx",
+}, "123456", []sdk.FileMeta{
+    {Filename: "file1.docx", Path: "file1.docx"},
+    {Filename: "file2.docx", Path: "file2.docx"},
+}, &sdk.DedupConfig{
+    By:       []string{"name", "md5"},
+    Strategy: "skip",
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+fmt.Printf("Uploaded files, task_id: %d\n", resp.TaskId)
+```
+
+#### 自动生成元数据
+
+```go
+ctx := context.Background()
+
+// 不提供 metas，将自动从文件路径生成
+resp, err := sdkClient.ImportLocalFilesToVolume(ctx, []string{
+    "/path/to/file1.docx",
+    "/path/to/file2.docx",
+}, "123456", nil, &sdk.DedupConfig{
+    By:       []string{"name", "md5"},
+    Strategy: "skip",
+})
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+## RunSQL
+
+执行 SQL 语句。使用 NL2SQL RunSQL 操作。
+
+### 方法签名
+
+```go
+func (c *SDKClient) RunSQL(ctx context.Context, statement string, opts ...CallOption) (*NL2SQLRunSQLResponse, error)
+```
+
+### 参数说明
+
+| 参数 | 类型 | 必需 | 说明 |
+|------|------|------|------|
+| statement | string | 是 | SQL 语句，必须使用完全限定名（database.table） |
+
+### 返回值
+
+- `*NL2SQLRunSQLResponse`: SQL 执行结果
+- `error`: 错误信息
+
+### 示例
+
+```go
+ctx := context.Background()
+
+resp, err := sdkClient.RunSQL(ctx, "SELECT * FROM mydb.mytable LIMIT 10")
+if err != nil {
+    log.Fatal(err)
+}
+
+for _, result := range resp.Results {
+    fmt.Printf("Columns: %v\n", result.Columns)
+    for _, row := range result.Rows {
+        fmt.Printf("Row: %v\n", row)
+    }
+}
+```
+
 ## 注意事项
 
 1. **CreateTableRole**: 会自动检查角色是否存在，避免重复创建
@@ -458,4 +617,11 @@ func main() {
    - 使用固定的 VolumeID ("123456")
    - 文件必须已通过 `UploadLocalFile` 上传
    - 需要先调用 `FilePreview` 获取文件结构信息
+4. **ImportLocalFileToVolume** / **ImportLocalFilesToVolume**:
+   - 直接上传本地文件到卷，无需先调用 `UploadLocalFile`
+   - 返回的 `TaskId` 可用于查询上传任务状态
+   - 支持去重配置，避免重复上传相同文件
+5. **RunSQL**: 
+   - SQL 语句中的表名必须使用完全限定名（database.table）
+   - 这允许目录服务将查询路由到正确的数据库
 

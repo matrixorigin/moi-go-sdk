@@ -16,6 +16,7 @@ MOI Go SDK 是一个用于与 MOI Catalog Service 交互的 Go 语言客户端�
 - [File（文件）](./file.md) - 文件管理接口
 - [Folder（文件夹）](./folder.md) - 文件夹管理接口
 - [Connector（连接器）](./connector.md) - 文件上传和数据导入接口
+- [Task（任务管理）](./task.md) - 任务查询和管理接口
 - [User（用户）](./user.md) - 用户管理接口
 - [Role（角色）](./role.md) - 角色管理接口
 - [Privilege（权限）](./privilege.md) - 权限查询接口
