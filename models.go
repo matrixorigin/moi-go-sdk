@@ -1723,3 +1723,40 @@ type DataAnalysisStreamEvent struct {
 	// Raw JSON data for flexible parsing
 	RawData json.RawMessage `json:"-"`
 }
+
+// ============ Handler: Task types ============
+
+type TaskID int64
+
+// TaskInfoRequest represents a request to get task information.
+type TaskInfoRequest struct {
+	TaskID TaskID `json:"task_id" form:"task_id"`
+}
+
+// TaskInfoResponse represents task information response.
+type TaskInfoResponse struct {
+	ID                  string                 `json:"id"`
+	SourceConnectorId   uint64                 `json:"source_connector_id"`
+	SourceConnectorType string                 `json:"source_connector_type"`
+	VolumeID            string                 `json:"volume_id"`
+	VolumeName          string                 `json:"volume_name"`
+	VolumePath          *FullPath              `json:"volume_path,omitempty"`
+	Name                string                 `json:"name"`
+	Creator             string                 `json:"creator"`
+	Status              string                 `json:"status"`
+	SourceConfig        map[string]interface{} `json:"source_config,omitempty"`
+	StartAt             string                 `json:"start_at,omitempty"`
+	EndAt               string                 `json:"end_at,omitempty"`
+	CreatedAt           string                 `json:"created_at"`
+	UpdatedAt           string                 `json:"updated_at"`
+	ConnectorName       string                 `json:"connector_name,omitempty"`
+	TablePath           *FullPath              `json:"table_path,omitempty"`
+	SourceFiles         [][]string             `json:"source_files,omitempty"`
+	LoadResults         []*LoadResult          `json:"load_results,omitempty"`
+}
+
+// LoadResult represents a single file load result.
+type LoadResult struct {
+	Lines  int64  `json:"lines"`
+	Reason string `json:"reason,omitempty"`
+}

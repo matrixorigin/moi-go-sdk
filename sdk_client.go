@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -456,6 +458,186 @@ func (c *SDKClient) ImportLocalFileToTable(ctx context.Context, tableConfig *Tab
 
 	// Call the raw client's UploadConnectorFile method
 	return c.raw.UploadConnectorFile(ctx, uploadReq)
+}
+
+// ImportLocalFileToVolume uploads a local unstructured file to a target volume.
+// This is a high-level convenience method that uploads a local file to a volume
+// with metadata and deduplication configuration.
+//
+// Parameters:
+//   - filePath: the local file path to upload (required)
+//   - volumeID: the target volume ID (required)
+//   - meta: file metadata describing the file location in the target volume (required)
+//     Format: {"filename":"研发过程安全分析 202504.docx","path":"研发过程安全分析 202504.docx"}
+//   - dedup: deduplication configuration (optional)
+//     Format: {"by":["name","md5"],"strategy":"skip"}
+//
+// Returns:
+//   - *UploadFileResponse: the response from the upload operation
+//   - error: any error that occurred
+//
+// Example:
+//
+//	resp, err := sdkClient.ImportLocalFileToVolume(ctx, "/path/to/file.docx", "123456", sdk.FileMeta{
+//		Filename: "研发过程安全分析 202504.docx",
+//		Path:     "研发过程安全分析 202504.docx",
+//	}, &sdk.DedupConfig{
+//		By:       []string{"name", "md5"},
+//		Strategy: "skip",
+//	})
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Uploaded file: %s\n", resp.FileID)
+func (c *SDKClient) ImportLocalFileToVolume(ctx context.Context, filePath string, volumeID VolumeID, meta FileMeta, dedup *DedupConfig, opts ...CallOption) (*UploadFileResponse, error) {
+	if strings.TrimSpace(filePath) == "" {
+		return nil, fmt.Errorf("file_path is required")
+	}
+	if volumeID == "" {
+		return nil, fmt.Errorf("volume_id is required")
+	}
+	if strings.TrimSpace(meta.Filename) == "" {
+		return nil, fmt.Errorf("meta.filename is required")
+	}
+
+	// Open the local file
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("open file %s: %w", filePath, err)
+	}
+	defer file.Close()
+
+	// Extract filename from path
+	fileName := filepath.Base(filePath)
+
+	// Build UploadFileRequest
+	// Wrap meta in an array as required by UploadConnectorFile
+	uploadReq := &UploadFileRequest{
+		VolumeID: volumeID,
+		Files: []FileUploadItem{
+			{
+				File:     file,
+				FileName: fileName,
+			},
+		},
+		Meta:        []FileMeta{meta},
+		DedupConfig: dedup,
+	}
+
+	// Call the raw client's UploadConnectorFile method
+	return c.raw.UploadConnectorFile(ctx, uploadReq, opts...)
+}
+
+// ImportLocalFilesToVolume uploads multiple local unstructured files to a target volume.
+// This is a high-level convenience method that uploads multiple local files to a volume
+// with metadata and deduplication configuration.
+//
+// Parameters:
+//   - filePaths: array of local file paths to upload (required, must not be empty)
+//   - volumeID: the target volume ID (required)
+//   - metas: array of file metadata describing the file locations in the target volume (optional)
+//     If provided, must have the same length as filePaths.
+//     If empty or nil, metadata will be auto-generated from file paths.
+//     Format: [{"filename":"file1.docx","path":"file1.docx"}, {"filename":"file2.docx","path":"file2.docx"}]
+//   - dedup: deduplication configuration (optional, applied to all files)
+//     Format: {"by":["name","md5"],"strategy":"skip"}
+//
+// Returns:
+//   - *UploadFileResponse: the response from the upload operation
+//   - error: any error that occurred
+//
+// Example:
+//
+//	resp, err := sdkClient.ImportLocalFilesToVolume(ctx, []string{
+//		"/path/to/file1.docx",
+//		"/path/to/file2.docx",
+//	}, "123456", []sdk.FileMeta{
+//		{Filename: "file1.docx", Path: "file1.docx"},
+//		{Filename: "file2.docx", Path: "file2.docx"},
+//	}, &sdk.DedupConfig{
+//		By:       []string{"name", "md5"},
+//		Strategy: "skip",
+//	})
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Uploaded files, task_id: %d\n", resp.TaskId)
+func (c *SDKClient) ImportLocalFilesToVolume(ctx context.Context, filePaths []string, volumeID VolumeID, metas []FileMeta, dedup *DedupConfig, opts ...CallOption) (*UploadFileResponse, error) {
+	if len(filePaths) == 0 {
+		return nil, fmt.Errorf("at least one file path is required")
+	}
+	if volumeID == "" {
+		return nil, fmt.Errorf("volume_id is required")
+	}
+
+	// Validate metas if provided
+	if len(metas) > 0 && len(metas) != len(filePaths) {
+		return nil, fmt.Errorf("metas array length (%d) must match filePaths length (%d)", len(metas), len(filePaths))
+	}
+
+	// Open all files and build file upload items
+	files := make([]FileUploadItem, 0, len(filePaths))
+	fileMetas := make([]FileMeta, 0, len(filePaths))
+	fileHandles := make([]*os.File, 0, len(filePaths))
+
+	// Cleanup function to close all opened files
+	cleanup := func() {
+		for _, f := range fileHandles {
+			if f != nil {
+				f.Close()
+			}
+		}
+	}
+	defer cleanup()
+
+	for i, filePath := range filePaths {
+		if strings.TrimSpace(filePath) == "" {
+			return nil, fmt.Errorf("file_path[%d] is empty", i)
+		}
+
+		// Open the local file
+		file, err := os.Open(filePath)
+		if err != nil {
+			// Close already opened files before returning error
+			cleanup()
+			return nil, fmt.Errorf("open file %s: %w", filePath, err)
+		}
+		fileHandles = append(fileHandles, file)
+
+		// Extract filename from path
+		fileName := filepath.Base(filePath)
+
+		// Build file upload item
+		files = append(files, FileUploadItem{
+			File:     file,
+			FileName: fileName,
+		})
+
+		// Build meta - use provided meta or auto-generate from file path
+		if i < len(metas) && strings.TrimSpace(metas[i].Filename) != "" {
+			// Use provided meta
+			fileMetas = append(fileMetas, metas[i])
+		} else {
+			// Auto-generate meta from file path
+			fileMetas = append(fileMetas, FileMeta{
+				Filename: fileName,
+				Path:     fileName,
+			})
+		}
+	}
+
+	// Build UploadFileRequest
+	uploadReq := &UploadFileRequest{
+		VolumeID:    volumeID,
+		Files:       files,
+		Meta:        fileMetas,
+		DedupConfig: dedup,
+	}
+
+	// Call the raw client's UploadConnectorFile method
+	// Note: We need to keep files open until the request completes, so we don't defer close here
+	// The files will be closed by the defer function above after the method returns
+	return c.raw.UploadConnectorFile(ctx, uploadReq, opts...)
 }
 
 // RunSQL executes a SQL statement using the NL2SQL RunSQL operation.
