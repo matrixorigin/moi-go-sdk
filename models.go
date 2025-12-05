@@ -514,9 +514,87 @@ type UserResponse struct {
 
 // ============ Models: File/Dedup types ============
 
+// DedupBy represents the deduplication criteria.
+type DedupBy string
+
+const (
+	// DedupByName deduplicates files by filename.
+	DedupByName DedupBy = "name"
+	// DedupByMD5 deduplicates files by MD5 hash.
+	DedupByMD5 DedupBy = "md5"
+)
+
+// DedupStrategy represents the deduplication strategy.
+type DedupStrategy string
+
+const (
+	// DedupStrategySkip skips duplicate files (does not upload).
+	DedupStrategySkip DedupStrategy = "skip"
+	// DedupStrategyReplace replaces duplicate files.
+	DedupStrategyReplace DedupStrategy = "replace"
+)
+
 type DedupConfig struct {
 	By       []string `json:"by,omitempty"`
 	Strategy string   `json:"strategy,omitempty"`
+}
+
+// NewDedupConfig creates a new DedupConfig with the specified criteria and strategy.
+//
+// This is a helper function to create DedupConfig in a type-safe way.
+// Use DedupBy constants for criteria and DedupStrategy constants for strategy.
+//
+// Example:
+//
+//	// Skip files that have the same name or MD5 hash
+//	dedup := sdk.NewDedupConfig([]sdk.DedupBy{sdk.DedupByName, sdk.DedupByMD5}, sdk.DedupStrategySkip)
+//
+//	// Skip files that have the same name
+//	dedup := sdk.NewDedupConfig([]sdk.DedupBy{sdk.DedupByName}, sdk.DedupStrategySkip)
+func NewDedupConfig(by []DedupBy, strategy DedupStrategy) *DedupConfig {
+	if len(by) == 0 {
+		return nil
+	}
+	byStrings := make([]string, len(by))
+	for i, b := range by {
+		byStrings[i] = string(b)
+	}
+	return &DedupConfig{
+		By:       byStrings,
+		Strategy: string(strategy),
+	}
+}
+
+// NewDedupConfigSkipByNameAndMD5 creates a DedupConfig that skips files with the same name or MD5 hash.
+//
+// This is a convenience function for the most common deduplication scenario.
+//
+// Example:
+//
+//	dedup := sdk.NewDedupConfigSkipByNameAndMD5()
+//	resp, err := sdkClient.ImportLocalFileToVolume(ctx, filePath, volumeID, meta, dedup)
+func NewDedupConfigSkipByNameAndMD5() *DedupConfig {
+	return NewDedupConfig([]DedupBy{DedupByName, DedupByMD5}, DedupStrategySkip)
+}
+
+// NewDedupConfigSkipByName creates a DedupConfig that skips files with the same name.
+//
+// Example:
+//
+//	dedup := sdk.NewDedupConfigSkipByName()
+//	resp, err := sdkClient.ImportLocalFileToVolume(ctx, filePath, volumeID, meta, dedup)
+func NewDedupConfigSkipByName() *DedupConfig {
+	return NewDedupConfig([]DedupBy{DedupByName}, DedupStrategySkip)
+}
+
+// NewDedupConfigSkipByMD5 creates a DedupConfig that skips files with the same MD5 hash.
+//
+// Example:
+//
+//	dedup := sdk.NewDedupConfigSkipByMD5()
+//	resp, err := sdkClient.ImportLocalFileToVolume(ctx, filePath, volumeID, meta, dedup)
+func NewDedupConfigSkipByMD5() *DedupConfig {
+	return NewDedupConfig([]DedupBy{DedupByMD5}, DedupStrategySkip)
 }
 
 // ============ Infra: MO types ============

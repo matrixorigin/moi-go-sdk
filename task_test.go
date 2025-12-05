@@ -54,10 +54,7 @@ func TestImportLocalFileToVolumeAndGetTask(t *testing.T) {
 		Filename: testFileName,
 		Path:     testFileName,
 	}
-	dedup := &DedupConfig{
-		By:       []string{"name", "md5"},
-		Strategy: "skip",
-	}
+	dedup := NewDedupConfigSkipByNameAndMD5()
 
 	uploadResp, err := sdkClient.ImportLocalFileToVolume(ctx, testFilePath, volumeID, meta, dedup)
 	require.NoError(t, err)
@@ -117,10 +114,7 @@ func TestImportLocalFilesToVolume(t *testing.T) {
 		{Filename: "test_file1.txt", Path: "test_file1.txt"},
 		{Filename: "test_file2.txt", Path: "test_file2.txt"},
 	}
-	dedup := &DedupConfig{
-		By:       []string{"name", "md5"},
-		Strategy: "skip",
-	}
+	dedup := NewDedupConfigSkipByNameAndMD5()
 
 	uploadResp, err := sdkClient.ImportLocalFilesToVolume(ctx, []string{testFile1, testFile2}, volumeID, metas, dedup)
 	require.NoError(t, err)
@@ -136,6 +130,44 @@ func TestImportLocalFilesToVolume(t *testing.T) {
 	require.NotZero(t, uploadResp2.TaskId)
 
 	t.Logf("Upload with auto-generated metas successful, task_id: %d", uploadResp2.TaskId)
+}
+
+func TestDedupConfigHelpers(t *testing.T) {
+	t.Parallel()
+
+	// Test NewDedupConfigSkipByNameAndMD5
+	dedup1 := NewDedupConfigSkipByNameAndMD5()
+	require.NotNil(t, dedup1)
+	require.Len(t, dedup1.By, 2)
+	require.Contains(t, dedup1.By, "name")
+	require.Contains(t, dedup1.By, "md5")
+	require.Equal(t, "skip", dedup1.Strategy)
+
+	// Test NewDedupConfigSkipByName
+	dedup2 := NewDedupConfigSkipByName()
+	require.NotNil(t, dedup2)
+	require.Len(t, dedup2.By, 1)
+	require.Equal(t, "name", dedup2.By[0])
+	require.Equal(t, "skip", dedup2.Strategy)
+
+	// Test NewDedupConfigSkipByMD5
+	dedup3 := NewDedupConfigSkipByMD5()
+	require.NotNil(t, dedup3)
+	require.Len(t, dedup3.By, 1)
+	require.Equal(t, "md5", dedup3.By[0])
+	require.Equal(t, "skip", dedup3.Strategy)
+
+	// Test NewDedupConfig with custom parameters
+	dedup4 := NewDedupConfig([]DedupBy{DedupByName, DedupByMD5}, DedupStrategyReplace)
+	require.NotNil(t, dedup4)
+	require.Len(t, dedup4.By, 2)
+	require.Contains(t, dedup4.By, "name")
+	require.Contains(t, dedup4.By, "md5")
+	require.Equal(t, "replace", dedup4.Strategy)
+
+	// Test NewDedupConfig with empty by returns nil
+	dedup5 := NewDedupConfig([]DedupBy{}, DedupStrategySkip)
+	require.Nil(t, dedup5)
 }
 
 func TestImportLocalFilesToVolumeErrors(t *testing.T) {
