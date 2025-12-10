@@ -102,6 +102,28 @@ func NewRawClient(baseURL, apiKey string, opts ...ClientOption) (*RawClient, err
 	}, nil
 }
 
+// WithSpecialUser creates a new RawClient with the same configuration but a different API key.
+// The cloned client shares the same HTTP client instance but has its own API key.
+// Panics if the client is nil or if the API key is empty.
+func (c *RawClient) WithSpecialUser(apiKey string) *RawClient {
+	if c == nil {
+		panic("cannot clone nil client")
+	}
+	trimmedKey := strings.TrimSpace(apiKey)
+	if trimmedKey == "" {
+		panic("API key is required")
+	}
+
+	return &RawClient{
+		baseURL:         c.baseURL,
+		apiKey:          trimmedKey,
+		httpClient:      c.httpClient, // Share the same HTTP client (thread-safe)
+		userAgent:       c.userAgent,
+		defaultHeaders:  cloneHeader(c.defaultHeaders),
+		llmProxyBaseURL: c.llmProxyBaseURL,
+	}
+}
+
 // postJSON issues a JSON request and decodes the enveloped response payload.
 func (c *RawClient) postJSON(ctx context.Context, path string, reqBody interface{}, respBody interface{}, opts ...CallOption) error {
 	return c.doJSON(ctx, http.MethodPost, path, reqBody, respBody, opts...)

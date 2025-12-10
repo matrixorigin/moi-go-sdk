@@ -25,6 +25,19 @@ func NewSDKClient(raw *RawClient) *SDKClient {
 	}
 }
 
+// WithSpecialUser creates a new SDKClient with the same configuration but a different API key.
+// The cloned client uses a cloned RawClient with the new API key.
+// Panics if the client is nil or if the API key is empty.
+func (c *SDKClient) WithSpecialUser(apiKey string) *SDKClient {
+	if c == nil {
+		panic("cannot clone nil client")
+	}
+	clonedRaw := c.raw.WithSpecialUser(apiKey)
+	return &SDKClient{
+		raw: clonedRaw,
+	}
+}
+
 // TablePrivInfo represents table privilege information for role creation.
 type TablePrivInfo struct {
 	// TableID is the table ID

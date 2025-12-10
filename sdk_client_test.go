@@ -316,3 +316,94 @@ func TestSDKClientRunSQL(t *testing.T) {
 	require.NotEmpty(t, resp.Results)
 	require.Equal(t, []string{"id", "name"}, resp.Results[0].Columns)
 }
+
+func TestRawClientWithSpecialUser(t *testing.T) {
+	t.Parallel()
+
+	t.Run("WithSpecialUser with valid API key", func(t *testing.T) {
+		original, err := NewRawClient(testBaseURL, testAPIKey)
+		require.NoError(t, err)
+
+		newAPIKey := "new-api-key-123"
+		cloned := original.WithSpecialUser(newAPIKey)
+		require.NotNil(t, cloned)
+		require.NotSame(t, original, cloned)
+
+		// Verify API key is different
+		require.Equal(t, newAPIKey, cloned.apiKey)
+		require.NotEqual(t, original.apiKey, cloned.apiKey)
+
+		// Verify other fields are the same
+		require.Equal(t, original.baseURL, cloned.baseURL)
+		require.Equal(t, original.userAgent, cloned.userAgent)
+		require.Equal(t, original.llmProxyBaseURL, cloned.llmProxyBaseURL)
+		require.Equal(t, original.httpClient, cloned.httpClient) // Should share the same HTTP client
+	})
+
+	t.Run("WithSpecialUser with empty API key panics", func(t *testing.T) {
+		original, err := NewRawClient(testBaseURL, testAPIKey)
+		require.NoError(t, err)
+
+		require.Panics(t, func() {
+			original.WithSpecialUser("")
+		})
+	})
+
+	t.Run("WithSpecialUser with whitespace-only API key panics", func(t *testing.T) {
+		original, err := NewRawClient(testBaseURL, testAPIKey)
+		require.NoError(t, err)
+
+		require.Panics(t, func() {
+			original.WithSpecialUser("   ")
+		})
+	})
+
+	t.Run("WithSpecialUser nil client panics", func(t *testing.T) {
+		var original *RawClient = nil
+		require.Panics(t, func() {
+			original.WithSpecialUser("new-key")
+		})
+	})
+}
+
+func TestSDKClientWithSpecialUser(t *testing.T) {
+	t.Parallel()
+
+	t.Run("WithSpecialUser with valid API key", func(t *testing.T) {
+		originalRaw, err := NewRawClient(testBaseURL, testAPIKey)
+		require.NoError(t, err)
+		original := NewSDKClient(originalRaw)
+
+		newAPIKey := "new-api-key-456"
+		cloned := original.WithSpecialUser(newAPIKey)
+		require.NotNil(t, cloned)
+		require.NotSame(t, original, cloned)
+		require.NotSame(t, original.raw, cloned.raw)
+
+		// Verify cloned SDKClient has new API key
+		require.Equal(t, newAPIKey, cloned.raw.apiKey)
+		require.NotEqual(t, original.raw.apiKey, cloned.raw.apiKey)
+
+		// Verify other fields are the same
+		require.Equal(t, original.raw.baseURL, cloned.raw.baseURL)
+		require.Equal(t, original.raw.userAgent, cloned.raw.userAgent)
+		require.Equal(t, original.raw.llmProxyBaseURL, cloned.raw.llmProxyBaseURL)
+	})
+
+	t.Run("WithSpecialUser with empty API key panics", func(t *testing.T) {
+		originalRaw, err := NewRawClient(testBaseURL, testAPIKey)
+		require.NoError(t, err)
+		original := NewSDKClient(originalRaw)
+
+		require.Panics(t, func() {
+			original.WithSpecialUser("")
+		})
+	})
+
+	t.Run("WithSpecialUser nil client panics", func(t *testing.T) {
+		var original *SDKClient = nil
+		require.Panics(t, func() {
+			original.WithSpecialUser("new-key")
+		})
+	})
+}
