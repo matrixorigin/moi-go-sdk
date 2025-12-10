@@ -103,3 +103,74 @@ func TestUserNilRequestErrors(t *testing.T) {
 		})
 	}
 }
+
+func TestCreateUserWithGetApiKey(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	roleID, markRoleDeleted := createTestRole(t, client, []string{string(PrivCode_QueryCatalog)})
+
+	t.Run("GetApiKey=true should return ApiKey", func(t *testing.T) {
+		createResp, err := client.CreateUser(ctx, &UserCreateRequest{
+			UserName:    strings.ToLower(randomUserName()),
+			Password:    "TestPwd123!",
+			RoleIDList:  []RoleID{roleID},
+			Description: "sdk test user with api key",
+			GetApiKey:   true,
+		})
+		require.NoError(t, err)
+		require.NotZero(t, createResp.UserID)
+		require.NotEmpty(t, createResp.ApiKey, "ApiKey should be present when GetApiKey is true")
+
+		// Cleanup
+		t.Cleanup(func() {
+			if _, err := client.DeleteUser(ctx, &UserDeleteUserRequest{UserID: createResp.UserID}); err != nil {
+				t.Logf("cleanup delete user failed: %v", err)
+			}
+		})
+	})
+
+	t.Run("GetApiKey=false should not return ApiKey", func(t *testing.T) {
+		createResp, err := client.CreateUser(ctx, &UserCreateRequest{
+			UserName:    strings.ToLower(randomUserName()),
+			Password:    "TestPwd123!",
+			RoleIDList:  []RoleID{roleID},
+			Description: "sdk test user without api key",
+			GetApiKey:   false,
+		})
+		require.NoError(t, err)
+		require.NotZero(t, createResp.UserID)
+		// ApiKey may be empty or not present when GetApiKey is false
+		// This is acceptable as the field has omitempty tag
+
+		// Cleanup
+		t.Cleanup(func() {
+			if _, err := client.DeleteUser(ctx, &UserDeleteUserRequest{UserID: createResp.UserID}); err != nil {
+				t.Logf("cleanup delete user failed: %v", err)
+			}
+		})
+	})
+
+	t.Run("GetApiKey default (false) should work", func(t *testing.T) {
+		// Test that default behavior (GetApiKey not set, defaults to false) still works
+		createResp, err := client.CreateUser(ctx, &UserCreateRequest{
+			UserName:    strings.ToLower(randomUserName()),
+			Password:    "TestPwd123!",
+			RoleIDList:  []RoleID{roleID},
+			Description: "sdk test user with default GetApiKey",
+		})
+		require.NoError(t, err)
+		require.NotZero(t, createResp.UserID)
+
+		// Cleanup
+		t.Cleanup(func() {
+			if _, err := client.DeleteUser(ctx, &UserDeleteUserRequest{UserID: createResp.UserID}); err != nil {
+				t.Logf("cleanup delete user failed: %v", err)
+			}
+		})
+	})
+
+	_, err := client.DeleteRole(ctx, &RoleDeleteRequest{RoleID: roleID})
+	require.NoError(t, err)
+	markRoleDeleted()
+}

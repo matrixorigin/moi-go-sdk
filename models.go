@@ -1211,10 +1211,12 @@ type UserCreateRequest struct {
 	Description string   `json:"description"`
 	Phone       string   `json:"phone"`
 	Email       string   `json:"email"`
+	GetApiKey   bool     `json:"get_api_key"` // Whether to return API key in response
 }
 
 type UserCreateResponse struct {
 	UserID UserID `json:"id"`
+	ApiKey string `json:"api_key,omitempty"` // API key (only present if GetApiKey was true in request)
 }
 
 type UserDeleteUserRequest struct {
