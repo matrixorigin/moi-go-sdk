@@ -1746,8 +1746,9 @@ type FilterConditions struct {
 
 // CodeGroup represents a code group.
 type CodeGroup struct {
-	Name   string   `json:"name"`
-	Values []string `json:"values"`
+	Code   string   `json:"code"`   // Parent-level code
+	Name   string   `json:"name"`   // Code group name
+	Values []string `json:"values"` // Code value list
 }
 
 // DataScope represents data scope configuration.
