@@ -1635,19 +1635,20 @@ const (
 
 // LLMChatMessage represents a chat message in LLM Proxy.
 type LLMChatMessage struct {
-	ID              int64            `json:"id"`               // Message ID
-	UserID          string           `json:"user_id"`          // User ID
-	SessionID       *int64           `json:"session_id"`       // Session ID (optional)
-	Source          string           `json:"source"`           // Application name
-	Role            LLMMessageRole   `json:"role"`             // Message role
-	OriginalContent string           `json:"original_content"` // Original content (user's original input)
-	Content         string           `json:"content"`          // Actual content sent to LLM
-	Model           string           `json:"model"`            // Model name used
-	Status          LLMMessageStatus `json:"status"`           // Status
-	Response        string           `json:"response"`         // LLM reply content
-	Tags            []LLMTag         `json:"tags"`             // Tags bound to the message
-	CreatedAt       int64            `json:"created_at"`       // Creation time (Unix timestamp in seconds)
-	UpdatedAt       int64            `json:"updated_at"`       // Update time (Unix timestamp in seconds)
+	ID               int64            `json:"id"`                // Message ID
+	UserID           string           `json:"user_id"`           // User ID
+	SessionID        *int64           `json:"session_id"`        // Session ID (optional)
+	Source           string           `json:"source"`            // Application name
+	Role             LLMMessageRole   `json:"role"`              // Message role
+	OriginalContent  string           `json:"original_content"`  // Original content (user's original input)
+	Content          string           `json:"content"`           // Actual content sent to LLM
+	Model            string           `json:"model"`             // Model name used
+	Status           LLMMessageStatus `json:"status"`            // Status
+	Response         string           `json:"response"`          // LLM reply content
+	ModifiedResponse string           `json:"modified_response"` // Modified reply content
+	Tags             []LLMTag         `json:"tags"`              // Tags bound to the message
+	CreatedAt        int64            `json:"created_at"`        // Creation time (Unix timestamp in seconds)
+	UpdatedAt        int64            `json:"updated_at"`        // Update time (Unix timestamp in seconds)
 }
 
 // LLMChatMessageCreateRequest represents a request to create a chat message.
@@ -1686,10 +1687,11 @@ type LLMChatMessageListResponse struct {
 
 // LLMChatMessageUpdateRequest represents a request to update a chat message.
 type LLMChatMessageUpdateRequest struct {
-	Status   *LLMMessageStatus `json:"status,omitempty"`   // Message status
-	Response *string           `json:"response,omitempty"` // LLM reply content (for streaming, use CONCAT to append)
-	Content  *string           `json:"content,omitempty"`  // Actual content sent to LLM
-	Tags     *[]string         `json:"tags,omitempty"`     // Tag list (complete replacement)
+	Status           *LLMMessageStatus `json:"status,omitempty"`            // Message status
+	Response         *string           `json:"response,omitempty"`          // LLM reply content (for streaming, use CONCAT to append)
+	ModifiedResponse *string           `json:"modified_response,omitempty"` // Modified reply content
+	Content          *string           `json:"content,omitempty"`           // Actual content sent to LLM
+	Tags             *[]string         `json:"tags,omitempty"`              // Tag list (complete replacement)
 }
 
 // LLMChatMessageDeleteResponse represents a response from deleting a chat message.
@@ -1721,6 +1723,14 @@ type LLMSessionMessagesListRequest struct {
 type LLMLatestCompletedMessageResponse struct {
 	SessionID int64 `json:"session_id"`
 	MessageID int64 `json:"message_id"`
+}
+
+// LLMModifySessionMessageResponseResponse represents a response from modifying a session message's modified response.
+type LLMModifySessionMessageResponseResponse struct {
+	Message          string `json:"message"`
+	SessionID        int64  `json:"session_id"`
+	MessageID        int64  `json:"message_id"`
+	ModifiedResponse string `json:"modified_response"`
 }
 
 // ============ Handler: Data Asking types ============

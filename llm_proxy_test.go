@@ -525,3 +525,99 @@ func TestLLMSessionLatestMessageLiveFlow(t *testing.T) {
 	require.Equal(t, session.ID, latestResp.SessionID)
 	require.Equal(t, message2.ID, latestResp.MessageID, "Latest message (any status) should be message2 (the most recent)")
 }
+
+// TestModifyLLMSessionMessageResponse_NilClient tests nil client handling.
+func TestModifyLLMSessionMessageResponse_NilClient(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	var client *RawClient = nil
+
+	resp, err := client.ModifyLLMSessionMessageResponse(ctx, 1, 1, "test response")
+	require.Nil(t, resp)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "sdk client is nil")
+}
+
+// TestModifyLLMSessionMessageResponseLiveFlow tests modifying a message's modified_response with a real backend.
+func TestModifyLLMSessionMessageResponseLiveFlow(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	// Create a session first
+	createReq := &LLMSessionCreateRequest{
+		Title:  randomName("sdk-session-"),
+		Source: "sdk-test",
+		UserID: randomName("user-"),
+	}
+
+	session, err := client.CreateLLMSession(ctx, createReq)
+	require.NoError(t, err)
+	require.NotNil(t, session)
+	t.Logf("Created session ID: %d", session.ID)
+
+	// Cleanup: delete the session
+	t.Cleanup(func() {
+		if _, err := client.DeleteLLMSession(ctx, session.ID); err != nil {
+			t.Logf("cleanup delete session failed: %v", err)
+		}
+	})
+
+	// Create a message in the session
+	message, err := client.CreateLLMChatMessage(ctx, &LLMChatMessageCreateRequest{
+		UserID:    createReq.UserID,
+		SessionID: int64Ptr(session.ID),
+		Source:    createReq.Source,
+		Role:      LLMMessageRoleUser,
+		Content:   "Test message for modified response",
+		Model:     "gpt-4",
+		Status:    LLMMessageStatusSuccess,
+		Response:  "Original AI response",
+	})
+	require.NoError(t, err)
+	require.NotNil(t, message)
+	require.Greater(t, message.ID, int64(0))
+	t.Logf("Created message ID: %d", message.ID)
+
+	// Cleanup: delete the message
+	t.Cleanup(func() {
+		if _, err := client.DeleteLLMChatMessage(ctx, message.ID); err != nil {
+			t.Logf("cleanup delete message failed: %v", err)
+		}
+	})
+
+	// Verify initial state: modified_response should be empty
+	gotMessage, err := client.GetLLMChatMessage(ctx, message.ID)
+	require.NoError(t, err)
+	require.NotNil(t, gotMessage)
+	require.Equal(t, "", gotMessage.ModifiedResponse, "Initial modified_response should be empty")
+
+	// Modify the message's modified_response
+	modifiedResponse := "This is the modified response content"
+	modifyResp, err := client.ModifyLLMSessionMessageResponse(ctx, session.ID, message.ID, modifiedResponse)
+	require.NoError(t, err)
+	require.NotNil(t, modifyResp)
+	require.Equal(t, session.ID, modifyResp.SessionID)
+	require.Equal(t, message.ID, modifyResp.MessageID)
+	require.Equal(t, modifiedResponse, modifyResp.ModifiedResponse)
+	t.Logf("Modified response for message ID: %d", message.ID)
+
+	// Verify the modification by getting the message again
+	gotMessage2, err := client.GetLLMChatMessage(ctx, message.ID)
+	require.NoError(t, err)
+	require.NotNil(t, gotMessage2)
+	require.Equal(t, modifiedResponse, gotMessage2.ModifiedResponse, "Modified response should be updated")
+	require.Equal(t, "Original AI response", gotMessage2.Response, "Original response should remain unchanged")
+
+	// Update the modified_response again
+	modifiedResponse2 := "Updated modified response content"
+	modifyResp2, err := client.ModifyLLMSessionMessageResponse(ctx, session.ID, message.ID, modifiedResponse2)
+	require.NoError(t, err)
+	require.NotNil(t, modifyResp2)
+	require.Equal(t, modifiedResponse2, modifyResp2.ModifiedResponse)
+
+	// Verify the update
+	gotMessage3, err := client.GetLLMChatMessage(ctx, message.ID)
+	require.NoError(t, err)
+	require.NotNil(t, gotMessage3)
+	require.Equal(t, modifiedResponse2, gotMessage3.ModifiedResponse, "Modified response should be updated again")
+}
