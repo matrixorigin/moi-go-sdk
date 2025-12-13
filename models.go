@@ -362,8 +362,9 @@ func IntToPrivObjectID(id int64) PrivObjectID {
 
 // AuthorityCodeAndRule represents a privilege code with its associated rules.
 type AuthorityCodeAndRule struct {
-	Code     string             `json:"code"`
-	RuleList []*TableRowColRule `json:"rule_list"`
+	Code            string             `json:"code"`
+	BlackColumnList []string           `json:"black_column_list"`
+	RuleList        []*TableRowColRule `json:"rule_list"`
 }
 
 // TableRowColRule represents a table row/column rule with expressions.
@@ -377,6 +378,7 @@ type TableRowColRule struct {
 type TableRowColExpression struct {
 	Operator   string `json:"operator"` // = != like > >= < <=
 	Expression string `json:"expression"`
+	MatchType  string `json:"match_type"` // c,i,m,n,u
 }
 
 type ObjPrivResponse struct {
@@ -387,8 +389,11 @@ type ObjPrivResponse struct {
 }
 
 type PrivObjectIDAndName struct {
-	ObjectID   string `json:"id"`
-	ObjectName string `json:"name"`
+	ObjectID   string                 `json:"id"`
+	ObjectName string                 `json:"name"`
+	DatabaseID string                 `json:"database_id"`
+	ObjectType string                 `json:"type"`
+	NodeList   []*PrivObjectIDAndName `json:"node_list"`
 }
 
 // ============ Models: Catalog types ============
