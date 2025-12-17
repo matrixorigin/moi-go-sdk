@@ -67,6 +67,9 @@ const (
 	ObjTypeCatalog
 	ObjTypeDatabase
 	ObjTypeTable
+	ObjTypeKnowledge    //知识库
+	ObjTypePublication  //发布操作
+	ObjTypeSubscription //订阅操作
 )
 
 func (objType ObjType) String() string {
@@ -97,6 +100,12 @@ func (objType ObjType) String() string {
 		return "database"
 	case ObjTypeTable:
 		return "table"
+	case ObjTypeKnowledge:
+		return "knowledge"
+	case ObjTypePublication:
+		return "publication"
+	case ObjTypeSubscription:
+		return "subscription"
 	default:
 		return "none"
 	}
@@ -217,7 +226,25 @@ const (
 	PrivID_TableReference PrivID = 212 //查询表的引用
 	PrivID_TableIndex     PrivID = 213 //查询表的索引
 
-	//4.1之后如果有新的类别，那么PrivID从300开始，每个类别100个值
+	//知识库
+	PrivID_CreateKnowledge PrivID = 300 //新建知识库
+	PrivID_QueryKnowledge  PrivID = 301 //查询知识库的详情
+	PrivID_UpdateKnowledge PrivID = 302 //更新知识库的内容
+	PrivID_DeleteKnowledge PrivID = 303 //删除知识库
+	PrivID_UseKnowledge    PrivID = 304 //使用知识库
+
+	//发布订阅
+	PrivID_CreatePublication  PrivID = 400 //新建发布
+	PrivID_QueryPublication   PrivID = 401 //查询发布的详情
+	PrivID_UpdatePublication  PrivID = 402 //更新发布的内容
+	PrivID_DeletePublication  PrivID = 403 //删除发布
+	PrivID_CreateSubscription PrivID = 404 //新建订阅
+	PrivID_QuerySubscription  PrivID = 405 //查询订阅的详情
+	PrivID_UpdateSubscription PrivID = 406 //更新订阅的内容
+	PrivID_DeleteSubscription PrivID = 407 //删除订阅
+	PrivID_UseSubscription    PrivID = 408 //使用订阅
+
+	//4.1之后如果有新的类别，那么PrivID从500开始，每个类别100个值
 )
 
 // ============ PrivCode constants ============
@@ -337,7 +364,36 @@ const (
 	PrivCode_TableTruncate  PrivCode = "DT12"
 	PrivCode_TableReference PrivCode = "DT13"
 	PrivCode_TableIndex     PrivCode = "DT14"
+
+	//知识库
+	PrivCode_CreateKnowledge PrivCode = "K1"
+	PrivCode_QueryKnowledge  PrivCode = "K2"
+	PrivCode_UpdateKnowledge PrivCode = "K3"
+	PrivCode_DeleteKnowledge PrivCode = "K4"
+	PrivCode_UseKnowledge    PrivCode = "K5"
+
+	//发布订阅
+	PrivCode_CreatePublication  PrivCode = "PS1"
+	PrivCode_QueryPublication   PrivCode = "PS2"
+	PrivCode_UpdatePublication  PrivCode = "PS3"
+	PrivCode_DeletePublication  PrivCode = "PS4"
+	PrivCode_QuerySubscription  PrivCode = "PS5"
+	PrivCode_CreateSubscription PrivCode = "PS6"
+	PrivCode_UpdateSubscription PrivCode = "PS7"
+	PrivCode_DeleteSubscription PrivCode = "PS8"
 )
+
+var ObjTypeToPrivIDMap = map[ObjType][]PrivID{
+	ObjTypeConnector:  {PrivID_UpdateConnector, PrivID_DeleteConnector, PrivID_GetConnector, PrivID_UseConnector},
+	ObjTypeLoadTask:   {PrivID_UpdateLoadTask, PrivID_DeleteLoadTask, PrivID_GetLoadTask},
+	ObjTypeExportTask: {PrivID_UpdateExportTask, PrivID_DeleteExportTask, PrivID_GetExportTask},
+	ObjTypeWorkFlow:   {PrivID_UpdateWorkflow, PrivID_DeleteWorkflow, PrivID_GetWorkflow, PrivID_RunWorkflow, PrivID_StopWorkflow},
+	ObjTypeAlarm:      {PrivID_QueryAlterRule, PrivID_UpdateAlterRule, PrivID_DeleteAlterRule, PrivID_QueryAlterReceiver, PrivID_UpdateAlterReceiver, PrivID_DeleteAlterReceiver, PrivID_QueryAlterLog},
+	ObjTypeCatalog:    {PrivID_QueryCatalog, PrivID_UpdateCatalog, PrivID_DeleteCatalog, PrivID_CreateDatabase, PrivID_QueryDatabase},
+	ObjTypeDatabase:   {PrivID_UpdateDatabase, PrivID_DeleteDatabase, PrivID_CreateVolume, PrivID_CreateTable, PrivID_ShowTables, PrivID_CreateView},
+	ObjTypeVolume:     {PrivID_UpdateVolume, PrivID_DeleteVolume, PrivID_VolumeRead, PrivID_VolumeWrite},
+	ObjTypeTable:      {PrivID_AlterTable, PrivID_DropTable, PrivID_AlterView, PrivID_DropView, PrivID_TableSelect, PrivID_TableInsert, PrivID_TableUpdate, PrivID_TableDelete, PrivID_TableTruncate, PrivID_TableReference, PrivID_TableIndex},
+}
 
 type CheckPriv struct {
 	PrivID   PrivID       `json:"priv_id"`
