@@ -1881,6 +1881,7 @@ type LLMChatMessage struct {
 	Status           LLMMessageStatus `json:"status"`            // Status
 	Response         string           `json:"response"`          // LLM reply content
 	ModifiedResponse string           `json:"modified_response"` // Modified reply content
+	Config           string           `json:"config"`            // Message configuration (JSON string, application-defined)
 	Tags             []LLMTag         `json:"tags"`              // Tags bound to the message
 	CreatedAt        int64            `json:"created_at"`        // Creation time (Unix timestamp in seconds)
 	UpdatedAt        int64            `json:"updated_at"`        // Update time (Unix timestamp in seconds)
@@ -1897,6 +1898,7 @@ type LLMChatMessageCreateRequest struct {
 	Model           string           `json:"model"`                      // Required: Model name
 	Status          LLMMessageStatus `json:"status,omitempty"`           // Optional: Message status (default: success)
 	Response        string           `json:"response,omitempty"`         // Optional: LLM reply content
+	Config          string           `json:"config,omitempty"`           // Optional: Message configuration (JSON string)
 	Tags            []string         `json:"tags,omitempty"`             // Optional: Tag names list
 }
 
@@ -1926,6 +1928,7 @@ type LLMChatMessageUpdateRequest struct {
 	Response         *string           `json:"response,omitempty"`          // LLM reply content (for streaming, use CONCAT to append)
 	ModifiedResponse *string           `json:"modified_response,omitempty"` // Modified reply content
 	Content          *string           `json:"content,omitempty"`           // Actual content sent to LLM
+	Config           *string           `json:"config,omitempty"`            // Message configuration (JSON string)
 	Tags             *[]string         `json:"tags,omitempty"`              // Tag list (complete replacement)
 }
 
