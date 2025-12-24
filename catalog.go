@@ -1,7 +1,12 @@
 package sdk
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
 )
 
 // CreateCatalog creates a new catalog.
@@ -156,4 +161,73 @@ func (c *RawClient) GetCatalogRefList(ctx context.Context, req *CatalogRefListRe
 		return nil, err
 	}
 	return &resp, nil
+}
+
+// DownloadTableData downloads table data as a CSV file stream.
+//
+// Returns a FileStream that must be closed by the caller. The stream contains
+// the CSV content that can be read directly.
+//
+// This method uses a client with no timeout to allow downloading large files.
+// The download can still be cancelled using the provided context.
+//
+// Example:
+//
+//	stream, err := client.DownloadTableData(ctx, &sdk.TableDownloadDataRequest{
+//		ID: 1,
+//	})
+//	if err != nil {
+//		return err
+//	}
+//	defer stream.Close()
+//
+//	data, err := io.ReadAll(stream.Body)
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Downloaded %d bytes\n", len(data))
+func (c *RawClient) DownloadTableData(ctx context.Context, req *TableDownloadDataRequest, opts ...CallOption) (*FileStream, error) {
+	if req == nil {
+		return nil, ErrNilRequest
+	}
+	callOpts := newCallOptions(opts...)
+
+	var reader *bytes.Reader
+	payload, err := json.Marshal(req)
+	if err != nil {
+		return nil, fmt.Errorf("marshal request body: %w", err)
+	}
+	reader = bytes.NewReader(payload)
+
+	// Build the request
+	httpReq, err := c.buildRequest(ctx, http.MethodPost, "/catalog/table/download_data", reader, callOpts)
+	if err != nil {
+		return nil, err
+	}
+	httpReq.Header.Set(headerContentType, mimeJSON)
+
+	// Create a client with no timeout for downloading large files
+	// The download can still be cancelled via context
+	downloadClient := &http.Client{
+		Timeout: 0, // No timeout - allows downloading large files
+	}
+
+	// Execute the request
+	resp, err := downloadClient.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check for HTTP errors
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		data, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		return nil, &HTTPError{StatusCode: resp.StatusCode, Body: data}
+	}
+
+	return &FileStream{
+		Body:       resp.Body,
+		Header:     resp.Header.Clone(),
+		StatusCode: resp.StatusCode,
+	}, nil
 }

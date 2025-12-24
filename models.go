@@ -930,6 +930,10 @@ type TableDownloadResponse struct {
 	Url string `json:"url"`
 }
 
+type TableDownloadDataRequest struct {
+	ID int64 `json:"id"`
+}
+
 type TableTruncateRequest struct {
 	TableID TableID `json:"id"`
 }
