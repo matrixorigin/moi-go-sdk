@@ -210,7 +210,7 @@ func TestUpdateTableRole_LiveFlow(t *testing.T) {
 							ExpressionList: []*TableRowColExpression{
 								{
 									Operator:   "=",
-									Expression: "100",
+									Expression: []string{"100"},
 								},
 							},
 						},
@@ -248,7 +248,7 @@ func TestUpdateTableRole_LiveFlow(t *testing.T) {
 						require.Equal(t, "and", authCode.RuleList[0].Relation)
 						require.Equal(t, 1, len(authCode.RuleList[0].ExpressionList))
 						require.Equal(t, "=", authCode.RuleList[0].ExpressionList[0].Operator)
-						require.Equal(t, "100", authCode.RuleList[0].ExpressionList[0].Expression)
+						require.Equal(t, []string{"100"}, authCode.RuleList[0].ExpressionList[0].Expression)
 					}
 				}
 			}

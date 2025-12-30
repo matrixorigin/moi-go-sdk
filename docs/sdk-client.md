@@ -108,7 +108,7 @@ roleID, created, err := sdkClient.CreateTableRole(ctx, "restricted-role", "Role 
                         ExpressionList: []*sdk.TableRowColExpression{
                             {
                                 Operator:   "=",
-                                Expression: "IT",
+                                Expression: []string{"IT"},
                             },
                         },
                     },

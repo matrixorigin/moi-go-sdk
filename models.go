@@ -474,9 +474,9 @@ type TableRowColRule struct {
 
 // TableRowColExpression represents a single expression in a table row/column rule.
 type TableRowColExpression struct {
-	Operator   string `json:"operator"` // = != like > >= < <=
-	Expression string `json:"expression"`
-	MatchType  string `json:"match_type"` // c,i,m,n,u
+	Operator   string   `json:"operator"` // = != like > >= < <= regexp_like
+	Expression []string `json:"expression"`
+	MatchType  string   `json:"match_type"` // c,i,m,n,u
 }
 
 type ObjPrivResponse struct {

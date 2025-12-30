@@ -183,7 +183,7 @@ func (c *RawClient) UpdateRoleCodeList(ctx context.Context, req *RoleUpdateCodeL
 //								Column:   "department",
 //								Relation: "and",
 //								ExpressionList: []*sdk.TableRowColExpression{
-//									{Operator: "=", Expression: "IT"},
+//									{Operator: "=", Expression: []string{"IT"}},
 //								},
 //							},
 //						},
