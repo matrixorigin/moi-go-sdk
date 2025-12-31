@@ -172,12 +172,14 @@ type callOptions struct {
 	query             url.Values
 	requestID         string
 	useDirectLLMProxy bool // Whether to use direct LLM Proxy connection
+	streamBufferSize  int  // Buffer size for stream scanner (in bytes)
 }
 
 func newCallOptions(opts ...CallOption) callOptions {
 	co := callOptions{
-		headers: make(http.Header),
-		query:   make(url.Values),
+		headers:          make(http.Header),
+		query:            make(url.Values),
+		streamBufferSize: 0, // 0 means use default
 	}
 	for _, opt := range opts {
 		if opt != nil {
@@ -306,6 +308,27 @@ func WithQuery(values url.Values) CallOption {
 func WithDirectLLMProxy() CallOption {
 	return func(co *callOptions) {
 		co.useDirectLLMProxy = true
+	}
+}
+
+// WithStreamBufferSize sets the initial buffer size for stream reader.
+//
+// The buffer will dynamically grow as needed to handle lines of arbitrary length,
+// so this option only sets the initial buffer size for better performance.
+// If not set, the default initial buffer size is 4KB.
+//
+// The size is specified in bytes. A larger initial buffer can improve performance
+// for streams with consistently large lines, but is not required for correctness.
+//
+// Example:
+//
+//	stream, err := client.AnalyzeDataStream(ctx, req,
+//		sdk.WithStreamBufferSize(64*1024)) // 64KB initial buffer
+func WithStreamBufferSize(size int) CallOption {
+	return func(co *callOptions) {
+		if size > 0 {
+			co.streamBufferSize = size
+		}
 	}
 }
 
