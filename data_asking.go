@@ -45,6 +45,8 @@ type DataAnalysisStream struct {
 	// StatusCode is the HTTP status code
 	StatusCode int
 	scanner    *bufio.Scanner
+	// maxBufferSize is the maximum buffer size for the scanner (0 means use default 1MB)
+	maxBufferSize int
 }
 
 // Close releases the underlying HTTP response body.
@@ -74,6 +76,14 @@ func (s *DataAnalysisStream) Close() error {
 func (s *DataAnalysisStream) ReadEvent() (*DataAnalysisStreamEvent, error) {
 	if s.scanner == nil {
 		s.scanner = bufio.NewScanner(s.Body)
+		// Set buffer size to handle large tokens (default is 64KB)
+		// Use configured size or default to 1MB
+		maxCapacity := s.maxBufferSize
+		if maxCapacity == 0 {
+			maxCapacity = 1024 * 1024 // Default: 1MB
+		}
+		buf := make([]byte, 0, bufio.MaxScanTokenSize)
+		s.scanner.Buffer(buf, maxCapacity)
 	}
 
 	var event DataAnalysisStreamEvent
@@ -158,7 +168,7 @@ func (s *DataAnalysisStream) ReadEvent() (*DataAnalysisStreamEvent, error) {
 //				Type: "all",
 //			},
 //		},
-//	})
+//	}, sdk.WithStreamBufferSize(1024*1024)) // Optional: set buffer size for large data lines
 //	if err != nil {
 //		return err
 //	}
@@ -243,9 +253,10 @@ func (c *RawClient) AnalyzeDataStream(ctx context.Context, req *DataAnalysisRequ
 	}
 
 	return &DataAnalysisStream{
-		Body:       resp.Body,
-		Header:     resp.Header.Clone(),
-		StatusCode: resp.StatusCode,
+		Body:          resp.Body,
+		Header:        resp.Header.Clone(),
+		StatusCode:    resp.StatusCode,
+		maxBufferSize: callOpts.streamBufferSize,
 	}, nil
 }
 

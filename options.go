@@ -172,12 +172,14 @@ type callOptions struct {
 	query             url.Values
 	requestID         string
 	useDirectLLMProxy bool // Whether to use direct LLM Proxy connection
+	streamBufferSize  int  // Buffer size for stream scanner (in bytes)
 }
 
 func newCallOptions(opts ...CallOption) callOptions {
 	co := callOptions{
-		headers: make(http.Header),
-		query:   make(url.Values),
+		headers:          make(http.Header),
+		query:            make(url.Values),
+		streamBufferSize: 0, // 0 means use default
 	}
 	for _, opt := range opts {
 		if opt != nil {
@@ -306,6 +308,25 @@ func WithQuery(values url.Values) CallOption {
 func WithDirectLLMProxy() CallOption {
 	return func(co *callOptions) {
 		co.useDirectLLMProxy = true
+	}
+}
+
+// WithStreamBufferSize sets the buffer size for stream scanner to handle large tokens.
+//
+// The default buffer size for bufio.Scanner is 64KB. If your SSE stream contains
+// data lines larger than this, you need to increase the buffer size using this option.
+//
+// The size is specified in bytes. A common value is 1MB (1024 * 1024) or larger.
+//
+// Example:
+//
+//	stream, err := client.AnalyzeDataStream(ctx, req,
+//		sdk.WithStreamBufferSize(1024*1024)) // 1MB buffer
+func WithStreamBufferSize(size int) CallOption {
+	return func(co *callOptions) {
+		if size > 0 {
+			co.streamBufferSize = size
+		}
 	}
 }
 

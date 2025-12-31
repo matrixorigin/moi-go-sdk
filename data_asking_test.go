@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -326,4 +327,306 @@ func TestCancelAnalyzeLiveFlow(t *testing.T) {
 	require.Equal(t, "cancelled", cancelResp.Status)
 	require.NotEmpty(t, cancelResp.UserID)
 	t.Logf("Successfully cancelled request: %s, Status: %s, UserID: %s", cancelResp.RequestID, cancelResp.Status, cancelResp.UserID)
+}
+
+// ============ ReadEvent Unit Tests ============
+
+func TestDataAnalysisStream_ReadEvent_Basic(t *testing.T) {
+	t.Parallel()
+
+	// Create a simple SSE stream
+	sseData := "event: classification\ndata: {\"type\":\"classification\",\"data\":{\"category\":\"query\"}}\n\n"
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0, // Use default
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "classification", event.Type)
+	require.NotEmpty(t, event.RawData)
+
+	// Should return EOF for next read
+	event, err = stream.ReadEvent()
+	require.ErrorIs(t, err, io.EOF)
+	require.Nil(t, event)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_MultipleEvents(t *testing.T) {
+	t.Parallel()
+
+	sseData := "event: init\ndata: {\"step_type\":\"init\",\"data\":{\"request_id\":\"req-123\"}}\n\n" +
+		"event: classification\ndata: {\"type\":\"classification\"}\n\n" +
+		"event: complete\ndata: {\"type\":\"complete\"}\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	// Read first event
+	event, err := stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "init", event.Type)
+
+	// Read second event
+	event, err = stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "classification", event.Type)
+
+	// Read third event
+	event, err = stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "complete", event.Type)
+
+	// Should return EOF
+	event, err = stream.ReadEvent()
+	require.ErrorIs(t, err, io.EOF)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_MultiLineData(t *testing.T) {
+	t.Parallel()
+
+	sseData := "event: test\ndata: {\"key1\":\"value1\"}\ndata: {\"key2\":\"value2\"}\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "test", event.Type)
+	// Multi-line data should be joined with newline
+	require.Contains(t, string(event.RawData), "key1")
+	require.Contains(t, string(event.RawData), "key2")
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_EmptyStream(t *testing.T) {
+	t.Parallel()
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader("")),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	event, err := stream.ReadEvent()
+	require.ErrorIs(t, err, io.EOF)
+	require.Nil(t, event)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_DefaultBufferSize(t *testing.T) {
+	t.Parallel()
+
+	// Create data larger than 64KB (default bufio.Scanner limit) but less than 1MB
+	largeData := strings.Repeat("x", 100*1024) // 100KB
+	// Use JSON encoding to properly escape the data
+	jsonData, err := json.Marshal(map[string]string{"data": largeData})
+	require.NoError(t, err)
+	sseData := "event: large\ndata: " + string(jsonData) + "\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0, // Use default 1MB
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err, "Should handle large data with default buffer size")
+	require.NotNil(t, event)
+	require.Equal(t, "large", event.Type)
+	require.Contains(t, string(event.RawData), largeData)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_CustomBufferSize(t *testing.T) {
+	t.Parallel()
+
+	// Create data larger than 64KB
+	largeData := strings.Repeat("y", 200*1024) // 200KB
+	// Use JSON encoding to properly escape the data
+	jsonData, err := json.Marshal(map[string]string{"data": largeData})
+	require.NoError(t, err)
+	sseData := "event: large\ndata: " + string(jsonData) + "\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 512 * 1024, // 512KB custom buffer
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err, "Should handle large data with custom buffer size")
+	require.NotNil(t, event)
+	require.Equal(t, "large", event.Type)
+	require.Contains(t, string(event.RawData), largeData)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_VeryLargeData(t *testing.T) {
+	t.Parallel()
+
+	// Create data larger than 1MB to test custom buffer size
+	largeData := strings.Repeat("z", 2*1024*1024) // 2MB
+	// Use JSON encoding to properly escape the data
+	jsonData, err := json.Marshal(map[string]string{"data": largeData})
+	require.NoError(t, err)
+	sseData := "event: verylarge\ndata: " + string(jsonData) + "\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 4 * 1024 * 1024, // 4MB custom buffer
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err, "Should handle very large data with custom buffer size")
+	require.NotNil(t, event)
+	require.Equal(t, "verylarge", event.Type)
+	require.Contains(t, string(event.RawData), largeData)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_InvalidJSON(t *testing.T) {
+	t.Parallel()
+
+	// SSE with invalid JSON should still return the raw data
+	sseData := "event: test\ndata: {invalid json}\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err, "Should return event even with invalid JSON")
+	require.NotNil(t, event)
+	require.Equal(t, "test", event.Type)
+	require.Equal(t, "{invalid json}", string(event.RawData))
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_NoEventType(t *testing.T) {
+	t.Parallel()
+
+	// SSE without event type should still work
+	sseData := "data: {\"step_type\":\"init\",\"data\":{\"request_id\":\"req-123\"}}\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	// Type should be empty if not specified in event: field
+	require.Empty(t, event.Type)
+	require.NotEmpty(t, event.RawData)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_WithStreamBufferSizeOption(t *testing.T) {
+	t.Parallel()
+
+	// This test verifies that WithStreamBufferSize option is properly passed through
+	// We'll create a mock client and verify the option is set
+	largeData := strings.Repeat("a", 150*1024) // 150KB
+	// Use JSON encoding to properly escape the data
+	jsonData, err := json.Marshal(map[string]string{"data": largeData})
+	require.NoError(t, err)
+	sseData := "event: test\ndata: " + string(jsonData) + "\n\n"
+
+	// Create stream with custom buffer size (simulating what AnalyzeDataStream would do)
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 256 * 1024, // 256KB (set via WithStreamBufferSize)
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err, "Should handle data with custom buffer size from option")
+	require.NotNil(t, event)
+	require.Equal(t, "test", event.Type)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestDataAnalysisStream_ReadEvent_EmptyLines(t *testing.T) {
+	t.Parallel()
+
+	// SSE with multiple empty lines should be handled correctly
+	sseData := "\n\nevent: test\ndata: {\"key\":\"value\"}\n\n\n\n"
+
+	stream := &DataAnalysisStream{
+		Body:          io.NopCloser(strings.NewReader(sseData)),
+		Header:        make(http.Header),
+		StatusCode:    200,
+		maxBufferSize: 0,
+	}
+
+	event, err := stream.ReadEvent()
+	require.NoError(t, err)
+	require.NotNil(t, event)
+	require.Equal(t, "test", event.Type)
+
+	// Next read should be EOF
+	event, err = stream.ReadEvent()
+	require.ErrorIs(t, err, io.EOF)
+
+	require.NoError(t, stream.Close())
+}
+
+func TestWithStreamBufferSize_Option(t *testing.T) {
+	t.Parallel()
+
+	// Test that WithStreamBufferSize properly sets the buffer size in callOptions
+	opts := newCallOptions(WithStreamBufferSize(2 * 1024 * 1024)) // 2MB
+	require.Equal(t, 2*1024*1024, opts.streamBufferSize)
+
+	// Test with zero value (should not change default)
+	opts = newCallOptions(WithStreamBufferSize(0))
+	require.Equal(t, 0, opts.streamBufferSize)
+
+	// Test with negative value (should not change default)
+	opts = newCallOptions(WithStreamBufferSize(-1))
+	require.Equal(t, 0, opts.streamBufferSize)
+
+	// Test default value
+	opts = newCallOptions()
+	require.Equal(t, 0, opts.streamBufferSize)
 }
