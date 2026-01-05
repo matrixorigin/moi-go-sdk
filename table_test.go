@@ -112,6 +112,7 @@ func TestTableNilRequestErrors(t *testing.T) {
 		{"MultiInfo", func() error { _, err := client.GetMultiTable(ctx, nil); return err }},
 		{"Exist", func() error { _, err := client.CheckTableExists(ctx, nil); return err }},
 		{"Preview", func() error { _, err := client.PreviewTable(ctx, nil); return err }},
+		{"GetTableData", func() error { _, err := client.GetTableData(ctx, nil); return err }},
 		{"Load", func() error { _, err := client.LoadTable(ctx, nil); return err }},
 		{"Download", func() error { _, err := client.GetTableDownloadLink(ctx, nil); return err }},
 		{"DownloadData", func() error { _, err := client.DownloadTableData(ctx, nil); return err }},
@@ -214,6 +215,14 @@ func TestTableIDNotExists(t *testing.T) {
 		t.Logf("Error for previewing non-existent table (expected): %v", err)
 	} else {
 		t.Logf("Preview succeeded for non-existent table (service may allow empty preview)")
+	}
+
+	// Try to get data from non-existent table
+	_, err = client.GetTableData(ctx, &GetTableDataRequest{TableID: nonExistentID, Page: 1, PageSize: 10})
+	if err != nil {
+		t.Logf("Error for getting data from non-existent table (expected): %v", err)
+	} else {
+		t.Logf("GetTableData succeeded for non-existent table (service may allow empty data)")
 	}
 
 	// Try to delete non-existent table - service may allow idempotent delete
@@ -448,4 +457,177 @@ func TestFileStream_WriteToFile(t *testing.T) {
 	_, err = nilStream.WriteToFile("/tmp/test.csv")
 	require.Error(t, err)
 	require.Equal(t, io.ErrUnexpectedEOF, err)
+}
+
+func TestGetTableData_LiveFlow(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	catalogID, markCatalogDeleted := createTestCatalog(t, client)
+	databaseID, markDatabaseDeleted := createTestDatabase(t, client, catalogID)
+
+	defer func() {
+		markDatabaseDeleted()
+		markCatalogDeleted()
+	}()
+
+	// Create a test table
+	tableName := randomName("sdk-table-data-")
+	columns := []Column{
+		{Name: "id", Type: "int", IsPk: true},
+		{Name: "name", Type: "varchar(255)"},
+		{Name: "value", Type: "int"},
+	}
+	createResp, err := client.CreateTable(ctx, &TableCreateRequest{
+		DatabaseID: databaseID,
+		Name:       tableName,
+		Columns:    columns,
+		Comment:    "test table for GetTableData",
+	})
+	require.NoError(t, err)
+	tableID := createResp.TableID
+
+	// Cleanup table
+	defer func() {
+		if _, err := client.DeleteTable(ctx, &TableDeleteRequest{TableID: tableID}); err != nil {
+			t.Logf("cleanup delete table failed: %v", err)
+		}
+	}()
+
+	// Test GetTableData with default pagination (empty table)
+	resp, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       1,
+		PageSize:   100,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, resp.Columns)
+	require.NotNil(t, resp.Data)
+	require.Equal(t, 1, resp.Page)
+	require.Equal(t, 100, resp.PageSize)
+	require.GreaterOrEqual(t, resp.TotalRows, int64(0))
+	require.Len(t, resp.Columns, 3, "should have 3 columns")
+	require.Equal(t, "id", resp.Columns[0].Name)
+	require.Equal(t, "name", resp.Columns[1].Name)
+	require.Equal(t, "value", resp.Columns[2].Name)
+
+	// Test GetTableData with different page size
+	resp2, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       1,
+		PageSize:   50,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp2)
+	require.Equal(t, 1, resp2.Page)
+	require.Equal(t, 50, resp2.PageSize)
+	require.Equal(t, resp.TotalRows, resp2.TotalRows, "total rows should be the same")
+
+	// Test GetTableData with both TableID and TableName (TableID is required by backend)
+	resp3, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		TableName:  tableName,
+		DatabaseID: databaseID,
+		Page:       1,
+		PageSize:   10,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp3)
+	require.Equal(t, resp.TotalRows, resp3.TotalRows, "total rows should be the same when using both TableID and TableName")
+
+	// Test GetTableData with page 2 (should work even if empty)
+	resp4, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       2,
+		PageSize:   10,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp4)
+	require.Equal(t, 2, resp4.Page)
+	require.Equal(t, 10, resp4.PageSize)
+}
+
+func TestGetTableData_Pagination(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	catalogID, markCatalogDeleted := createTestCatalog(t, client)
+	databaseID, markDatabaseDeleted := createTestDatabase(t, client, catalogID)
+
+	defer func() {
+		markDatabaseDeleted()
+		markCatalogDeleted()
+	}()
+
+	// Create a test table
+	tableName := randomName("sdk-table-pagination-")
+	columns := []Column{
+		{Name: "id", Type: "int", IsPk: true},
+		{Name: "name", Type: "varchar(255)"},
+	}
+	createResp, err := client.CreateTable(ctx, &TableCreateRequest{
+		DatabaseID: databaseID,
+		Name:       tableName,
+		Columns:    columns,
+		Comment:    "test table for pagination",
+	})
+	require.NoError(t, err)
+	tableID := createResp.TableID
+
+	// Cleanup table
+	defer func() {
+		if _, err := client.DeleteTable(ctx, &TableDeleteRequest{TableID: tableID}); err != nil {
+			t.Logf("cleanup delete table failed: %v", err)
+		}
+	}()
+
+	// Test with page 0 (should default to 1)
+	resp, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       0,
+		PageSize:   10,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	// Backend should default page to 1 if <= 0
+	require.GreaterOrEqual(t, resp.Page, 1)
+
+	// Test with pageSize 0 (should default to 100)
+	resp2, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       1,
+		PageSize:   0,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp2)
+	// Backend should default pageSize to 100 if <= 0
+	require.GreaterOrEqual(t, resp2.PageSize, 100)
+
+	// Test with negative page
+	resp3, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       -1,
+		PageSize:   10,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp3)
+	require.GreaterOrEqual(t, resp3.Page, 1)
+
+	// Test with negative pageSize
+	resp4, err := client.GetTableData(ctx, &GetTableDataRequest{
+		TableID:    tableID,
+		DatabaseID: databaseID,
+		Page:       1,
+		PageSize:   -1,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp4)
+	require.GreaterOrEqual(t, resp4.PageSize, 100)
 }

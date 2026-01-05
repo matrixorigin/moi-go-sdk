@@ -156,6 +156,33 @@ func (c *RawClient) PreviewTable(ctx context.Context, req *TablePreviewRequest, 
 	return &resp, nil
 }
 
+// GetTableData retrieves table data with pagination.
+//
+// Returns paginated table data including columns, data rows, total row count, and pagination info.
+//
+// Example:
+//
+//	resp, err := client.GetTableData(ctx, &sdk.GetTableDataRequest{
+//		TableID:    456,
+//		DatabaseID: 123,
+//		Page:       1,
+//		PageSize:   100,
+//	})
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Total rows: %d, Current page: %d\n", resp.TotalRows, resp.Page)
+func (c *RawClient) GetTableData(ctx context.Context, req *GetTableDataRequest, opts ...CallOption) (*GetTableDataResponse, error) {
+	if req == nil {
+		return nil, ErrNilRequest
+	}
+	var resp GetTableDataResponse
+	if err := c.postJSON(ctx, "/catalog/table/data", req, &resp, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
 // LoadTable loads table data into memory for processing.
 //
 // This operation may take time for large tables.

@@ -904,6 +904,22 @@ type TablePreviewResponse struct {
 	Data    [][]interface{} `json:"data"`
 }
 
+type GetTableDataRequest struct {
+	TableID    TableID    `json:"id"`
+	TableName  string     `json:"name"`
+	DatabaseID DatabaseID `json:"database_id"`
+	Page       int        `json:"page"`
+	PageSize   int        `json:"page_size"`
+}
+
+type GetTableDataResponse struct {
+	Columns   []Column        `json:"columns"`
+	Data      [][]interface{} `json:"data"`
+	TotalRows int64           `json:"total_rows"`
+	Page      int             `json:"page"`
+	PageSize  int             `json:"page_size"`
+}
+
 type TableLoadRequest struct {
 	TableID     TableID     `json:"id"`
 	FileOption  FileOption  `json:"file_option"`
