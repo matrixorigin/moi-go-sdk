@@ -631,3 +631,167 @@ func TestGetTableData_Pagination(t *testing.T) {
 	require.NotNil(t, resp4)
 	require.GreaterOrEqual(t, resp4.PageSize, 100)
 }
+
+func TestPreviewTable_LiveFlow(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	catalogID, markCatalogDeleted := createTestCatalog(t, client)
+	databaseID, markDatabaseDeleted := createTestDatabase(t, client, catalogID)
+
+	defer func() {
+		markDatabaseDeleted()
+		markCatalogDeleted()
+	}()
+
+	// Create a test table
+	tableName := randomName("sdk-table-preview-")
+	columns := []Column{
+		{Name: "id", Type: "int", IsPk: true},
+		{Name: "name", Type: "varchar(255)"},
+		{Name: "value", Type: "int"},
+	}
+	createResp, err := client.CreateTable(ctx, &TableCreateRequest{
+		DatabaseID: databaseID,
+		Name:       tableName,
+		Columns:    columns,
+		Comment:    "test table for PreviewTable",
+	})
+	require.NoError(t, err)
+	tableID := createResp.TableID
+
+	// Cleanup table
+	defer func() {
+		if _, err := client.DeleteTable(ctx, &TableDeleteRequest{TableID: tableID}); err != nil {
+			t.Logf("cleanup delete table failed: %v", err)
+		}
+	}()
+
+	// Test PreviewTable with specific Lines
+	resp, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   5,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, resp.Columns)
+	require.NotNil(t, resp.Data)
+	require.Len(t, resp.Columns, 3, "should have 3 columns")
+	require.Equal(t, "id", resp.Columns[0].Name)
+	require.Equal(t, "name", resp.Columns[1].Name)
+	require.Equal(t, "value", resp.Columns[2].Name)
+	// Data rows should not exceed requested Lines
+	require.LessOrEqual(t, len(resp.Data), 5, "data rows should not exceed requested Lines")
+
+	// Test PreviewTable with different Lines value
+	resp2, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   10,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp2)
+	require.LessOrEqual(t, len(resp2.Data), 10, "data rows should not exceed requested Lines")
+	// Columns should be the same
+	require.Equal(t, len(resp.Columns), len(resp2.Columns))
+
+	// Test PreviewTable with Lines = 0 (should use default)
+	resp3, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   0,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp3)
+	// Should use default pageSize of 10
+	require.LessOrEqual(t, len(resp3.Data), 10, "data rows should not exceed default pageSize")
+
+	// Test PreviewTable with negative Lines (should use default)
+	resp4, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   -1,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp4)
+	// Should use default pageSize of 10
+	require.LessOrEqual(t, len(resp4.Data), 10, "data rows should not exceed default pageSize")
+
+	// Test PreviewTable with large Lines value
+	resp5, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   100,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp5)
+	require.LessOrEqual(t, len(resp5.Data), 100, "data rows should not exceed requested Lines")
+}
+
+func TestPreviewTable_EmptyTable(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	catalogID, markCatalogDeleted := createTestCatalog(t, client)
+	databaseID, markDatabaseDeleted := createTestDatabase(t, client, catalogID)
+
+	defer func() {
+		markDatabaseDeleted()
+		markCatalogDeleted()
+	}()
+
+	// Create an empty test table
+	tableName := randomName("sdk-table-preview-empty-")
+	columns := []Column{
+		{Name: "id", Type: "int", IsPk: true},
+		{Name: "name", Type: "varchar(255)"},
+	}
+	createResp, err := client.CreateTable(ctx, &TableCreateRequest{
+		DatabaseID: databaseID,
+		Name:       tableName,
+		Columns:    columns,
+		Comment:    "empty test table for PreviewTable",
+	})
+	require.NoError(t, err)
+	tableID := createResp.TableID
+
+	// Cleanup table
+	defer func() {
+		if _, err := client.DeleteTable(ctx, &TableDeleteRequest{TableID: tableID}); err != nil {
+			t.Logf("cleanup delete table failed: %v", err)
+		}
+	}()
+
+	// Preview empty table
+	resp, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: tableID,
+		Lines:   5,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, resp.Columns)
+	require.NotNil(t, resp.Data)
+	require.Len(t, resp.Columns, 2, "should have 2 columns")
+	// Data should be empty for empty table
+	require.Equal(t, 0, len(resp.Data), "data should be empty for empty table")
+}
+
+func TestPreviewTable_NonExistentTable(t *testing.T) {
+	ctx := context.Background()
+	client := newTestClient(t)
+
+	nonExistentID := TableID(999999999)
+
+	// Try to preview non-existent table
+	resp, err := client.PreviewTable(ctx, &TablePreviewRequest{
+		TableID: nonExistentID,
+		Lines:   5,
+	})
+	if err != nil {
+		// Expected error for non-existent table
+		require.Nil(t, resp)
+		t.Logf("Expected error for previewing non-existent table: %v", err)
+	} else {
+		// If no error, response should be valid (service may allow empty preview)
+		require.NotNil(t, resp)
+		require.NotNil(t, resp.Columns)
+		require.NotNil(t, resp.Data)
+		t.Logf("Preview succeeded for non-existent table (service may allow empty preview)")
+	}
+}

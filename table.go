@@ -138,22 +138,48 @@ func (c *RawClient) CheckTableExists(ctx context.Context, req *TableExistRequest
 // PreviewTable previews table data without loading it into memory.
 //
 // Returns a preview of the table data with limited rows.
+// This method internally uses GetTableData to fetch the data.
 //
 // Example:
 //
 //	resp, err := client.PreviewTable(ctx, &sdk.TablePreviewRequest{
 //		TableID: 456,
-//		Limit:   10,
+//		Lines:   10,
 //	})
 func (c *RawClient) PreviewTable(ctx context.Context, req *TablePreviewRequest, opts ...CallOption) (*TablePreviewResponse, error) {
 	if req == nil {
 		return nil, ErrNilRequest
 	}
-	var resp TablePreviewResponse
-	if err := c.postJSON(ctx, "/catalog/table/preview", req, &resp, opts...); err != nil {
+
+	// Convert TablePreviewRequest to GetTableDataRequest
+	pageSize := req.Lines
+	if pageSize <= 0 {
+		pageSize = 10 // Default preview size
+	}
+
+	dataReq := &GetTableDataRequest{
+		TableID:  req.TableID,
+		Page:     1,
+		PageSize: pageSize,
+	}
+
+	// Call GetTableData internally
+	dataResp, err := c.GetTableData(ctx, dataReq, opts...)
+	if err != nil {
 		return nil, err
 	}
-	return &resp, nil
+
+	// Convert GetTableDataResponse to TablePreviewResponse
+	// Limit data rows to the requested pageSize
+	previewData := dataResp.Data
+	if len(previewData) > pageSize {
+		previewData = previewData[:pageSize]
+	}
+
+	return &TablePreviewResponse{
+		Columns: dataResp.Columns,
+		Data:    previewData,
+	}, nil
 }
 
 // GetTableData retrieves table data with pagination.
