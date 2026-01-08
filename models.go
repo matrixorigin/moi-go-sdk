@@ -1606,7 +1606,7 @@ type CatalogWorkflow struct {
 type CatalogWorkflowNode struct {
 	ID             string                            `json:"id"`
 	Type           string                            `json:"type"`
-	InitParameters map[string]map[string]interface{} `json:"init_parameters"` // Required: must be present, use empty map {} if no parameters
+	InitParameters map[string]map[string]interface{} `json:"parameters"` // Required: must be present, use empty map {} if no parameters
 }
 
 // CatalogWorkflowConnection represents a workflow connection definition.
