@@ -2059,6 +2059,12 @@ type DataSource struct {
 	Files  *FileConfig            `json:"files,omitempty"`
 }
 
+// ContextConfig represents context configuration.
+type ContextConfig struct {
+	MaxKnowledgeItems      int `json:"max_knowledge_items"`       // Maximum number of business rules returned by list_knowledge (default: 20)
+	MaxKnowledgeValueLength int `json:"max_knowledge_value_length"` // Maximum character length of each rule value in list_knowledge (default: 100)
+}
+
 // DataAnalysisConfig represents data analysis configuration.
 type DataAnalysisConfig struct {
 	MCPServerURL     *string           `json:"mcp_server_url,omitempty"`   // MCP server URL
@@ -2067,6 +2073,7 @@ type DataAnalysisConfig struct {
 	FilterConditions *FilterConditions `json:"filter_conditions,omitempty"`
 	DataSource       *DataSource       `json:"data_source,omitempty"`
 	DataScope        *DataScope        `json:"data_scope,omitempty"`
+	ContextConfig    *ContextConfig    `json:"context_config,omitempty"` // Context configuration
 }
 
 // DataAnalysisRequest represents a request for data analysis.

@@ -43,6 +43,178 @@ func TestAnalyzeDataStream_EmptyQuestion(t *testing.T) {
 	require.Contains(t, err.Error(), "question cannot be empty")
 }
 
+// ============ ContextConfig Tests ============
+
+// runContextConfigTest provides a common test framework for ContextConfig tests
+func runContextConfigTest(t *testing.T, testFunc func(t *testing.T)) {
+	t.Helper()
+	testFunc(t)
+}
+
+func TestContextConfig_JSONSerialization(t *testing.T) {
+	runContextConfigTest(t, func(t *testing.T) {
+		t.Parallel()
+
+		// Test serialization
+		config := &ContextConfig{
+			MaxKnowledgeItems:      30,
+			MaxKnowledgeValueLength: 150,
+		}
+
+		jsonData, err := json.Marshal(config)
+		require.NoError(t, err)
+
+		// Verify JSON structure
+		var result map[string]interface{}
+		err = json.Unmarshal(jsonData, &result)
+		require.NoError(t, err)
+		require.Equal(t, float64(30), result["max_knowledge_items"])
+		require.Equal(t, float64(150), result["max_knowledge_value_length"])
+
+		// Test deserialization
+		var deserialized ContextConfig
+		err = json.Unmarshal(jsonData, &deserialized)
+		require.NoError(t, err)
+		require.Equal(t, 30, deserialized.MaxKnowledgeItems)
+		require.Equal(t, 150, deserialized.MaxKnowledgeValueLength)
+	})
+}
+
+func TestContextConfig_DefaultValues(t *testing.T) {
+	runContextConfigTest(t, func(t *testing.T) {
+		t.Parallel()
+
+		// Test with zero values (defaults)
+		config := &ContextConfig{}
+
+		jsonData, err := json.Marshal(config)
+		require.NoError(t, err)
+
+		var result map[string]interface{}
+		err = json.Unmarshal(jsonData, &result)
+		require.NoError(t, err)
+		require.Equal(t, float64(0), result["max_knowledge_items"])
+		require.Equal(t, float64(0), result["max_knowledge_value_length"])
+	})
+}
+
+func TestDataAnalysisConfig_WithContextConfig(t *testing.T) {
+	runContextConfigTest(t, func(t *testing.T) {
+		t.Parallel()
+
+		// Test DataAnalysisConfig with ContextConfig
+		config := &DataAnalysisConfig{
+			DataCategory: "admin",
+			ContextConfig: &ContextConfig{
+				MaxKnowledgeItems:      25,
+				MaxKnowledgeValueLength: 120,
+			},
+		}
+
+		jsonData, err := json.Marshal(config)
+		require.NoError(t, err)
+
+		// Verify JSON structure
+		var result map[string]interface{}
+		err = json.Unmarshal(jsonData, &result)
+		require.NoError(t, err)
+		require.Equal(t, "admin", result["data_category"])
+
+		contextConfig, ok := result["context_config"].(map[string]interface{})
+		require.True(t, ok, "context_config should be present")
+		require.Equal(t, float64(25), contextConfig["max_knowledge_items"])
+		require.Equal(t, float64(120), contextConfig["max_knowledge_value_length"])
+
+		// Test deserialization
+		var deserialized DataAnalysisConfig
+		err = json.Unmarshal(jsonData, &deserialized)
+		require.NoError(t, err)
+		require.Equal(t, "admin", deserialized.DataCategory)
+		require.NotNil(t, deserialized.ContextConfig)
+		require.Equal(t, 25, deserialized.ContextConfig.MaxKnowledgeItems)
+		require.Equal(t, 120, deserialized.ContextConfig.MaxKnowledgeValueLength)
+	})
+}
+
+func TestDataAnalysisConfig_WithoutContextConfig(t *testing.T) {
+	runContextConfigTest(t, func(t *testing.T) {
+		t.Parallel()
+
+		// Test DataAnalysisConfig without ContextConfig (should omit the field)
+		config := &DataAnalysisConfig{
+			DataCategory: "admin",
+			ContextConfig: nil,
+		}
+
+		jsonData, err := json.Marshal(config)
+		require.NoError(t, err)
+
+		// Verify context_config is omitted when nil
+		var result map[string]interface{}
+		err = json.Unmarshal(jsonData, &result)
+		require.NoError(t, err)
+		require.Equal(t, "admin", result["data_category"])
+		_, exists := result["context_config"]
+		require.False(t, exists, "context_config should be omitted when nil")
+	})
+}
+
+func TestAnalyzeDataStream_WithContextConfig(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping integration test in short mode")
+	}
+
+	runContextConfigTest(t, func(t *testing.T) {
+		ctx := context.Background()
+		client := newTestClient(t)
+
+		req := &DataAnalysisRequest{
+			Question: "平均薪资是多少？",
+			Config: &DataAnalysisConfig{
+				DataCategory: "admin",
+				DataSource: &DataSource{
+					Type: "all",
+				},
+				ContextConfig: &ContextConfig{
+					MaxKnowledgeItems:      20,
+					MaxKnowledgeValueLength: 100,
+				},
+			},
+		}
+
+		// Verify request can be serialized correctly
+		jsonData, err := json.Marshal(req)
+		require.NoError(t, err)
+
+		var requestData map[string]interface{}
+		err = json.Unmarshal(jsonData, &requestData)
+		require.NoError(t, err)
+
+		configData, ok := requestData["config"].(map[string]interface{})
+		require.True(t, ok)
+		contextConfigData, ok := configData["context_config"].(map[string]interface{})
+		require.True(t, ok)
+		require.Equal(t, float64(20), contextConfigData["max_knowledge_items"])
+		require.Equal(t, float64(100), contextConfigData["max_knowledge_value_length"])
+
+		// Test actual API call
+		stream, err := client.AnalyzeDataStream(ctx, req)
+		require.NoError(t, err)
+		require.NotNil(t, stream)
+		defer stream.Close()
+
+		// Read at least one event to verify the stream works
+		event, err := stream.ReadEvent()
+		if err == io.EOF {
+			t.Log("Stream ended immediately (no events)")
+			return
+		}
+		require.NoError(t, err)
+		require.NotNil(t, event)
+		t.Logf("First event with ContextConfig: Type=%s, Source=%s", event.Type, event.Source)
+	})
+}
+
 // ============ Live Flow Tests (using real backend) ============
 
 // TestAnalyzeDataStreamLiveFlow tests the data analysis streaming API with a real backend.
