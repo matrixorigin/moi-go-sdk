@@ -621,10 +621,17 @@ func (c *SDKClient) ImportLocalFilesToVolume(ctx context.Context, filePaths []st
 		// Extract filename from path
 		fileName := filepath.Base(filePath)
 
+		// If meta provides a filename, use it for the upload item
+		// This allows callers to specify a different display name than the local file name
+		uploadFileName := fileName
+		if i < len(metas) && strings.TrimSpace(metas[i].Filename) != "" {
+			uploadFileName = metas[i].Filename
+		}
+
 		// Build file upload item
 		files = append(files, FileUploadItem{
 			File:     file,
-			FileName: fileName,
+			FileName: uploadFileName,
 		})
 
 		// Build meta - use provided meta or auto-generate from file path
