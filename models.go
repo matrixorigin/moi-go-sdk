@@ -2067,13 +2067,15 @@ type ContextConfig struct {
 
 // DataAnalysisConfig represents data analysis configuration.
 type DataAnalysisConfig struct {
-	MCPServerURL     *string           `json:"mcp_server_url,omitempty"`   // MCP server URL
-	DataObjectType   string            `json:"data_object_type,omitempty"` // "default", "audit_related" (default: "default")
-	DataCategory     string            `json:"data_category,omitempty"`    // "admin", "common" (default: "admin")
-	FilterConditions *FilterConditions `json:"filter_conditions,omitempty"`
-	DataSource       *DataSource       `json:"data_source,omitempty"`
-	DataScope        *DataScope        `json:"data_scope,omitempty"`
-	ContextConfig    *ContextConfig    `json:"context_config,omitempty"` // Context configuration
+	MCPServerURL                       *string           `json:"mcp_server_url,omitempty"`                        // MCP server URL
+	DataObjectType                     string            `json:"data_object_type,omitempty"`                      // "default", "audit_related" (default: "default")
+	DataCategory                       string            `json:"data_category,omitempty"`                         // "admin", "common" (default: "admin")
+	FilterConditions                   *FilterConditions `json:"filter_conditions,omitempty"`
+	DataSource                         *DataSource       `json:"data_source,omitempty"`
+	DataScope                          *DataScope        `json:"data_scope,omitempty"`
+	ContextConfig                      *ContextConfig    `json:"context_config,omitempty"`                        // Context configuration
+	EnableRecommendedQuestions         *bool             `json:"enable_recommended_questions,omitempty"`          // 是否启用推荐问题 (default: true, nil 表示由后端使用默认值)
+	RecommendedQuestionsTimeoutSeconds *float64          `json:"recommended_questions_timeout_seconds,omitempty"` // 推荐问题生成超时秒数 (default: 2.0, nil 表示由后端使用默认值)
 }
 
 // DataAnalysisRequest represents a request for data analysis.
