@@ -1255,3 +1255,95 @@ func TestDataAnalysisStream_ReadEvent_WithTimeout_MultipleReads(t *testing.T) {
 
 	require.NoError(t, stream.Close())
 }
+
+// ============ RecommendedQuestions Config Tests ============
+
+func boolPtr(b bool) *bool          { return &b }
+func float64Ptr(f float64) *float64 { return &f }
+
+// TestDataAnalysisConfig_RecommendedQuestions_OmittedWhenNil 验证两个字段为 nil 时
+// 不出现在 JSON 中，由后端使用默认值（enable=true, timeout=2.0）。
+func TestDataAnalysisConfig_RecommendedQuestions_OmittedWhenNil(t *testing.T) {
+	t.Parallel()
+
+	config := &DataAnalysisConfig{
+		DataCategory: "admin",
+	}
+
+	jsonData, err := json.Marshal(config)
+	require.NoError(t, err)
+
+	var result map[string]interface{}
+	require.NoError(t, json.Unmarshal(jsonData, &result))
+
+	_, existsEnable := result["enable_recommended_questions"]
+	require.False(t, existsEnable, "enable_recommended_questions should be omitted when nil")
+
+	_, existsTimeout := result["recommended_questions_timeout_seconds"]
+	require.False(t, existsTimeout, "recommended_questions_timeout_seconds should be omitted when nil")
+}
+
+// TestDataAnalysisConfig_RecommendedQuestions_EnabledExplicitly 验证显式启用时序列化正确。
+func TestDataAnalysisConfig_RecommendedQuestions_EnabledExplicitly(t *testing.T) {
+	t.Parallel()
+
+	config := &DataAnalysisConfig{
+		DataCategory:                       "admin",
+		EnableRecommendedQuestions:         boolPtr(true),
+		RecommendedQuestionsTimeoutSeconds: float64Ptr(3.5),
+	}
+
+	jsonData, err := json.Marshal(config)
+	require.NoError(t, err)
+
+	var result map[string]interface{}
+	require.NoError(t, json.Unmarshal(jsonData, &result))
+	require.Equal(t, true, result["enable_recommended_questions"])
+	require.Equal(t, 3.5, result["recommended_questions_timeout_seconds"])
+
+	// 反序列化
+	var deserialized DataAnalysisConfig
+	require.NoError(t, json.Unmarshal(jsonData, &deserialized))
+	require.NotNil(t, deserialized.EnableRecommendedQuestions)
+	require.True(t, *deserialized.EnableRecommendedQuestions)
+	require.NotNil(t, deserialized.RecommendedQuestionsTimeoutSeconds)
+	require.Equal(t, 3.5, *deserialized.RecommendedQuestionsTimeoutSeconds)
+}
+
+// TestDataAnalysisConfig_RecommendedQuestions_DisabledExplicitly 验证显式设为 false 时
+// 字段仍出现在 JSON 中（区分"未设置"和"主动禁用"）。
+func TestDataAnalysisConfig_RecommendedQuestions_DisabledExplicitly(t *testing.T) {
+	t.Parallel()
+
+	config := &DataAnalysisConfig{
+		DataCategory:               "admin",
+		EnableRecommendedQuestions: boolPtr(false),
+	}
+
+	jsonData, err := json.Marshal(config)
+	require.NoError(t, err)
+
+	var result map[string]interface{}
+	require.NoError(t, json.Unmarshal(jsonData, &result))
+
+	val, exists := result["enable_recommended_questions"]
+	require.True(t, exists, "enable_recommended_questions should be present when explicitly false")
+	require.Equal(t, false, val)
+}
+
+// TestDataAnalysisConfig_RecommendedQuestions_DefaultTimeout 验证默认超时值 2.0 序列化正确。
+func TestDataAnalysisConfig_RecommendedQuestions_DefaultTimeout(t *testing.T) {
+	t.Parallel()
+
+	config := &DataAnalysisConfig{
+		EnableRecommendedQuestions:         boolPtr(true),
+		RecommendedQuestionsTimeoutSeconds: float64Ptr(2.0),
+	}
+
+	jsonData, err := json.Marshal(config)
+	require.NoError(t, err)
+
+	var result map[string]interface{}
+	require.NoError(t, json.Unmarshal(jsonData, &result))
+	require.Equal(t, 2.0, result["recommended_questions_timeout_seconds"])
+}
