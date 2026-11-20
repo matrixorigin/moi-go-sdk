@@ -6,27 +6,17 @@
 
 ## 环境要求与安装
 
-需要 Go 1.25.7 或更高版本。当前 Product SDK 的模块路径为 `github.com/matrixorigin/moi-go-sdk/v5`，生成的产品类型随模块一同提供。
+需要 Go 1.25.7 或更高版本。Product SDK 的模块路径为 `github.com/matrixorigin/moi-go-sdk/v5`，生成的产品类型随模块提供。
 
-在自己的 Go 模块中安装指定版本。先将 `SDK_TAG` 设置为 [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) 中与部署匹配的已发布 Product SDK 标签（`v5.Y.Z`）：
-
-```sh
-go get "github.com/matrixorigin/moi-go-sdk/v5@${SDK_TAG}"
-```
-
-也可以使用离线包：
-
-当前可从[官方 SDK 下载页](https://docs.matrixorigin.cn/moi/zh/5.0/developer/quickstart/downloads/ai-studio.html)获取离线包。按页面校验 SHA-256 并解压，保留归档内的 `go.work`、SDK 和依赖目录布局。在含 `go.work` 的目录执行以下命令验证随包示例。请使用归档内模块路径对应的随包示例。
+在自己的 Go 模块中安装 [v5.2.3](https://github.com/matrixorigin/moi-go-sdk/releases/tag/v5.2.3)：
 
 ```sh
-go build ./examples/list_workspaces
+go get github.com/matrixorigin/moi-go-sdk/v5@v5.2.3
 ```
 
-以下 Product SDK 示例使用当前模块路径。从当前 SDK 源码使用示例时，将 `main.go` 放在模块根目录下新建的示例子目录中，再从该子目录执行 `go run .`。[GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) 发布正式 Product SDK 标签后，可在自己的 Go 模块中使用以下命令。将 `SDK_TAG` 设置为与部署匹配的已发布 `v5.Y.Z` 标签。
+如需其他版本，请在 [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) 选择与部署匹配的 `v5.Y.Z`。安装后，在自己的模块中保存下方示例并运行 `go run .`。
 
-```sh
-go get "github.com/matrixorigin/moi-go-sdk/v5@${SDK_TAG}"
-```
+[官方 SDK 下载页](https://docs.matrixorigin.cn/moi/zh/5.0/developer/quickstart/downloads/ai-studio.html)另有旧版 `0.1.0-r2` 离线归档。使用该归档时，请保留随包的 `go.work` 和模块布局，并按下载页验证随包示例。
 
 ## 认证与最小示例
 
@@ -67,7 +57,7 @@ func main() {
 }
 ```
 
-Low-level route-aligned services stay available for explicit control:
+也可以直接调用与 API 路由对应的底层服务：
 
 ```go
 result, err := client.Workspaces().List(context.Background())
@@ -83,9 +73,9 @@ PAT 标识账号。工作区请求默认使用服务端的 Default Role，也可
 
 ## 版本兼容性与许可证
 
-正式版本发布后，请按 Release 记录中的 MOI 版本、SDK 版本和源码提交选型。文档包修订号 `0.1.0-r2` 与 SDK 版本 `0.1.0` 分开标记。离线包的 API 覆盖与当前源码可能不同。若方法缺失，请向部署管理员获取匹配的版本。
+Go SDK 5.2.3 面向 MOI 5.2.3 的 AI Studio API（`/v5`）。使用其他 MOI 版本时，请按部署说明选择匹配的制品。旧离线包的能力覆盖可能不同。
 
-[旧版 Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) 面向 MOI 4.0。公开仓的 `main` 仍保留旧版 Catalog 入口。迁移到 MOI 5.x 时，请检查获取的版本确为 Product SDK，并切换 API 地址、认证方式和客户端方法，再重新验证各业务调用。
+[旧版 Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) 面向 MOI 4.0。迁移到 MOI 5.x 时，请检查获取的版本确为 Product SDK，并切换 API 地址、认证方式和客户端方法，再重新验证各业务调用。
 
 本目录采用 [Apache License 2.0](LICENSE)。
 

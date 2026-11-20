@@ -120,7 +120,7 @@ instead of waiting three seconds when the peer does not acknowledge closure.
 The local Go/Python/CLI terminal tests cover these wire behaviors; the existing
 real Go `TestAgentSandboxTerminalWebSocketRoute` has not been rerun here. HTTP
 parity alone does not establish a working terminal session. See the
-[CLI environment procedures](../cli/skill/assets/references/runners-and-sandboxes.md).
+[CLI environment procedures](../cli/skill/moi-cli/references/recipes/manage-compute-lifecycle.md).
 
 ## Workspace chat completion wire values
 

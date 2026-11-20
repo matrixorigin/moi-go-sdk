@@ -6,27 +6,17 @@ Use the MatrixOne Intelligence (MOI) 5.x AI Studio product API from Go to manage
 
 ## Requirements and installation
 
-Use Go 1.25.7 or newer. The current Product SDK module path is `github.com/matrixorigin/moi-go-sdk/v5`. The module includes its generated product types.
+Use Go 1.25.7 or newer. The Product SDK module is `github.com/matrixorigin/moi-go-sdk/v5` and includes the generated product types.
 
-Install a specific version in your own Go module. First set `SDK_TAG` to a published Product SDK tag (`v5.Y.Z`) from [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) that matches your deployment:
-
-```sh
-go get "github.com/matrixorigin/moi-go-sdk/v5@${SDK_TAG}"
-```
-
-Alternatively, use an offline archive:
-
-Get the current offline archive from the [official SDK downloads page](https://docs.matrixorigin.cn/moi/en/5.0/developer/quickstart/downloads/ai-studio.html). Verify its SHA-256 checksum and extract it, keeping the bundled `go.work`, SDK, and dependency directories together. Run this command from the directory containing `go.work` to verify the bundled example. Use the archive's bundled example with its module path.
+Install [v5.2.3](https://github.com/matrixorigin/moi-go-sdk/releases/tag/v5.2.3) in your own Go module:
 
 ```sh
-go build ./examples/list_workspaces
+go get github.com/matrixorigin/moi-go-sdk/v5@v5.2.3
 ```
 
-The Product SDK example below uses the current module path. To run it from the current SDK source, save `main.go` in a new example subdirectory under the module root and run `go run .` from that subdirectory. Once a formal Product SDK tag is published in [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases), use the following command in your own Go module. Set `SDK_TAG` to a published `v5.Y.Z` tag that matches your deployment.
+For other versions, choose a `v5.Y.Z` tag that matches your deployment from [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases). After installing, save the example below in your module and run `go run .`.
 
-```sh
-go get "github.com/matrixorigin/moi-go-sdk/v5@${SDK_TAG}"
-```
+The [official SDK downloads page](https://docs.matrixorigin.cn/moi/en/5.0/developer/quickstart/downloads/ai-studio.html) also offers the older `0.1.0-r2` offline archive. If you use it, keep its bundled `go.work` and module layout together and follow the download page to verify its bundled example.
 
 ## Authentication and quickstart
 
@@ -83,9 +73,9 @@ The PAT identifies your account. Workspace requests use the server's Default Rol
 
 ## Compatibility and license
 
-When a formal release is available, use its MOI version, SDK version, and source commit to select a compatible build. The docs archive revision `0.1.0-r2` is separate from SDK version `0.1.0`. API coverage can differ between the offline package and this source tree. Ask your deployment administrator for a matching build if an example uses an unavailable method.
+Go SDK 5.2.3 targets the AI Studio API (`/v5`) on MOI 5.2.3. For other MOI versions, use the build specified by your deployment documentation. Older offline packages may cover different capabilities.
 
-The [legacy Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) targets MOI 4.0. The public repository's `main` still carries the legacy Catalog entry point. To migrate to MOI 5.x, verify that you have a Product SDK build, then switch the API endpoint, authentication, and client methods and verify each business operation.
+The [legacy Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) targets MOI 4.0. To migrate to MOI 5.x, verify that you have a Product SDK build, then switch the API endpoint, authentication, and client methods and verify each business operation.
 
 This directory is licensed under the [Apache License 2.0](LICENSE).
 
