@@ -14,9 +14,7 @@ Install [v5.2.3](https://github.com/matrixorigin/moi-go-sdk/releases/tag/v5.2.3)
 go get github.com/matrixorigin/moi-go-sdk/v5@v5.2.3
 ```
 
-For other versions, choose a `v5.Y.Z` tag that matches your deployment from [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases). After installing, save the example below in your module and run `go run .`.
-
-The [official SDK downloads page](https://docs.matrixorigin.cn/moi/en/5.0/developer/quickstart/downloads/ai-studio.html) also offers the older `0.1.0-r2` offline archive. If you use it, keep its bundled `go.work` and module layout together and follow the download page to verify its bundled example.
+For other versions, choose a `v5.Y.Z` tag that matches your deployment from [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases).
 
 ## Authentication and quickstart
 
@@ -27,7 +25,7 @@ export PRODUCT_API_BASE_URL='https://api.moi.matrixorigin.cn/v5'
 export PRODUCT_API_KEY='YOUR_PERSONAL_ACCESS_TOKEN'
 ```
 
-This example binds a workspace by name and prints its ID, using the promoted `EnsureWorkspace` user-story entry. Once you have a workspace, continue with `WorkspaceHandle` for workspace-scoped tasks. Use `client.Workspace(workspaceID)` only when you already sourced the workspace id.
+Save the following as `main.go` in your module and run `go run .` to list the workspaces visible to your account.
 
 ```go
 package main
@@ -49,31 +47,24 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	workspace, err := client.EnsureWorkspace(context.Background(), "my-first-workspace")
+
+	result, err := client.Workspaces().List(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(workspace.ID(), workspace.Name())
+	for _, workspace := range result.GetWorkspaces() {
+		fmt.Printf("%s\t%s\n", workspace.GetId(), workspace.GetName())
+	}
 }
 ```
 
-Low-level route-aligned services stay available for explicit control:
-
-```go
-result, err := client.Workspaces().List(context.Background())
-if err != nil {
-	log.Fatal(err)
-}
-for _, workspace := range result.GetWorkspaces() {
-	fmt.Println(workspace.GetId(), workspace.GetName())
-}
-```
+To find a workspace by name and create it if missing, use `client.EnsureWorkspace(ctx, "my-first-workspace")`. To work with a known workspace ID, use `client.Workspace(workspaceID)`.
 
 The PAT identifies your account. Workspace requests use the server's Default Role unless you select a role for that workspace with `sdk.WithWorkspaceCurrentRoleID` when constructing the client. Use an assigned role ID. The server validates the role and rejects invalid explicit selections.
 
 ## Compatibility and license
 
-Go SDK 5.2.3 targets the AI Studio API (`/v5`) on MOI 5.2.3. For other MOI versions, use the build specified by your deployment documentation. Older offline packages may cover different capabilities.
+Go SDK 5.2.3 targets the AI Studio API (`/v5`) on MOI 5.2.3. For other MOI versions, use the build specified by your deployment documentation.
 
 The [legacy Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) targets MOI 4.0. To migrate to MOI 5.x, verify that you have a Product SDK build, then switch the API endpoint, authentication, and client methods and verify each business operation.
 
