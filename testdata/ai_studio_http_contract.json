@@ -1,0 +1,153 @@
+[
+  {
+    "name": "chat model policy",
+    "operation": "chat-model-policy",
+    "method": "GET",
+    "path": "/newmoi/aistudio/model-policy",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "chat-model-policy",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": ""
+  },
+  {
+    "name": "service slots",
+    "operation": "service-slots",
+    "method": "GET",
+    "path": "/newmoi/admin/aistudio/service-slots",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "service-slots",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": ""
+  },
+  {
+    "name": "service slot candidates",
+    "operation": "service-slot-candidates",
+    "method": "GET",
+    "path": "/newmoi/admin/aistudio/service-slots/candidates",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "service-slot-candidates",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": ""
+  },
+  {
+    "name": "service slot logs explicit zero and empty filter",
+    "operation": "service-slot-logs",
+    "method": "GET",
+    "path": "/newmoi/admin/aistudio/service-slots/operation-logs",
+    "query": {
+      "slot_id": [
+        ""
+      ],
+      "page_size": [
+        "0"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "service-slot-logs",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": ""
+  },
+  {
+    "name": "put service slot preserves empty assignment",
+    "operation": "put-service-slot",
+    "method": "PUT",
+    "path": "/newmoi/admin/aistudio/service-slots/chat%2F1",
+    "query": {},
+    "input": {
+      "default_model_id": "",
+      "model_ids": [],
+      "extra_json": ""
+    },
+    "request": {
+      "default_model_id": "",
+      "model_ids": [],
+      "extra_json": ""
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "put-service-slot",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": "chat/1"
+  },
+  {
+    "name": "put service slot full body",
+    "operation": "put-service-slot",
+    "method": "PUT",
+    "path": "/newmoi/admin/aistudio/service-slots/chat%2F1",
+    "query": {},
+    "input": {
+      "slot_id": "chat/1",
+      "default_model_id": "model/1",
+      "model_ids": [
+        "model/1",
+        "model/2"
+      ],
+      "extra_json": "{\"enabled\":false}"
+    },
+    "request": {
+      "slot_id": "chat/1",
+      "default_model_id": "model/1",
+      "model_ids": [
+        "model/1",
+        "model/2"
+      ],
+      "extra_json": "{\"enabled\":false}"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "put-service-slot",
+        "items": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "slot_id": "chat/1"
+  }
+]

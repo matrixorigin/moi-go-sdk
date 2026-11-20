@@ -1,0 +1,266 @@
+[
+  {
+    "name": "DSL create all options",
+    "command": "create-workflow-template",
+    "id": "101",
+    "method": "POST",
+    "path": "/workflow-templates",
+    "request": {
+      "name": "custom",
+      "dsl_yaml": "root: custom",
+      "template_key": "ignored-custom-key",
+      "description": "模板描述",
+      "runtime_fields": "{\"fields\":[]}",
+      "is_builtin": false
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "workspace_id": "workspace-1",
+        "name": "custom",
+        "template_key": "",
+        "description": "模板描述",
+        "definition_format": "dsl",
+        "dsl_yaml": "root: custom",
+        "runtime_fields": "{\"fields\":[]}",
+        "is_builtin": false,
+        "created_at": "2026-11-10T01:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "DSL create omitted options",
+    "command": "create-workflow-template",
+    "id": "4294967297",
+    "method": "POST",
+    "path": "/workflow-templates",
+    "request": {
+      "name": "defaults",
+      "dsl_yaml": "root: defaults"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 4294967297,
+        "workspace_id": "workspace-1",
+        "name": "defaults",
+        "template_key": "",
+        "description": "",
+        "definition_format": "dsl",
+        "dsl_yaml": "root: defaults",
+        "runtime_fields": "",
+        "is_builtin": false,
+        "created_at": "2026-11-10T01:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "MOWL builtin create all options",
+    "command": "create-mowl-workflow-template",
+    "id": "101",
+    "method": "POST",
+    "path": "/workflow-templates",
+    "request": {
+      "name": "builtin",
+      "definition_format": "mowl",
+      "workflow": {
+        "name": "template",
+        "root": "root",
+        "nets": {
+          "root": {
+            "nodes": {
+              "__start": {
+                "id": "mowl:start"
+              },
+              "__end": {
+                "id": "mowl:end"
+              }
+            }
+          }
+        }
+      },
+      "template_key": "integration-template",
+      "description": "MOWL 模板",
+      "runtime_fields": "[]",
+      "is_builtin": true
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "workspace_id": "",
+        "name": "builtin",
+        "template_key": "integration-template",
+        "description": "MOWL 模板",
+        "definition_format": "mowl",
+        "dsl_yaml": "",
+        "runtime_fields": "[]",
+        "is_builtin": true,
+        "created_at": "2026-11-10T01:00:00Z",
+        "workflow": {
+          "name": "template",
+          "root": "root",
+          "nets": {
+            "root": {
+              "nodes": {
+                "__start": {
+                  "id": "mowl:start"
+                },
+                "__end": {
+                  "id": "mowl:end"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "DSL update empty options",
+    "command": "update-workflow-template",
+    "id": "101",
+    "method": "PUT",
+    "path": "/workflow-templates/101",
+    "request": {
+      "name": "custom",
+      "dsl_yaml": "root: updated",
+      "template_key": "",
+      "description": "",
+      "runtime_fields": "",
+      "is_builtin": false
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "workspace_id": "workspace-1",
+        "name": "custom",
+        "template_key": "",
+        "description": "",
+        "definition_format": "dsl",
+        "dsl_yaml": "root: updated",
+        "runtime_fields": "",
+        "is_builtin": false,
+        "created_at": "2026-11-10T01:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "MOWL update all options",
+    "command": "update-mowl-workflow-template",
+    "id": "101",
+    "method": "PUT",
+    "path": "/workflow-templates/101",
+    "request": {
+      "name": "custom",
+      "definition_format": "mowl",
+      "workflow": {
+        "name": "template",
+        "root": "root",
+        "nets": {
+          "root": {
+            "nodes": {
+              "__start": {
+                "id": "mowl:start"
+              },
+              "__end": {
+                "id": "mowl:end"
+              }
+            }
+          }
+        }
+      },
+      "template_key": "ignored",
+      "description": "图更新",
+      "runtime_fields": "{\"fields\":[]}",
+      "is_builtin": false
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "workspace_id": "workspace-1",
+        "name": "custom",
+        "template_key": "",
+        "description": "图更新",
+        "definition_format": "mowl",
+        "dsl_yaml": "",
+        "runtime_fields": "{\"fields\":[]}",
+        "is_builtin": false,
+        "created_at": "2026-11-10T01:00:00Z",
+        "workflow": {
+          "name": "template",
+          "root": "root",
+          "nets": {
+            "root": {
+              "nodes": {
+                "__start": {
+                  "id": "mowl:start"
+                },
+                "__end": {
+                  "id": "mowl:end"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "owner rejects custom to builtin promotion",
+    "command": "update-workflow-template",
+    "id": "101",
+    "method": "PUT",
+    "path": "/workflow-templates/101",
+    "request": {
+      "name": "custom",
+      "dsl_yaml": "root: unchanged",
+      "template_key": "new-key",
+      "is_builtin": true
+    },
+    "status": 400,
+    "response": {
+      "code": "ErrTemplateTypeImmutable",
+      "msg": "模板类型不能修改",
+      "data": null
+    }
+  },
+  {
+    "name": "uint64 template ID",
+    "command": "get-workflow-template",
+    "id": "4294967297",
+    "method": "GET",
+    "path": "/workflow-templates/4294967297",
+    "request": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 4294967297,
+        "workspace_id": "workspace-1",
+        "name": "large-id-template",
+        "template_key": "",
+        "description": "",
+        "definition_format": "dsl",
+        "dsl_yaml": "",
+        "runtime_fields": "",
+        "is_builtin": false,
+        "created_at": "2026-11-10T01:00:00Z"
+      }
+    }
+  }
+]

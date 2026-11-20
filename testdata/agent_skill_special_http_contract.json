@@ -1,0 +1,158 @@
+[
+  {
+    "name": "inspect skill package multipart",
+    "operation": "inspect_skill_package",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/skills/import/inspect",
+    "filename": "skill package.zip",
+    "file_base64": "AP8BgArmtYvor5U=",
+    "input": {},
+    "multipart_fields": {},
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "name": "Skill",
+        "description": "",
+        "category": "",
+        "tags": [],
+        "instruction": {
+          "body": "Review"
+        },
+        "files": [
+          {
+            "path": "SKILL.md",
+            "size": 9007199254740993
+          }
+        ],
+        "warnings": [],
+        "archive_digest": "sha256:archive"
+      }
+    }
+  },
+  {
+    "name": "import skill package preserves explicit fields and null tags",
+    "operation": "import_skill_package",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/skills/import",
+    "filename": "skill package.zip",
+    "file_base64": "AP8BgArmtYvor5U=",
+    "input": {
+      "name": "",
+      "description": " Imported description ",
+      "category": "",
+      "tags": null
+    },
+    "multipart_fields": {
+      "name": "",
+      "description": " Imported description ",
+      "category": "",
+      "tags": "null"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "skill": {
+          "id": "skill-1",
+          "workspace_id": "workspace-1",
+          "name": "Skill",
+          "status": "draft",
+          "source_type": "custom",
+          "instruction": {
+            "body": "Review"
+          },
+          "requirements": {},
+          "version": 1,
+          "metadata": {
+            "big": 9007199254740993
+          },
+          "created_at": "2026-01-02T03:04:05Z",
+          "updated_at": "2026-01-02T03:04:05Z"
+        },
+        "files": [],
+        "warnings": []
+      }
+    }
+  },
+  {
+    "name": "import skill package preserves empty tags and omits other fields",
+    "operation": "import_skill_package",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/skills/import",
+    "filename": "skill package.zip",
+    "file_base64": "AP8BgArmtYvor5U=",
+    "input": {
+      "tags": []
+    },
+    "multipart_fields": {
+      "tags": "[]"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "skill": {
+          "id": "skill-1",
+          "workspace_id": "workspace-1",
+          "name": "Skill",
+          "status": "draft",
+          "source_type": "custom",
+          "instruction": {
+            "body": "Review"
+          },
+          "requirements": {},
+          "version": 1,
+          "created_at": "2026-01-02T03:04:05Z",
+          "updated_at": "2026-01-02T03:04:05Z"
+        },
+        "files": [],
+        "warnings": []
+      }
+    }
+  },
+  {
+    "name": "polish skill stream preserves JSON and SSE bytes",
+    "operation": "polish_skill_stream",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/skills/polish/stream",
+    "input": {
+      "body": {
+        "name": " Draft ",
+        "instruction": {
+          "body": "",
+          "variables": {
+            "count": 0,
+            "enabled": false,
+            "empty": "",
+            "items": [],
+            "object": {},
+            "nothing": null,
+            "big": 9007199254740993
+          }
+        }
+      }
+    },
+    "request": {
+      "name": " Draft ",
+      "instruction": {
+        "body": "",
+        "variables": {
+          "count": 0,
+          "enabled": false,
+          "empty": "",
+          "items": [],
+          "object": {},
+          "nothing": null,
+          "big": 9007199254740993
+        }
+      }
+    },
+    "status": 200,
+    "response_headers": {
+      "Content-Type": "text/event-stream",
+      "X-Request-ID": "request-polish-1"
+    },
+    "response_text": "event: progress\ndata: {\"progress\":0}\n\nevent: done\ndata: {\"ok\":true}\n\n"
+  }
+]

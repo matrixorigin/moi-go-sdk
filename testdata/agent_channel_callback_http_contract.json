@@ -1,0 +1,129 @@
+[
+  {
+    "name": "callback-list-explicit-filters",
+    "operation": "list-callback-rules",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules",
+    "query": {"provider": [""], "credential_ref": [""], "enabled": ["false"], "limit": ["0"], "offset": ["0"]},
+    "response": {"code": 0, "data": {"items": [], "total": 0, "limit": 0, "offset": 0}},
+    "status": 200
+  },
+  {
+    "name": "callback-create-resource-kinds-and-disabled",
+    "operation": "create-callback-rule",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules",
+    "input": {"provider": "wecom", "credential_ref": "cred/1", "name": "rule", "enabled": false, "priority": 10, "match": {"resource_kinds": ["issue"], "event_types": ["changed"], "event_actions": ["open"], "field_equals": {"repo": "moi"}}, "target_type": "agent_automation_task", "target_config": {"automation_task_id": "task/1"}, "stop_after_match": true},
+    "response": {"code": 0, "data": {"id": "rule/1", "workspace_id": "workspace-1", "provider": "wecom", "credential_ref": "cred/1", "name": "rule", "enabled": false, "priority": 10, "match": {"resource_kinds": ["issue"], "event_types": ["changed"], "event_actions": ["open"], "field_equals": {"repo": "moi"}}, "target_type": "agent_automation_task", "target_config": {"automation_task_id": "task/1"}, "stop_after_match": true, "version": 1, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z"}},
+    "status": 201
+  },
+  {
+    "name": "callback-delete-escaped-id",
+    "operation": "delete-callback-rule",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules/rule%20%2F1",
+    "rule_id": "rule /1",
+    "response": {"code": 0, "data": {"deleted": true}},
+    "status": 200
+  },
+  {
+    "name": "callback-get-resource-kinds",
+    "operation": "get-callback-rule",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules/rule%20%2F1",
+    "rule_id": "rule /1",
+    "response": {"code": 0, "data": {"id": "rule /1", "workspace_id": "workspace-1", "provider": "wecom", "credential_ref": "cred/1", "name": "rule", "enabled": true, "priority": 0, "match": {"resource_kinds": ["pull_request"]}, "target_type": "agent_automation_task", "target_config": {"automation_task_id": "task/1"}, "stop_after_match": false, "version": 0, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "callback-update-explicit-zero-and-empty",
+    "operation": "update-callback-rule",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules/rule%20%2F1",
+    "rule_id": "rule /1",
+    "input": {"description": "", "enabled": false, "priority": 0, "match": {"resource_kinds": ["issue"], "event_types": ["changed"], "event_actions": ["open"], "field_equals": {"repo": "moi"}}, "target_config": {"automation_task_id": "task/2", "metadata": {}}, "stop_after_match": false, "version": 0},
+    "response": {"code": 0, "data": {"id": "rule /1", "workspace_id": "workspace-1", "provider": "wecom", "credential_ref": "cred/1", "name": "rule", "enabled": false, "priority": 0, "match": {"resource_kinds": ["issue"], "event_types": ["changed"], "event_actions": ["open"], "field_equals": {"repo": "moi"}}, "target_type": "agent_automation_task", "target_config": {"automation_task_id": "task/2", "metadata": {}}, "stop_after_match": false, "version": 0, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "callback-get-owner-not-found",
+    "operation": "get-callback-rule",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/callback-rules/missing",
+    "rule_id": "missing",
+    "response": {"code": 3, "message": "callback rule not found"},
+    "response_headers": {"X-Request-ID": "request-callback-1"},
+    "status": 404
+  },
+  {
+    "name": "channel-list-explicit-filters",
+    "operation": "list-channel-instances",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances",
+    "provider": "wecom",
+    "query": {"status": [""], "limit": ["0"], "offset": ["0"]},
+    "response": {"code": 0, "data": {"items": [], "total": 0, "limit": 0, "offset": 0}},
+    "status": 200
+  },
+  {
+    "name": "channel-create-full-body",
+    "operation": "create-channel-instance",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances",
+    "provider": "wecom",
+    "input": {"channel_type": "wecom_app", "name": "WeCom", "config": {"corp_id": "corp/1"}, "secrets": {"secret": "synthetic-secret"}, "visibility": "workspace", "labels": {"team": "ops"}},
+    "response": {"code": 0, "data": {"id": "inst/1", "workspace_id": "workspace-1", "provider": "wecom", "channel_type": "wecom_app", "name": "WeCom", "status": "active", "credential_ref": "cred/1", "config": {"corp_id": "corp/1"}, "labels": {"team": "ops"}, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z", "version": 1}},
+    "status": 201
+  },
+  {
+    "name": "channel-test-unsaved-omits-instance",
+    "operation": "test-channel-configuration",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances/test",
+    "provider": "wecom",
+    "input": {"channel_type": "wecom_app", "name": "WeCom", "config": {"corp_id": "corp/1"}, "secrets": {"secret": "synthetic-secret"}},
+    "response": {"code": 0, "data": {"ok": false, "status": "COMPLETED", "last_test_status": "failed", "last_test_error": "invalid", "error_code": "INVALID", "error_stage": "config", "last_tested_at": "2026-11-10T00:00:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "channel-disable-escaped-id",
+    "operation": "disable-channel-instance",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances/inst%20%2F1",
+    "provider": "wecom",
+    "instance_id": "inst /1",
+    "response": {"code": 0, "data": {"id": "inst /1", "workspace_id": "workspace-1", "provider": "wecom", "channel_type": "wecom_app", "name": "WeCom", "status": "disabled", "credential_ref": "cred/1", "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z", "version": 2}},
+    "status": 200
+  },
+  {
+    "name": "channel-get-labels-and-error-code",
+    "operation": "get-channel-instance",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances/inst%20%2F1",
+    "provider": "wecom",
+    "instance_id": "inst /1",
+    "response": {"code": 0, "data": {"id": "inst /1", "workspace_id": "workspace-1", "provider": "wecom", "channel_type": "wecom_app", "name": "WeCom", "status": "active", "credential_ref": "cred/1", "last_test_status": "failed", "last_test_error": "denied", "last_test_error_code": "AUTH_DENIED", "labels": {"team": "ops"}, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z", "version": 2}},
+    "status": 200
+  },
+  {
+    "name": "channel-update-clears-labels-and-description",
+    "operation": "update-channel-instance",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances/inst%20%2F1",
+    "provider": "wecom",
+    "instance_id": "inst /1",
+    "input": {"description": "", "labels": {}, "expected_version": 2},
+    "response": {"code": 0, "data": {"id": "inst /1", "workspace_id": "workspace-1", "provider": "wecom", "channel_type": "wecom_app", "name": "WeCom", "status": "active", "credential_ref": "cred/1", "labels": {"team": "ops"}, "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z", "version": 3}},
+    "status": 200
+  },
+  {
+    "name": "channel-test-saved-instance",
+    "operation": "test-channel-instance",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/channels/wecom/instances/inst%20%2F1/test",
+    "provider": "wecom",
+    "instance_id": "inst /1",
+    "response": {"code": 0, "data": {"instance": {"id": "inst /1", "workspace_id": "workspace-1", "provider": "wecom", "channel_type": "wecom_app", "name": "WeCom", "status": "active", "credential_ref": "cred/1", "created_at": "2026-11-10T00:00:00Z", "updated_at": "2026-11-10T00:00:00Z", "version": 3}, "ok": true, "status": "COMPLETED", "last_test_status": "succeeded", "last_tested_at": "2026-11-10T00:00:00Z"}},
+    "status": 200
+  }
+]

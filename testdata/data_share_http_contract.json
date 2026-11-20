@@ -1,0 +1,162 @@
+[
+  {
+    "name": "publishes",
+    "operation": "publishes",
+    "method": "GET",
+    "path": "/newmoi/data-share/publishes",
+    "query": {"keyword": "orders", "page": "2", "page_size": "50"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"list": [{"id": "9007199254740994", "name": "orders", "source_database_id": "9007199254740993", "mo_database_name": "orders", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995"]}, "targets": [{"workspace_id": "ws/2", "workspace_name": "Target"}], "permission": "owner", "remark": "daily", "created_by": "user-1", "created_at": "2026-06-01T00:00:00Z", "updated_at": "2026-06-02T00:00:00Z", "obj_display_name": "Orders", "obj_display_path": "Catalog/Orders", "cleanup_status": "failed"}], "total": 9007199254740993, "page": 2, "page_size": 50}}
+  },
+  {
+    "name": "workspace-names",
+    "operation": "workspace-names",
+    "method": "POST",
+    "path": "/newmoi/data-share/workspace-names",
+    "input": {"ids": ["ws/2", "ws-3"]},
+    "request": {"ids": ["ws/2", "ws-3"]},
+    "status": 200,
+    "response": {"code": "OK", "data": {"workspaces": [{"id": "ws/2", "name": "Target"}, {"id": "ws-3", "name": "Other"}]}}
+  },
+  {
+    "name": "resolve-workspace-names",
+    "operation": "resolve-workspace-names",
+    "method": "POST",
+    "path": "/newmoi/data-share/workspaces/resolve-names",
+    "input": {"ids": ["cross-user/ws"]},
+    "request": {"ids": ["cross-user/ws"]},
+    "status": 200,
+    "response": {"code": "OK", "data": {"workspaces": [{"id": "cross-user/ws", "name": "Cross User"}]}}
+  },
+  {
+    "name": "publish-summary",
+    "operation": "publish-summary",
+    "method": "GET",
+    "path": "/newmoi/data-share/publishes/summary",
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"total": 9007199254740993, "target_total": 5}}
+  },
+  {
+    "name": "source-tables",
+    "operation": "source-tables",
+    "method": "GET",
+    "path": "/newmoi/data-share/source-databases/9007199254740993/tables",
+    "query": {"page": "2", "page_size": "50"},
+    "input": {"source_database_id": "9007199254740993"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"list": [{"id": "9007199254740995", "name": "orders"}], "total": 9007199254740993, "page": 2, "page_size": 50}}
+  },
+  {
+    "name": "check-publish-name",
+    "operation": "check-publish-name",
+    "method": "GET",
+    "path": "/newmoi/data-share/publishes/check-name",
+    "query": {"name": "orders share"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"available": false}}
+  },
+  {
+    "name": "create-all-omits-remark",
+    "operation": "create-publish",
+    "method": "POST",
+    "path": "/newmoi/data-share/publishes",
+    "input": {"name": "all-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "all", "object_ids": []}, "target_workspace_ids": ["ws/2"], "remark_present": false},
+    "request": {"name": "all-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "all"}, "target_workspace_ids": ["ws/2"]},
+    "status": 200,
+    "response": {"code": "OK", "data": {"id": "9007199254740994", "name": "all-share", "source_database_id": "9007199254740993", "mo_database_name": "orders", "table_scope": {"mode": "all", "object_ids": []}, "targets": [{"workspace_id": "ws/2", "workspace_name": "Target"}], "permission": "owner", "remark": "", "created_by": "user-1", "created_at": "2026-06-01T00:00:00Z", "updated_at": "2026-06-01T00:00:00Z", "obj_display_name": "Orders", "obj_display_path": "Catalog/Orders", "cleanup_status": ""}}
+  },
+  {
+    "name": "create-selected-empty-remark",
+    "operation": "create-publish",
+    "method": "POST",
+    "path": "/newmoi/data-share/publishes",
+    "input": {"name": "selected-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995"]}, "target_workspace_ids": ["ws/2", "ws-3"], "remark_present": true, "remark": ""},
+    "request": {"name": "selected-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995"]}, "target_workspace_ids": ["ws/2", "ws-3"], "remark": ""},
+    "status": 200,
+    "response": {"code": "OK", "data": {"id": "9007199254740994", "name": "selected-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995"]}, "targets": [], "remark": ""}}
+  },
+  {
+    "name": "update-all-fields",
+    "operation": "update-publish",
+    "method": "PUT",
+    "path": "/newmoi/data-share/publishes/9007199254740994",
+    "input": {"publish_id": "9007199254740994", "table_scope_present": true, "table_scope": {"mode": "selected", "object_ids": ["9007199254740995", "9007199254740996"]}, "target_workspace_ids_present": true, "target_workspace_ids": ["ws/2", "ws-3"], "remark_present": true, "remark": ""},
+    "request": {"table_scope": {"mode": "selected", "object_ids": ["9007199254740995", "9007199254740996"]}, "target_workspace_ids": ["ws/2", "ws-3"], "remark": ""},
+    "status": 200,
+    "response": {"code": "OK", "data": {"id": "9007199254740994", "name": "selected-share", "source_database_id": "9007199254740993", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995", "9007199254740996"]}, "targets": [{"workspace_id": "ws/2"}, {"workspace_id": "ws-3"}], "remark": "", "updated_at": "2026-06-02T00:00:00Z"}}
+  },
+  {
+    "name": "update-empty-options",
+    "operation": "update-publish",
+    "method": "PUT",
+    "path": "/newmoi/data-share/publishes/9007199254740994",
+    "input": {"publish_id": "9007199254740994"},
+    "request": {},
+    "status": 200,
+    "response": {"code": "OK", "data": {"id": "9007199254740994", "name": "selected-share", "table_scope": {"mode": "all", "object_ids": []}, "targets": []}}
+  },
+  {
+    "name": "delete-publish",
+    "operation": "delete-publish",
+    "method": "DELETE",
+    "path": "/newmoi/data-share/publishes/9007199254740994",
+    "input": {"publish_id": "9007199254740994"},
+    "request": null,
+    "status": 204,
+    "response": null
+  },
+  {
+    "name": "subscriptions",
+    "operation": "subscriptions",
+    "method": "GET",
+    "path": "/newmoi/data-share/subscriptions",
+    "query": {"keyword": "", "status": "pending", "page": "1", "page_size": "20"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"list": [{"id": "9007199254740997", "pub_name": "orders", "source_workspace_id": "ws-source", "source_workspace_name": "Source", "publisher": "alice", "published_at": "2026-06-01T00:00:00Z", "status": "unsubscribed", "sub_name": "", "subscribed_by": "", "created_at": "2026-06-01T00:00:00Z", "obj_display_name": "Orders", "obj_display_path": "Catalog/Orders", "source_database_id": "9007199254740993", "mo_database_name": "orders", "table_scope": {"mode": "selected", "object_ids": ["9007199254740995"]}, "target_database_id": "", "cleanup_status": "running"}], "total": 9007199254740993, "page": 1, "page_size": 20}}
+  },
+  {
+    "name": "subscribe",
+    "operation": "subscribe",
+    "method": "POST",
+    "path": "/newmoi/data-share/subscriptions/9007199254740997/subscribe",
+    "input": {"subscription_id": "9007199254740997", "sub_name": "orders copy"},
+    "request": {"sub_name": "orders copy"},
+    "status": 200,
+    "response": {"code": "OK", "data": {"id": "9007199254740997", "pub_name": "orders", "source_workspace_id": "ws-source", "status": "subscribed", "sub_name": "orders copy", "subscribed_by": "user-1", "source_database_id": "9007199254740993", "table_scope": {"mode": "all", "object_ids": []}, "target_database_id": "9007199254740998", "cleanup_status": ""}}
+  },
+  {
+    "name": "unsubscribe",
+    "operation": "unsubscribe",
+    "method": "POST",
+    "path": "/newmoi/data-share/subscriptions/9007199254740997/unsubscribe",
+    "input": {"subscription_id": "9007199254740997"},
+    "request": null,
+    "status": 204,
+    "response": null
+  },
+  {
+    "name": "publishes-explicit-zero-error",
+    "operation": "publishes",
+    "method": "GET",
+    "path": "/newmoi/data-share/publishes",
+    "query": {"keyword": "", "page": "0", "page_size": "20"},
+    "request": null,
+    "status": 400,
+    "response": {"code": "ErrParamInvalid", "msg": "Synthetic invalid page", "data": null}
+  },
+  {
+    "name": "update-owner-conflict",
+    "operation": "update-publish",
+    "method": "PUT",
+    "path": "/newmoi/data-share/publishes/9007199254740994",
+    "input": {"publish_id": "9007199254740994", "target_workspace_ids_present": true, "target_workspace_ids": [], "remark_present": false},
+    "request": {"target_workspace_ids": []},
+    "status": 409,
+    "response": {"code": "ErrDataShareMutationInProgress", "msg": "Synthetic mutation conflict", "data": null}
+  }
+]

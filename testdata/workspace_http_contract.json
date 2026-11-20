@@ -1,0 +1,93 @@
+[
+  {
+    "name": "workspace list omits the name filter",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/workspaces",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"workspaces": [{"id": "workspace-1", "name": "Orders", "status": "ACTIVE", "owner_id": "user-1", "owner_name": "Alice", "owner_email": "alice@example.test", "created_at": "2026-06-25T00:00:00Z", "access_status": "accepted"}], "total": 1}},
+    "status": 200
+  },
+  {
+    "name": "workspace list preserves the exact name filter",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/workspaces",
+    "query": {"name": "Orders & 配方"},
+    "input": {"name": "Orders & 配方"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"workspaces": [], "total": 0}},
+    "status": 200
+  },
+  {
+    "name": "workspace create preserves Unicode and returns its ID",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/workspaces",
+    "input": {"name": "订单 配方"},
+    "request": {"name": "订单 配方"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "workspace-2"}},
+    "status": 200
+  },
+  {
+    "name": "workspace create preserves the owner conflict",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/workspaces",
+    "input": {"name": "Orders"},
+    "request": {"name": "Orders"},
+    "response": {"code": "ErrAlreadyExists", "msg": "您已有同名工作区，请换一个名字重试", "data": null},
+    "status": 409
+  },
+  {
+    "name": "workspace claim decodes an existing claim",
+    "operation": "claim",
+    "method": "POST",
+    "path": "/newmoi/workspaces/claim",
+    "input": {"workspace_id": "workspace-1"},
+    "request": {"workspace_id": "workspace-1"},
+    "response": {"code": "OK", "msg": "success", "data": {"workspace_id": "workspace-1", "claimed": false, "already_claimed": true}},
+    "status": 200
+  },
+  {
+    "name": "workspace delete accepts an empty acknowledgement",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1",
+    "input": {"workspace_id": "workspace-1"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "workspace creations decode job state",
+    "operation": "creations",
+    "method": "GET",
+    "path": "/newmoi/workspaces/creations",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"creations": [{"id": "job-1", "name": "Orders", "status": "succeeded", "workspace_id": "workspace-1", "error_code": "", "error_reason": "", "created_at": "2026-06-25T00:00:00Z", "updated_at": "2026-06-25T00:01:00Z"}]}},
+    "status": 200
+  },
+  {
+    "name": "workspace start creation accepts the asynchronous job",
+    "operation": "start-creation",
+    "method": "POST",
+    "path": "/newmoi/workspaces/creations",
+    "input": {"name": "Orders"},
+    "request": {"name": "Orders"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "job-2", "name": "Orders", "status": "pending", "workspace_id": "", "created_at": "2026-06-25T00:00:00Z", "updated_at": "2026-06-25T00:00:00Z"}},
+    "status": 202
+  },
+  {
+    "name": "workspace update forwards the new name",
+    "operation": "update",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1",
+    "input": {"workspace_id": "workspace-1", "name": "Renamed"},
+    "request": {"name": "Renamed"},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  }
+]

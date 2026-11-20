@@ -1,0 +1,56 @@
+[
+  {
+    "name": "agent list preserves omitted filters",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agents",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [], "total": 0, "limit": 50, "offset": 0}}
+  },
+  {
+    "name": "agent list forwards all filters and explicit zero values",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agents",
+    "query": {"catalog": ["system"], "status": [""], "query": [" review "], "surface": [""], "include_development": ["false"], "limit": ["0"], "offset": ["0"]},
+    "input": {"catalog": "system", "status": "", "query": " review ", "surface": "", "include_development": false, "limit": 0, "offset": 0},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"id": "agent-1", "workspace_id": "workspace-1", "name": "Review", "status": "active", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "items": [], "object": {}, "nothing": null}}], "total": 9007199254740993, "limit": 0, "offset": 0}}
+  },
+  {
+    "name": "agent card preserves selector and raw card",
+    "operation": "agent-card",
+    "method": "GET",
+    "path": "/newmoi/agents/card",
+    "query": {"agent_id": ["agent/1"], "agent_workspace_id": ["workspace 1"]},
+    "input": {"agent_id": "agent/1", "agent_workspace_id": "workspace 1"},
+    "request": null,
+    "status": 200,
+    "response": {"protocolVersion": "0.3.0", "name": "Agent", "version": "1.0.0", "url": "https://example.test/a2a", "capabilities": {"streaming": false, "stateTransitionHistory": true}, "metadata": {"big": 9007199254740993, "zero": 0}}
+  },
+  {
+    "name": "agent card preserves owner error",
+    "operation": "agent-card",
+    "method": "GET",
+    "path": "/newmoi/agents/card",
+    "query": {"agent_id": ["agent/1"], "agent_workspace_id": ["workspace 1"]},
+    "input": {"agent_id": "agent/1", "agent_workspace_id": "workspace 1"},
+    "request": null,
+    "status": 404,
+    "response_headers": {"X-Request-ID": "request-agent-card-1"},
+    "response": {"code": 3, "message": "agent not found", "details": {"agent_id": "agent/1"}}
+  },
+  {
+    "name": "A2A preserves large request id and arbitrary params",
+    "operation": "a2a",
+    "method": "POST",
+    "path": "/newmoi/agents/a2a",
+    "input": {"body": {"agent_id": "agent/1", "agent_workspace_id": "workspace 1", "jsonrpc": "2.0", "id": 9007199254740993, "method": "tasks/get", "params": {"id": "task-1", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "items": [], "object": {}, "nothing": null}}}},
+    "request": {"agent_id": "agent/1", "agent_workspace_id": "workspace 1", "jsonrpc": "2.0", "id": 9007199254740993, "method": "tasks/get", "params": {"id": "task-1", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "items": [], "object": {}, "nothing": null}}},
+    "status": 200,
+    "response": {"jsonrpc": "2.0", "id": 9007199254740993, "result": {"id": "task-1", "status": {"state": "completed"}, "metadata": {"big": 9007199254740993, "enabled": false}}}
+  }
+]

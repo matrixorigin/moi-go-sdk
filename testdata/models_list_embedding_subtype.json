@@ -1,0 +1,10 @@
+{
+  "model": "efficientnet-b3",
+  "backend_id": -900002,
+  "backend_name": "TaaS Embedding",
+  "model_type": "embedding",
+  "type": "embedding_multimodal",
+  "source": "system",
+  "system_default": true,
+  "dim": 1024
+}

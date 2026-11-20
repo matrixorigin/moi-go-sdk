@@ -1,0 +1,577 @@
+[
+  {
+    "name": "resolve-link",
+    "operation": "resolve",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/resolve",
+    "input": {
+      "body": {
+        "webapp": "agent-1",
+        "t": "link token/+",
+        "k": ""
+      }
+    },
+    "request": {
+      "webapp": "agent-1",
+      "t": "link token/+",
+      "k": ""
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_name": "演示 Agent",
+        "agent_id": "agent-1"
+      }
+    }
+  },
+  {
+    "name": "create-session",
+    "operation": "create-session",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/session",
+    "input": {
+      "body": {
+        "webapp": "agent-1",
+        "t": "link token/+",
+        "session": ""
+      }
+    },
+    "request": {
+      "webapp": "agent-1",
+      "t": "link token/+",
+      "session": ""
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "session_token": "session token/+",
+        "expires_in": 9007199254740993
+      }
+    }
+  },
+  {
+    "name": "refresh-session",
+    "operation": "refresh-session",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/session/refresh",
+    "input": {
+      "body": {
+        "webapp": "agent-1",
+        "t": "link token/+",
+        "session": "old-session"
+      }
+    },
+    "request": {
+      "webapp": "agent-1",
+      "t": "link token/+",
+      "session": "old-session"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "session_token": "new-session",
+        "expires_in": 0
+      }
+    }
+  },
+  {
+    "name": "create-conversation",
+    "operation": "create-conversation",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/conversations",
+    "input": {
+      "body": {
+        "webapp": "agent-1",
+        "t": "link token/+",
+        "k": ""
+      }
+    },
+    "request": {
+      "webapp": "agent-1",
+      "t": "link token/+",
+      "k": ""
+    },
+    "status": 201,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "conversation_id": "conversation/1",
+        "title": "",
+        "updated_at": "2026-11-10T01:02:03Z"
+      }
+    }
+  },
+  {
+    "name": "list-conversations",
+    "operation": "list-conversations",
+    "method": "GET",
+    "path": "/newmoi/public/webapp/conversations",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    }
+  },
+  {
+    "name": "rename-conversation",
+    "operation": "rename-conversation",
+    "method": "PATCH",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1",
+    "input": {
+      "body": {
+        "title": " renamed "
+      }
+    },
+    "request": {
+      "title": " renamed "
+    },
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "conversation_id": "conversation/1",
+        "title": "renamed",
+        "updated_at": "2026-11-10T01:02:03Z"
+      }
+    }
+  },
+  {
+    "name": "delete-conversation",
+    "operation": "delete-conversation",
+    "method": "DELETE",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "conversation_id": "conversation/1",
+        "status": "archived"
+      }
+    }
+  },
+  {
+    "name": "list-messages",
+    "operation": "list-messages",
+    "method": "GET",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1/messages",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ],
+      "role": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [
+          {
+            "message_id": "message-1",
+            "seq": 9007199254740993,
+            "parts": [
+              {
+                "kind": "text",
+                "text": "你好"
+              }
+            ]
+          }
+        ],
+        "total": 1,
+        "limit": 0,
+        "offset": 0
+      }
+    }
+  },
+  {
+    "name": "list-task-events",
+    "operation": "list-task-events",
+    "method": "GET",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1/tasks/task%2F1/events",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ],
+      "after_seq": [
+        "0"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [
+          {
+            "id": "event-1",
+            "task_id": "task/1",
+            "seq": 9007199254740993,
+            "kind": "artifact",
+            "visible": false,
+            "payload": {
+              "count": 0
+            }
+          }
+        ],
+        "total": 1,
+        "after_seq": 9007199254740993
+      }
+    }
+  },
+  {
+    "name": "submit-feedback",
+    "operation": "submit-feedback",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/feedback",
+    "input": {
+      "body": {
+        "conversation_id": "conversation/1",
+        "message_id": "message-1",
+        "task_id": "task/1",
+        "rating": "dislike",
+        "comment": ""
+      }
+    },
+    "request": {
+      "conversation_id": "conversation/1",
+      "message_id": "message-1",
+      "task_id": "task/1",
+      "rating": "dislike",
+      "comment": ""
+    },
+    "status": 201,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "feedback_id": "feedback-1"
+      }
+    }
+  },
+  {
+    "name": "call-mcp-app",
+    "operation": "call-mcp-app",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/mcp-apps/call",
+    "input": {
+      "body": {
+        "conversation_id": "conversation/1",
+        "task_id": "task/1",
+        "tool_id": "",
+        "tool_name": "search",
+        "arguments": {
+          "limit": 0,
+          "exact": false,
+          "items": [],
+          "object": {},
+          "nothing": null,
+          "big": 9007199254740993
+        }
+      }
+    },
+    "request": {
+      "conversation_id": "conversation/1",
+      "task_id": "task/1",
+      "tool_id": "",
+      "tool_name": "search",
+      "arguments": {
+        "limit": 0,
+        "exact": false,
+        "items": [],
+        "object": {},
+        "nothing": null,
+        "big": 9007199254740993
+      }
+    },
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "name": "read-mcp-app-resource",
+    "operation": "read-mcp-app-resource",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/mcp-apps/resource",
+    "input": {
+      "body": {
+        "conversation_id": "conversation/1",
+        "task_id": "task/1",
+        "tool_id": "",
+        "uri": "mcp://resource/1"
+      }
+    },
+    "request": {
+      "conversation_id": "conversation/1",
+      "task_id": "task/1",
+      "tool_id": "",
+      "uri": "mcp://resource/1"
+    },
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "contents": [
+          {
+            "uri": "mcp://resource/1",
+            "text": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "a2a-stream",
+    "operation": "a2a-stream",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/a2a",
+    "input": {
+      "body": {
+        "jsonrpc": "2.0",
+        "id": 9007199254740993,
+        "method": "message/stream",
+        "params": {
+          "message": {
+            "messageId": "message-1",
+            "contextId": "conversation/1",
+            "role": "user",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "你好"
+              },
+              {
+                "kind": "data",
+                "data": {
+                  "count": 0,
+                  "enabled": false,
+                  "items": [],
+                  "nothing": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 9007199254740993,
+      "method": "message/stream",
+      "params": {
+        "message": {
+          "messageId": "message-1",
+          "contextId": "conversation/1",
+          "role": "user",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "你好"
+            },
+            {
+              "kind": "data",
+              "data": {
+                "count": 0,
+                "enabled": false,
+                "items": [],
+                "nothing": null
+              }
+            }
+          ]
+        }
+      }
+    },
+    "status": 200,
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "response_base64": "aWQ6IDkwMDcxOTkyNTQ3NDA5OTMKZXZlbnQ6IG1lc3NhZ2UKZGF0YTogeyJqc29ucnBjIjoiMi4wIiwiaWQiOjkwMDcxOTkyNTQ3NDA5OTMsInJlc3VsdCI6eyJraW5kIjoic3RhdHVzLXVwZGF0ZSIsInN0YXR1cyI6eyJzdGF0ZSI6ImNvbXBsZXRlZCJ9LCJmaW5hbCI6dHJ1ZX19Cgo=",
+    "response_content_type": "text/event-stream"
+  },
+  {
+    "name": "owner-unavailable",
+    "operation": "resolve",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/resolve",
+    "input": {
+      "body": {
+        "webapp": "missing",
+        "t": "invalid",
+        "k": ""
+      }
+    },
+    "request": {
+      "webapp": "missing",
+      "t": "invalid",
+      "k": ""
+    },
+    "status": 404,
+    "response": {
+      "code": 3,
+      "message": "Webapp 不可用",
+      "data": null
+    },
+    "response_headers": {
+      "X-Request-ID": "request-webapp-public"
+    }
+  },
+  {
+    "name": "malformed-envelope",
+    "operation": "refresh-session",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/session/refresh",
+    "input": {
+      "body": {
+        "webapp": "agent-1",
+        "t": "link token/+",
+        "session": "old-session"
+      }
+    },
+    "request": {
+      "webapp": "agent-1",
+      "t": "link token/+",
+      "session": "old-session"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "message": "broken"
+    },
+    "response_headers": {
+      "X-Request-ID": "request-webapp-malformed"
+    }
+  }
+]

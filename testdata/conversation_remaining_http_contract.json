@@ -1,0 +1,265 @@
+[
+  {
+    "name": "workspace embedding models uses existing resource owner",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/models",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "models": [],
+        "total": 9007199254740993
+      }
+    },
+    "status": 200,
+    "resource": "embeddings",
+    "tail_path": "/models"
+  },
+  {
+    "name": "get workspace message preserves int64 id",
+    "operation": "get-message",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/messages/9007199254740995",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "list workspace message tags",
+    "operation": "list-message-tags",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/messages/9007199254740995/tags",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "remove workspace message tag escapes source and name",
+    "operation": "remove-message-tag",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/llm/messages/9007199254740995/tags/user%2Fsource/tag%2Fname",
+    "query": {},
+    "request": null,
+    "response": null,
+    "status": 204,
+    "message_id": 9007199254740995,
+    "source": "user/source",
+    "tag_name": "tag/name"
+  },
+  {
+    "name": "list workspace sessions forwards zero filters",
+    "operation": "list-sessions",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions",
+    "query": {
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ],
+      "query": [
+        ""
+      ]
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "delete workspace session accepts empty response",
+    "operation": "delete-session",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "query": {},
+    "request": null,
+    "response": null,
+    "status": 204,
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "get workspace session",
+    "operation": "get-session",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "list workspace messages forwards zero filters",
+    "operation": "list-messages",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages",
+    "query": {
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ],
+      "after": [
+        "0"
+      ]
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "latest workspace message id",
+    "operation": "latest-message-id",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages/latest",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "append modified response preserves empty content",
+    "operation": "append-modified-response",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages/9007199254740995/append-modified-response",
+    "query": {},
+    "request": {
+      "append_content": ""
+    },
+    "response": null,
+    "status": 204,
+    "session_id": 9007199254740993,
+    "message_id": 9007199254740995,
+    "content": ""
+  },
+  {
+    "name": "modify response preserves empty content",
+    "operation": "modify-response",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages/9007199254740995/modify-response",
+    "query": {},
+    "request": {
+      "modified_response": ""
+    },
+    "response": null,
+    "status": 204,
+    "session_id": 9007199254740993,
+    "message_id": 9007199254740995,
+    "content": ""
+  },
+  {
+    "name": "list workspace session tags",
+    "operation": "list-session-tags",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/tags",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200,
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "remove workspace session tag escapes source and name",
+    "operation": "remove-session-tag",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/tags/user%2Fsource/tag%2Fname",
+    "query": {},
+    "request": null,
+    "response": null,
+    "status": 204,
+    "session_id": 9007199254740993,
+    "source": "user/source",
+    "tag_name": "tag/name"
+  },
+  {
+    "name": "list workspace tags forwards zero filters",
+    "operation": "list-tags",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/tags",
+    "query": {
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ],
+      "query": [
+        ""
+      ]
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "delete workspace tag escapes source and name",
+    "operation": "delete-tag",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/llm/tags/user%2Fsource/tag%2Fname",
+    "query": {},
+    "request": null,
+    "response": null,
+    "status": 204,
+    "source": "user/source",
+    "tag_name": "tag/name"
+  },
+  {
+    "name": "get session preserves owner error",
+    "operation": "get-session",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "query": {},
+    "request": null,
+    "response": {
+      "code": "ErrNotFound",
+      "msg": "会话不存在"
+    },
+    "status": 404,
+    "session_id": 9007199254740993,
+    "response_headers": {
+      "X-Request-ID": "request-conversation-1"
+    }
+  }
+]

@@ -1,0 +1,699 @@
+[
+  {
+    "name": "workbook cursor and search",
+    "command": "workbooks",
+    "path": "/workbook/list",
+    "input": {
+      "search": "分析",
+      "page_size": 25,
+      "page_token": "eyJ2IjoxLCJraW5kIjoid29ya2Jvb2tzIiwid29ya3NwYWNlX2lkIjoid29ya3NwYWNlLTEiLCJzZWFyY2giOiLliIbmnpAiLCJjcmVhdGVkX2F0IjoiMjAyNi0xMS0wOVQwMTowMDowMFoiLCJpZCI6IndiLXByZXZpb3VzIn0"
+    },
+    "request": {
+      "search": "分析",
+      "page_size": 25,
+      "page_token": "eyJ2IjoxLCJraW5kIjoid29ya2Jvb2tzIiwid29ya3NwYWNlX2lkIjoid29ya3NwYWNlLTEiLCJzZWFyY2giOiLliIbmnpAiLCJjcmVhdGVkX2F0IjoiMjAyNi0xMS0wOVQwMTowMDowMFoiLCJpZCI6IndiLXByZXZpb3VzIn0"
+    },
+    "response": {
+      "total": 1,
+      "result": [
+        {
+          "workbook_id": "wb-1",
+          "name": "分析表"
+        }
+      ],
+      "next_page_token": "eyJ2IjoxLCJraW5kIjoid29ya2Jvb2tzIiwid29ya3NwYWNlX2lkIjoid29ya3NwYWNlLTEiLCJzZWFyY2giOiLliIbmnpAiLCJjcmVhdGVkX2F0IjoiMjAyNi0xMS0wOVQwMTowMDowMFoiLCJpZCI6IndiLTEifQ"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 1,
+        "result": [
+          {
+            "workbook_id": "wb-1",
+            "name": "分析表"
+          }
+        ],
+        "next_page_token": "eyJ2IjoxLCJraW5kIjoid29ya2Jvb2tzIiwid29ya3NwYWNlX2lkIjoid29ya3NwYWNlLTEiLCJzZWFyY2giOiLliIbmnpAiLCJjcmVhdGVkX2F0IjoiMjAyNi0xMS0wOVQwMTowMDowMFoiLCJpZCI6IndiLTEifQ"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "workbook options omitted",
+    "command": "workbooks",
+    "path": "/workbook/list",
+    "input": {},
+    "request": {},
+    "response": {
+      "total": 0,
+      "result": [],
+      "next_page_token": ""
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 0,
+        "result": [],
+        "next_page_token": ""
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "workbook version pagination",
+    "command": "workbook-versions",
+    "path": "/workbook/version/list",
+    "input": {
+      "workbook_id": "wb-1",
+      "page_size": 25,
+      "page_token": ""
+    },
+    "request": {
+      "workbook_id": "wb-1",
+      "page_size": 25,
+      "page_token": ""
+    },
+    "response": {
+      "total": 1,
+      "result": [
+        {
+          "id": "v-1",
+          "name": "draft",
+          "status": "draft"
+        }
+      ],
+      "next_page_token": ""
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 1,
+        "result": [
+          {
+            "id": "v-1",
+            "name": "draft",
+            "status": "draft"
+          }
+        ],
+        "next_page_token": ""
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history overview filters",
+    "command": "query-history-overview",
+    "path": "/query/history/overview",
+    "input": {
+      "scope": "workspace",
+      "non_user": true,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "sql_source_type": [
+        "cloud_user_sql",
+        "cloud_nonuser_sql"
+      ]
+    },
+    "request": {
+      "scope": "workspace",
+      "non_user": true,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "sql_source_type": [
+        "cloud_user_sql",
+        "cloud_nonuser_sql"
+      ]
+    },
+    "response": {
+      "total": 4,
+      "success": 2,
+      "running": 1,
+      "failed": 1
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 4,
+        "success": 2,
+        "running": 1,
+        "failed": 1
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history every public filter",
+    "command": "query-history",
+    "path": "/query/history",
+    "input": {
+      "scope": "workspace",
+      "non_user": true,
+      "status": "Success",
+      "user": [
+        "alice",
+        "bob"
+      ],
+      "databases": [
+        "sales",
+        "分析"
+      ],
+      "statement": "select %",
+      "query_type": [
+        "DQL"
+      ],
+      "duration": 9007199254740993,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "statement-1",
+      "transaction_id": "transaction-1",
+      "session_id": "session-1",
+      "selected_field": [
+        "statement_id",
+        "statement",
+        "request_at"
+      ],
+      "sql_source_type": [
+        "cloud_user_sql"
+      ],
+      "offset": 2,
+      "limit": 5,
+      "order_by": [
+        "request_at"
+      ],
+      "order": "desc",
+      "cu": 7
+    },
+    "request": {
+      "scope": "workspace",
+      "non_user": true,
+      "status": "Success",
+      "user": [
+        "alice",
+        "bob"
+      ],
+      "databases": [
+        "sales",
+        "分析"
+      ],
+      "statement": "select %",
+      "query_type": [
+        "DQL"
+      ],
+      "duration": 9007199254740993,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "statement-1",
+      "transaction_id": "transaction-1",
+      "session_id": "session-1",
+      "selected_field": [
+        "statement_id",
+        "statement",
+        "request_at"
+      ],
+      "sql_source_type": [
+        "cloud_user_sql"
+      ],
+      "offset": 2,
+      "limit": 5,
+      "order_by": [
+        "request_at"
+      ],
+      "order": "desc",
+      "cu": 7
+    },
+    "response": {
+      "total": 3,
+      "offset": 2,
+      "limit": 5,
+      "query_list": [
+        {
+          "statement_id": "statement-1",
+          "statement": "select 1",
+          "status": "Success",
+          "request_at": "2026-11-10T01:02:03Z",
+          "duration": 9007199254740993
+        }
+      ]
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 3,
+        "offset": 2,
+        "limit": 5,
+        "query_list": [
+          {
+            "statement_id": "statement-1",
+            "statement": "select 1",
+            "status": "Success",
+            "request_at": "2026-11-10T01:02:03Z",
+            "duration": 9007199254740993
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history zero empty and omitted lists",
+    "command": "query-history",
+    "path": "/query/history",
+    "input": {
+      "scope": "",
+      "non_user": false,
+      "user": [],
+      "databases": [],
+      "statement": "",
+      "query_type": [],
+      "duration": 0,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "",
+      "transaction_id": "",
+      "session_id": "",
+      "selected_field": [],
+      "sql_source_type": [],
+      "offset": 0,
+      "limit": 0,
+      "order_by": [],
+      "order": "",
+      "cu": 0
+    },
+    "request": {
+      "non_user": false,
+      "statement": "",
+      "duration": 0,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "",
+      "transaction_id": "",
+      "session_id": "",
+      "offset": 0,
+      "limit": 0,
+      "order": "",
+      "cu": 0
+    },
+    "response": {
+      "total": 0,
+      "offset": 0,
+      "limit": 10,
+      "query_list": []
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 0,
+        "offset": 0,
+        "limit": 10,
+        "query_list": []
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history overview empty scope",
+    "command": "query-history-overview",
+    "path": "/query/history/overview",
+    "input": {
+      "scope": "",
+      "non_user": false,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "sql_source_type": []
+    },
+    "request": {
+      "non_user": false,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z"
+    },
+    "response": {
+      "total": 0,
+      "success": 0,
+      "running": 0,
+      "failed": 0
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "total": 0,
+        "success": 0,
+        "running": 0,
+        "failed": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history detail category and time",
+    "command": "query-detail",
+    "path": "/query/detail",
+    "input": {
+      "statement_id": "statement-1",
+      "scope": "workspace",
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z"
+    },
+    "request": {
+      "statement_id": "statement-1",
+      "scope": "workspace",
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z"
+    },
+    "response": {
+      "statement_id": "statement-1",
+      "statement": "select 1",
+      "status": "Success",
+      "request_at": "2026-11-10T01:02:03Z"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "statement_id": "statement-1",
+        "statement": "select 1",
+        "status": "Success",
+        "request_at": "2026-11-10T01:02:03Z"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "history profile empty scope",
+    "command": "query-profile",
+    "path": "/query/profile",
+    "input": {
+      "statement_id": "statement-1",
+      "scope": "",
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z"
+    },
+    "request": {
+      "statement_id": "statement-1",
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z"
+    },
+    "response": {
+      "statement_id": "statement-1",
+      "profile": {
+        "code": 0,
+        "message": "",
+        "success": true,
+        "uuid": "statement-1"
+      }
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "statement_id": "statement-1",
+        "profile": {
+          "code": 0,
+          "message": "",
+          "success": true,
+          "uuid": "statement-1"
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "execute all options including zero",
+    "command": "execute-query",
+    "path": "/query/execute",
+    "input": {
+      "query": "SELECT NULL AS n",
+      "db_name": "sales",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "request": {
+      "query": "SELECT NULL AS n",
+      "db_name": "sales",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "response": {
+      "id": "query-1",
+      "query_id": "query-1"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "id": "query-1",
+        "query_id": "query-1"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "execute options omitted",
+    "command": "execute-query",
+    "path": "/query/execute",
+    "input": {
+      "query": "SELECT 1"
+    },
+    "request": {
+      "query": "SELECT 1"
+    },
+    "response": {
+      "id": "query-1",
+      "query_id": "query-1"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "id": "query-1",
+        "query_id": "query-1"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "saved result pagination",
+    "command": "query-result",
+    "path": "/query/result",
+    "input": {
+      "statement_id": "statement-1",
+      "offset": 0,
+      "limit": 25
+    },
+    "request": {
+      "statement_id": "statement-1",
+      "offset": 0,
+      "limit": 25
+    },
+    "response": {
+      "query_id": "query-1",
+      "statement_id": "statement-1",
+      "status": "success",
+      "offset": 0,
+      "limit": 25,
+      "total": 1,
+      "columns": [
+        {
+          "name": "n",
+          "type": "INT"
+        }
+      ],
+      "result": [
+        [
+          {
+            "String": "",
+            "Valid": false
+          }
+        ]
+      ]
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "query_id": "query-1",
+        "statement_id": "statement-1",
+        "status": "success",
+        "offset": 0,
+        "limit": 25,
+        "total": 1,
+        "columns": [
+          {
+            "name": "n",
+            "type": "INT"
+          }
+        ],
+        "result": [
+          [
+            {
+              "String": "",
+              "Valid": false
+            }
+          ]
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "execute alias preserves zero and empty",
+    "command": "execute",
+    "path": "/query/execute",
+    "input": {
+      "query": "SELECT NULL AS n",
+      "db_name": "",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "request": {
+      "query": "SELECT NULL AS n",
+      "db_name": "",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "response": {
+      "id": "query-1",
+      "query_id": "query-1"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "id": "query-1",
+        "query_id": "query-1"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "run alias preserves zero and empty",
+    "command": "run",
+    "path": "/query/run",
+    "input": {
+      "query": "SELECT NULL AS n",
+      "db_name": "",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "request": {
+      "query": "SELECT NULL AS n",
+      "db_name": "",
+      "sql_type": "DQL",
+      "offset": 0,
+      "limit": 0
+    },
+    "response": {
+      "query_id": "query-1",
+      "statement_id": "statement-1",
+      "status": "success",
+      "columns": [
+        {
+          "name": "n",
+          "type": "INT"
+        }
+      ],
+      "result": [
+        [
+          {
+            "String": "",
+            "Valid": false
+          }
+        ]
+      ],
+      "total": 1
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "query_id": "query-1",
+        "statement_id": "statement-1",
+        "status": "success",
+        "columns": [
+          {
+            "name": "n",
+            "type": "INT"
+          }
+        ],
+        "result": [
+          [
+            {
+              "String": "",
+              "Valid": false
+            }
+          ]
+        ],
+        "total": 1
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "workbook zero page size reaches owner",
+    "command": "workbook-versions",
+    "path": "/workbook/version/list",
+    "input": {
+      "workbook_id": "wb-1",
+      "page_size": 0,
+      "page_token": ""
+    },
+    "request": {
+      "workbook_id": "wb-1",
+      "page_size": 0,
+      "page_token": ""
+    },
+    "response": null,
+    "envelope": {
+      "code": "ErrParamInvalid",
+      "msg": "workbook page is invalid"
+    },
+    "status": 400,
+    "error_code": "ErrParamInvalid"
+  },
+  {
+    "name": "history empty status reaches owner",
+    "command": "query-history",
+    "path": "/query/history",
+    "input": {
+      "scope": "",
+      "non_user": false,
+      "user": [],
+      "databases": [],
+      "statement": "",
+      "query_type": [],
+      "duration": 0,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "",
+      "transaction_id": "",
+      "session_id": "",
+      "selected_field": [],
+      "sql_source_type": [],
+      "offset": 0,
+      "limit": 0,
+      "order_by": [],
+      "order": "",
+      "cu": 0,
+      "status": ""
+    },
+    "request": {
+      "non_user": false,
+      "statement": "",
+      "duration": 0,
+      "start": "2026-11-10T01:02:03Z",
+      "end": "2026-11-10T02:03:04Z",
+      "statement_id": "",
+      "transaction_id": "",
+      "session_id": "",
+      "offset": 0,
+      "limit": 0,
+      "order": "",
+      "cu": 0,
+      "status": ""
+    },
+    "response": null,
+    "envelope": {
+      "code": "ErrParamInvalid",
+      "msg": "参数无效"
+    },
+    "status": 400,
+    "error_code": "ErrParamInvalid"
+  }
+]

@@ -1,0 +1,896 @@
+[
+  {
+    "name": "drop meta database",
+    "api": "API-0663",
+    "command": "drop-meta-database",
+    "cli_group": "sql",
+    "cli_command": "sql drop-meta-database",
+    "cli_args": [
+      "drop-meta-database",
+      "--db-name",
+      "sales"
+    ],
+    "method": "POST",
+    "path": "/meta/db/drop",
+    "query": "",
+    "request": {
+      "db_name": "sales"
+    },
+    "input": {
+      "db_name": "sales"
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  },
+  {
+    "name": "meta databases without body",
+    "api": "API-0664",
+    "command": "meta-databases",
+    "cli_group": "sql",
+    "cli_command": "sql meta-databases",
+    "cli_args": [
+      "meta-databases"
+    ],
+    "method": "POST",
+    "path": "/meta/db/info",
+    "query": "",
+    "bodyless": true,
+    "request": {},
+    "input": {},
+    "response": {
+      "result": [
+        {
+          "db_name": "sales",
+          "display_name": "sales",
+          "is_internal": false,
+          "is_subscription": false,
+          "has_published": true,
+          "tables": {
+            "tables": [],
+            "total": 0
+          },
+          "views": {
+            "tables": [],
+            "total": 0
+          }
+        }
+      ],
+      "total": 1,
+      "next_page_token": ""
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "result": [
+          {
+            "db_name": "sales",
+            "display_name": "sales",
+            "is_internal": false,
+            "is_subscription": false,
+            "has_published": true,
+            "tables": {
+              "tables": [],
+              "total": 0
+            },
+            "views": {
+              "tables": [],
+              "total": 0
+            }
+          }
+        ],
+        "total": 1,
+        "next_page_token": ""
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "meta database tables use name field",
+    "api": "API-0665",
+    "command": "meta-db-tables",
+    "cli_group": "sql",
+    "cli_command": "sql meta-db-tables",
+    "cli_args": [
+      "meta-db-tables",
+      "--db-name",
+      "sales"
+    ],
+    "method": "POST",
+    "path": "/meta/db/table",
+    "query": "",
+    "request": {
+      "name": "sales"
+    },
+    "input": {
+      "db_name": "sales"
+    },
+    "response": {
+      "db_name": "sales",
+      "tables": {
+        "tables": [
+          {
+            "name": "orders",
+            "rows": 3
+          }
+        ],
+        "total": 1
+      },
+      "views": {
+        "tables": [],
+        "total": 0
+      }
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "db_name": "sales",
+        "tables": {
+          "tables": [
+            {
+              "name": "orders",
+              "rows": 3
+            }
+          ],
+          "total": 1
+        },
+        "views": {
+          "tables": [],
+          "total": 0
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "meta database tree without body",
+    "api": "API-0666",
+    "command": "meta-db-tree",
+    "cli_group": "sql",
+    "cli_command": "sql meta-db-tree",
+    "cli_args": [
+      "meta-db-tree"
+    ],
+    "method": "POST",
+    "path": "/meta/db/tree",
+    "query": "",
+    "bodyless": true,
+    "request": null,
+    "input": {},
+    "response": {
+      "db_list": [
+        {
+          "db_name": "sales",
+          "is_internal": false,
+          "is_subscription": false,
+          "has_published": false,
+          "tables": {
+            "tables": [],
+            "total": 0
+          },
+          "views": {
+            "tables": [],
+            "total": 0
+          }
+        }
+      ]
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "db_list": [
+          {
+            "db_name": "sales",
+            "is_internal": false,
+            "is_subscription": false,
+            "has_published": false,
+            "tables": {
+              "tables": [],
+              "total": 0
+            },
+            "views": {
+              "tables": [],
+              "total": 0
+            }
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "meta table columns",
+    "api": "API-0667",
+    "command": "meta-table-columns",
+    "cli_group": "sql",
+    "cli_command": "sql meta-table-columns",
+    "cli_args": [
+      "meta-table-columns",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/table/column",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": {
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INT",
+          "nullable": "NO",
+          "default_value": "",
+          "key_type": "PRI",
+          "comment": ""
+        }
+      ],
+      "total": 1
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INT",
+            "nullable": "NO",
+            "default_value": "",
+            "key_type": "PRI",
+            "comment": ""
+          }
+        ],
+        "total": 1
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "meta table column stats",
+    "api": "API-0668",
+    "command": "meta-table-column-stats",
+    "cli_group": "sql",
+    "cli_command": "sql meta-table-column-stats",
+    "cli_args": [
+      "meta-table-column-stats",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/table/column_stat",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": {
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INT",
+          "nullable": "NO",
+          "comment": ""
+        }
+      ],
+      "total": 1
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INT",
+            "nullable": "NO",
+            "comment": ""
+          }
+        ],
+        "total": 1
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "meta table ddl",
+    "api": "API-0669",
+    "command": "meta-table-ddl",
+    "cli_group": "sql",
+    "cli_command": "sql meta-table-ddl",
+    "cli_args": [
+      "meta-table-ddl",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/table/ddl",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": {
+      "create_sql": "CREATE TABLE `orders` (`id` INT)"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "create_sql": "CREATE TABLE `orders` (`id` INT)"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "drop meta table",
+    "api": "API-0670",
+    "command": "drop-meta-table",
+    "cli_group": "sql",
+    "cli_command": "sql drop-meta-table",
+    "cli_args": [
+      "drop-meta-table",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/table/drop",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  },
+  {
+    "name": "meta table info",
+    "api": "API-0671",
+    "command": "meta-table-info",
+    "cli_group": "sql",
+    "cli_command": "sql meta-table-info",
+    "cli_args": [
+      "meta-table-info",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/table/info",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": {
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INT",
+          "nullable": "NO"
+        }
+      ],
+      "total": 1,
+      "rows": 3
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "columns": [
+          {
+            "name": "id",
+            "data_type": "INT",
+            "nullable": "NO"
+          }
+        ],
+        "total": 1,
+        "rows": 3
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "drop meta view",
+    "api": "API-0672",
+    "command": "drop-meta-view",
+    "cli_group": "sql",
+    "cli_command": "sql drop-meta-view",
+    "cli_args": [
+      "drop-meta-view",
+      "--db-name",
+      "sales",
+      "--table-name",
+      "orders"
+    ],
+    "method": "POST",
+    "path": "/meta/view/drop",
+    "query": "",
+    "request": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "input": {
+      "db_name": "sales",
+      "table_name": "orders"
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  },
+  {
+    "name": "describe query operation",
+    "api": "API-0673",
+    "command": "describe-query",
+    "cli_group": "sql",
+    "cli_command": "sql describe-query",
+    "cli_args": [
+      "describe-query",
+      "--query-id",
+      "query-1"
+    ],
+    "method": "POST",
+    "path": "/query/describe",
+    "query": "",
+    "request": {
+      "query_id": "query-1"
+    },
+    "input": {
+      "query_id": "query-1"
+    },
+    "response": {
+      "query_id": "query-1",
+      "created_at": "2026-11-10T01:02:03Z",
+      "statement_id": "statement-1",
+      "db_name": "sales",
+      "status": "running",
+      "rows_affected": 0
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "query_id": "query-1",
+        "created_at": "2026-11-10T01:02:03Z",
+        "statement_id": "statement-1",
+        "db_name": "sales",
+        "status": "running",
+        "rows_affected": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "kill query owner rejection",
+    "api": "API-0678",
+    "command": "kill-query",
+    "cli_group": "sql",
+    "cli_command": "sql kill-query",
+    "cli_args": [
+      "kill-query",
+      "--query-id",
+      "query-1"
+    ],
+    "method": "POST",
+    "path": "/query/kill",
+    "query": "",
+    "request": {
+      "query_id": "query-1"
+    },
+    "input": {
+      "query_id": "query-1"
+    },
+    "response": null,
+    "envelope": {
+      "code": "ErrParamInvalid",
+      "msg": "参数无效"
+    },
+    "status": 400,
+    "error_code": "ErrParamInvalid"
+  },
+  {
+    "name": "workspace table columns request",
+    "api": "API-0684",
+    "command": "workspace-table-columns",
+    "cli_group": "catalog",
+    "cli_command": "catalog workspace-table-columns",
+    "cli_args": [
+      "workspace-table-columns",
+      "--json",
+      "{\"database_id\":7,\"table_id\":12,\"table_name\":\"orders\"}"
+    ],
+    "method": "POST",
+    "path": "/table/columns",
+    "query": "",
+    "request": {
+      "database_id": 7,
+      "table_id": 12,
+      "table_name": "orders"
+    },
+    "sdk_request": {
+      "database_id": 7,
+      "table_id": 12,
+      "table_name": "orders"
+    },
+    "input": {},
+    "response": {
+      "db_name": "sales",
+      "table_name": "orders",
+      "col_names": [
+        "id",
+        "amount"
+      ]
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "db_name": "sales",
+        "table_name": "orders",
+        "col_names": [
+          "id",
+          "amount"
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "workspace database tables zero id",
+    "api": "API-0685",
+    "command": "workspace-database-tables",
+    "cli_group": "catalog",
+    "cli_command": "catalog workspace-database-tables",
+    "cli_args": [
+      "workspace-database-tables",
+      "--database-id",
+      "0"
+    ],
+    "method": "POST",
+    "path": "/table/database/tables",
+    "query": "",
+    "request": {
+      "database_id": 0
+    },
+    "input": {
+      "database_id": 0
+    },
+    "response": {
+      "tables": [
+        {
+          "db_name": "sales",
+          "table_name": "orders",
+          "col_names": []
+        },
+        {
+          "db_name": "sales",
+          "table_name": "order_items",
+          "col_names": [
+            "id"
+          ]
+        }
+      ]
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "tables": [
+          {
+            "db_name": "sales",
+            "table_name": "orders",
+            "col_names": []
+          },
+          {
+            "db_name": "sales",
+            "table_name": "order_items",
+            "col_names": [
+              "id"
+            ]
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "workspace table overview empty result",
+    "api": "API-0686",
+    "command": "workspace-table-overview",
+    "cli_group": "catalog",
+    "cli_command": "catalog workspace-table-overview",
+    "cli_args": [
+      "workspace-table-overview"
+    ],
+    "method": "POST",
+    "path": "/table/overview",
+    "query": "",
+    "bodyless": true,
+    "request": {},
+    "input": {},
+    "response": {
+      "tables": []
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "tables": []
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "create workbook unicode name",
+    "api": "API-0687",
+    "command": "create-workbook",
+    "cli_group": "sql",
+    "cli_command": "sql create-workbook",
+    "cli_args": [
+      "create-workbook",
+      "--name",
+      "分析 表/1"
+    ],
+    "method": "POST",
+    "path": "/workbook/create",
+    "query": "",
+    "request": {
+      "name": "分析 表/1"
+    },
+    "input": {
+      "name": "分析 表/1"
+    },
+    "response": {
+      "workbook_id": "wb-1",
+      "name": "分析 表/1"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "workbook_id": "wb-1",
+        "name": "分析 表/1"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "delete workbook owner rejection",
+    "api": "API-0688",
+    "command": "delete-workbook",
+    "cli_group": "sql",
+    "cli_command": "sql delete-workbook",
+    "cli_args": [
+      "delete-workbook",
+      "--workbook-id",
+      "wb/1 分析"
+    ],
+    "method": "POST",
+    "path": "/workbook/delete",
+    "query": "",
+    "request": {
+      "workbook_id": "wb/1 分析"
+    },
+    "input": {
+      "workbook_id": "wb/1 分析"
+    },
+    "response": null,
+    "envelope": {
+      "code": "ErrNotFound",
+      "msg": "workbook not found"
+    },
+    "status": 404,
+    "error_code": "ErrNotFound"
+  },
+  {
+    "name": "workbook detail by version",
+    "api": "API-0689",
+    "command": "workbook-detail",
+    "cli_group": "sql",
+    "cli_command": "sql workbook-detail",
+    "cli_args": [
+      "workbook-detail",
+      "--workbook-id",
+      "wb-1",
+      "--version-id",
+      "v-1"
+    ],
+    "method": "POST",
+    "path": "/workbook/detail",
+    "query": "",
+    "request": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1"
+    },
+    "input": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1"
+    },
+    "response": {
+      "sql_content": "SELECT 1",
+      "created_at": "2026-11-10T01:02:03Z",
+      "updated_at": "2026-11-10T02:03:04Z"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "sql_content": "SELECT 1",
+        "created_at": "2026-11-10T01:02:03Z",
+        "updated_at": "2026-11-10T02:03:04Z"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "update workbook rename",
+    "api": "API-0691",
+    "command": "update-workbook",
+    "cli_group": "sql",
+    "cli_command": "sql update-workbook",
+    "cli_args": [
+      "update-workbook",
+      "--workbook-id",
+      "wb-1",
+      "--name",
+      "新名字"
+    ],
+    "method": "POST",
+    "path": "/workbook/update",
+    "query": "",
+    "request": {
+      "workbook_id": "wb-1",
+      "name": "新名字"
+    },
+    "input": {
+      "workbook_id": "wb-1",
+      "name": "新名字"
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  },
+  {
+    "name": "create workbook version",
+    "api": "API-0692",
+    "command": "create-workbook-version",
+    "cli_group": "sql",
+    "cli_command": "sql create-workbook-version",
+    "cli_args": [
+      "create-workbook-version",
+      "--workbook-id",
+      "wb-1",
+      "--sql-content",
+      "SELECT 1"
+    ],
+    "method": "POST",
+    "path": "/workbook/version/create",
+    "query": "",
+    "request": {
+      "workbook_id": "wb-1",
+      "sql_content": "SELECT 1"
+    },
+    "input": {
+      "workbook_id": "wb-1",
+      "sql_content": "SELECT 1"
+    },
+    "response": {
+      "id": "v-1",
+      "version": "1",
+      "status": "draft"
+    },
+    "envelope": {
+      "code": "OK",
+      "data": {
+        "id": "v-1",
+        "version": "1",
+        "status": "draft"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "save workbook version explicit empty content",
+    "api": "API-0694",
+    "command": "save-workbook-version",
+    "cli_group": "sql",
+    "cli_command": "sql save-workbook-version",
+    "cli_args": [
+      "save-workbook-version",
+      "--workbook-id",
+      "wb-1",
+      "--version-id",
+      "v-1",
+      "--json",
+      "\"\""
+    ],
+    "method": "POST",
+    "path": "/workbook/version/save",
+    "query": "",
+    "request": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1",
+      "sql_content": ""
+    },
+    "input": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1",
+      "sql_content": ""
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  },
+  {
+    "name": "update workbook version content",
+    "api": "API-0695",
+    "command": "update-workbook-version",
+    "cli_group": "sql",
+    "cli_command": "sql update-workbook-version",
+    "cli_args": [
+      "update-workbook-version",
+      "--workbook-id",
+      "wb-1",
+      "--version-id",
+      "v-1",
+      "--sql-content",
+      "SELECT 2"
+    ],
+    "method": "POST",
+    "path": "/workbook/version/update",
+    "query": "",
+    "request": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1",
+      "sql_content": "SELECT 2"
+    },
+    "input": {
+      "workbook_id": "wb-1",
+      "version_id": "v-1",
+      "sql_content": "SELECT 2"
+    },
+    "response": null,
+    "envelope": {
+      "code": "OK",
+      "data": null
+    },
+    "status": 200
+  }
+]

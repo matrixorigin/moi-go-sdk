@@ -1,0 +1,57 @@
+{
+  "ID": "dash-101",
+  "Name": "Sales Overview",
+  "Description": "daily sales cockpit",
+  "CreatedByRoleID": "role-analyst",
+  "CreatedAt": "2026-10-01T02:00:00Z",
+  "UpdatedAt": "2026-10-18T13:05:00Z",
+  "sources": [
+    {
+      "ID": "src-1",
+      "DashboardID": "dash-101",
+      "TableID": 8801,
+      "DatabaseName": "retail_dw",
+      "TableName": "fact_sales",
+      "Status": "active",
+      "AffectedCharts": [{"ID": "chart-1", "Name": "GMV Trend"}]
+    }
+  ],
+  "charts": [
+    {
+      "ID": "chart-1",
+      "DashboardID": "dash-101",
+      "Name": "GMV Trend",
+      "ChartType": "line",
+      "SQLText": "SELECT day, gmv FROM fact_sales",
+      "DatabaseName": "retail_dw",
+      "ChartConfig": "{}",
+      "LayoutConfig": "{}",
+      "RefreshInterval": "1h",
+      "SchedulerTaskID": "sched-55",
+      "ScheduleVersion": 3,
+      "ScheduleStatus": "running",
+      "AlertEnabled": true,
+      "CreatedAt": "2026-10-01T02:10:00Z",
+      "UpdatedAt": "2026-10-12T08:00:00Z"
+    }
+  ],
+  "alerts": [
+    {
+      "ID": "alert-1",
+      "DashboardID": "dash-101",
+      "ChartID": "chart-1",
+      "ChartName": "GMV Trend",
+      "FieldName": "gmv",
+      "XFieldName": "day",
+      "Operator": ">",
+      "Threshold": 1000000,
+      "XValue": "2026-10-18",
+      "TriggerValue": 1250000,
+      "Level": "warning",
+      "Status": "triggered",
+      "OccurredAt": "2026-10-18T10:00:00Z",
+      "LastNotifiedAt": "2026-10-18T10:05:00Z"
+    }
+  ],
+  "active_alert_count": 1
+}

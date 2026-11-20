@@ -1,0 +1,66 @@
+[
+  {
+    "name": "confirmation state preserves explicit false values and escaped identity",
+    "operation": "get-skill-candidate-confirmation",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirmation",
+    "query": {"call_id": ["call /1"], "source_digest": ["sha256:a+b"]},
+    "input": {"task_id": "task/1", "call_id": "call /1", "source_digest": "sha256:a+b"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"skill_id": "skill/1", "workspace_id": "workspace 1", "agent_id": "agent/1", "saved": false, "bound": false}}
+  },
+  {
+    "name": "confirmation state preserves saved and bound true values",
+    "operation": "get-skill-candidate-confirmation",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirmation",
+    "query": {"call_id": ["call /1"], "source_digest": ["sha256:a+b"]},
+    "input": {"task_id": "task/1", "call_id": "call /1", "source_digest": "sha256:a+b"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"skill_id": "skill/1", "workspace_id": "workspace 1", "agent_id": "agent/1", "saved": true, "bound": true}}
+  },
+  {
+    "name": "confirm saves without binding using explicit false",
+    "operation": "confirm-skill-candidate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirm",
+    "input": {"task_id": "task/1", "body": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": false}},
+    "request": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": false},
+    "status": 200,
+    "response": {"code": "OK", "data": {"skill_id": "skill/1", "workspace_id": "workspace 1", "agent_id": "agent/1", "bound": false}}
+  },
+  {
+    "name": "confirm saves and binds using explicit true",
+    "operation": "confirm-skill-candidate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirm",
+    "input": {"task_id": "task/1", "body": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": true}},
+    "request": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": true},
+    "status": 200,
+    "response": {"code": "OK", "data": {"skill_id": "skill/1", "workspace_id": "workspace 1", "agent_id": "agent/1", "bound": true}}
+  },
+  {
+    "name": "confirm does not replace omitted bind current with false",
+    "operation": "confirm-skill-candidate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirm",
+    "input": {"task_id": "task/1", "body": {"call_id": "call /1", "source_digest": "sha256:a+b"}},
+    "request": {"call_id": "call /1", "source_digest": "sha256:a+b"},
+    "status": 400,
+    "response_headers": {"X-Request-ID": "request-skill-confirm-1"},
+    "response": {"code": "INVALID_ARGUMENT", "message": "invalid agent builder commit request", "details": {"field": "bind_current"}}
+  },
+  {
+    "name": "confirm preserves owner binding conflict diagnostics",
+    "operation": "confirm-skill-candidate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace%201/agent-runtime-tasks/task%2F1/skills/confirm",
+    "input": {"task_id": "task/1", "body": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": true}},
+    "request": {"call_id": "call /1", "source_digest": "sha256:a+b", "bind_current": true},
+    "status": 409,
+    "response_headers": {"X-Request-ID": "request-skill-confirm-2"},
+    "response": {"code": "ErrConflict", "msg": "Binding was rejected", "details": {"reason": "SKILL_CREATOR_BINDING_FAILED", "domain": "agent_skill_creator", "saved_skill_id": "skill/1"}}
+  }
+]

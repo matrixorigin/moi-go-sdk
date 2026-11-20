@@ -1,0 +1,77 @@
+[
+  {
+    "name": "proxy_policy_denied", "status": 403,
+    "response": {"error": "policy_denied", "detail": "GET moi.internal:8080/newmoi/workspaces/ws-1/files not permitted by policy", "private_extra": "RAW-SECRET"},
+    "expected_code": "policy_denied",
+    "expected_details": {"domain": "sandbox_network", "reason": "policy_denied", "detail": "GET moi.internal:8080/newmoi/workspaces/ws-1/files not permitted by policy"}
+  },
+  {
+    "name": "proxy_detail_is_not_a_classifier", "status": 403,
+    "response": {"error": "policy_denied", "detail": "Connection refused by configured policy (diagnostic)"},
+    "expected_code": "policy_denied",
+    "expected_details": {"domain": "sandbox_network", "reason": "policy_denied", "detail": "Connection refused by configured policy (diagnostic)"}
+  },
+  {
+    "name": "proxy_detail_at_limit", "status": 403, "detail_bytes": 16384,
+    "response": {"error": "policy_denied", "detail": "replaced by detail_bytes"},
+    "expected_code": "policy_denied",
+    "expected_details": {"domain": "sandbox_network", "reason": "policy_denied"}
+  },
+  {
+    "name": "proxy_detail_over_limit", "status": 403, "detail_bytes": 16385,
+    "response": {"error": "policy_denied", "detail": "replaced by detail_bytes"},
+    "expected_code": "policy_denied",
+    "expected_details": {"domain": "sandbox_network", "reason": "policy_denied", "detail_omitted": true}
+  },
+  {
+    "name": "product_forbidden_takes_precedence", "status": 403,
+    "response": {"code": "ErrForbidden", "msg": "Catalog permission denied", "error": "policy_denied", "detail": "RAW-SECRET", "details": {"domain": "catalog", "reason": "FILE_READ_DENIED"}},
+    "expected_code": "ErrForbidden",
+    "expected_details": {"domain": "catalog", "reason": "FILE_READ_DENIED"}
+  },
+  {
+    "name": "product_unauthorized", "status": 401,
+    "response": {"code": "ErrUnauthorized", "msg": "Task identity rejected"},
+    "expected_code": "ErrUnauthorized", "expected_details": {}
+  },
+  {
+    "name": "runtime_error_code_takes_precedence", "status": 403,
+    "response": {"error_code": "runtime_artifact_upload_denied", "msg": "Artifact denied", "error": "policy_denied", "detail": "RAW-SECRET"},
+    "expected_code": "runtime_artifact_upload_denied", "expected_details": {}
+  },
+  {
+    "name": "jsonrpc_error_takes_precedence", "status": 403,
+    "response": {"jsonrpc": "2.0", "id": "request", "error": {"code": -32005, "message": "Task denied"}, "detail": "RAW-SECRET"},
+    "expected_code": "-32005", "expected_details": {}
+  },
+  {
+    "name": "missing_proxy_detail", "status": 403,
+    "response": {"error": "policy_denied"},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  },
+  {
+    "name": "null_proxy_detail", "status": 403,
+    "response": {"error": "policy_denied", "detail": null},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  },
+  {
+    "name": "non_string_proxy_detail", "status": 403,
+    "response": {"error": "policy_denied", "detail": {"secret": "RAW-SECRET"}},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  },
+  {
+    "name": "empty_proxy_detail", "status": 403,
+    "response": {"error": "policy_denied", "detail": ""},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  },
+  {
+    "name": "wrong_proxy_status", "status": 401,
+    "response": {"error": "policy_denied", "detail": "RAW-SECRET"},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  },
+  {
+    "name": "malformed_forbidden_response", "status": 403,
+    "response": {"unexpected": "RAW-SECRET"},
+    "expected_code": "ErrResponseInvalid", "expected_details": {}
+  }
+]

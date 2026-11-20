@@ -1,0 +1,80 @@
+[
+  {
+    "name": "data asset escapes path and returns nested typed metadata",
+    "operation": "data-asset",
+    "method": "GET",
+    "path": "/newmoi/catalog/data-assets/asset%2F1",
+    "input": {"asset_id": "asset/1"},
+    "request": null,
+    "response": {
+      "code": "OK", "msg": "success",
+      "data": {
+        "asset": {"id": 9007199254740993, "asset_id": "asset/1", "name": "root", "raw_file_id": "raw/1", "volume_id": 7, "source": "workflow", "meta": {"attempt": 1, "source": "workflow"}, "created_at": 1700000000, "asset_type": "file", "asset_ref": "raw/1"},
+        "derivations": [{"id": 8, "asset_id": "derivation-1", "kind": "parse", "meta": {"pages": 2}, "target_asset_id": "asset-parsed"}],
+        "manifest": {"id": 9, "asset_id": "asset/1", "raw_file_id": "raw/1", "manifest": {"version": 1}},
+        "assets_by_id": {"asset/1": {"asset_id": "asset/1", "asset_ref": "raw/1"}}
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "batch get data assets preserves ordered raw ids",
+    "operation": "batch-get-data-assets",
+    "method": "POST",
+    "path": "/newmoi/catalog/data-assets/batch-get",
+    "input": {"raw_file_ids": ["raw/1", "raw 2"]},
+    "request": {"raw_file_ids": ["raw/1", "raw 2"]},
+    "response": {
+      "code": "OK", "msg": "success",
+      "data": {"items": [{"asset_id": "asset-1", "raw_file_id": "raw/1"}, {"asset_id": "asset-2", "raw_file_id": "raw 2"}], "total": 9007199254740993}
+    },
+    "status": 200
+  },
+  {
+    "name": "file data asset escapes path",
+    "operation": "file-data-asset",
+    "method": "GET",
+    "path": "/newmoi/catalog/files/file%2F1/data-asset",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"asset": {"asset_id": "asset-file", "raw_file_id": "file/1"}, "derivations": [], "assets_by_id": {}}},
+    "status": 200
+  },
+  {
+    "name": "file artifact returns nested structs and false presence",
+    "operation": "file-artifact",
+    "method": "GET",
+    "path": "/newmoi/catalog/file-artifacts/file%2F1",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "response": {
+      "code": "OK", "msg": "success",
+      "data": {"file_id": "file/1", "file_exists": true, "has_artifact": false, "root_asset": {"asset_id": "root"}, "derivations": [{"kind": "parse", "enabled": false}], "assets_by_id": {"root": {"asset_type": "file"}}}
+    },
+    "status": 200
+  },
+  {
+    "name": "file artifact forwards owner not found",
+    "operation": "file-artifact",
+    "method": "GET",
+    "path": "/newmoi/catalog/file-artifacts/missing%2Ffile",
+    "input": {"file_id": "missing/file"},
+    "request": null,
+    "response": {"code": "ErrIAMResourceNotFound", "msg": "file artifact not found", "data": null},
+    "response_headers": {"X-Request-ID": "asset-request-1"},
+    "status": 404
+  },
+  {
+    "name": "batch resolve file artifacts preserves ids and int64 volume",
+    "operation": "batch-resolve-file-artifacts",
+    "method": "POST",
+    "path": "/newmoi/catalog/file-artifacts:batchResolve",
+    "input": {"file_ids": ["file/1", "file 2"]},
+    "request": {"file_ids": ["file/1", "file 2"]},
+    "response": {
+      "code": "OK", "msg": "success",
+      "data": {"items": [{"file_id": "file/1", "file_exists": true, "has_artifact": false, "origin_file_name": "订单.csv", "volume_id": 9007199254740993}]}
+    },
+    "status": 200
+  }
+]

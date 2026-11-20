@@ -1,0 +1,43 @@
+[
+  {
+    "name": "load Agent package preserves raw archive bytes and typed result",
+    "operation": "load-agent-package",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-packages/load",
+    "file_base64": "AP8BgArmtYvor5U=",
+    "status": 201,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "workspace_id": "workspace-1", "version": "1.0.0", "status": "loaded", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "items": [], "object": {}, "nothing": null}, "warnings": []}}
+  },
+  {
+    "name": "load Agent package preserves owner rejection",
+    "operation": "load-agent-package",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-packages/load",
+    "file_base64": "AP8BgArmtYvor5U=",
+    "status": 400,
+    "response_headers": {"X-Request-ID": "request-agent-package-load-1"},
+    "response": {"code": 2, "message": "agent package is invalid", "details": {"reason": "INVALID_PACKAGE"}}
+  },
+  {
+    "name": "export Agent package preserves path ZIP bytes and headers",
+    "operation": "export-agent-package",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-packages/agent%201/versions/1.0.0/export",
+    "agent_id": "agent 1",
+    "version": "1.0.0",
+    "status": 200,
+    "response_headers": {"Content-Type": "application/vnd.moi.agent+zip", "Content-Disposition": "attachment; filename=agent-1-1.0.0.moiagent", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff"},
+    "response_base64": "UEsDBBQAAAAIAM+Cal09+OCXCgAAAAgAAAAIAAAAU0tJTEwubWRTVgjOzszJ4QIAUEsDBBQAAAAIAM+Cal1s4bG2DgAAAAwAAAAQAAAAc2NyaXB0cy9jaGVjay5weSsoyswr0VDKz1bS5AIAUEsBAhQDFAAAAAgAz4JqXT344JcKAAAACAAAAAgAAAAAAAAAAAAAAIABAAAAAFNLSUxMLm1kUEsBAhQDFAAAAAgAz4JqXWzhsbYOAAAADAAAABAAAAAAAAAAAAAAAIABMAAAAHNjcmlwdHMvY2hlY2sucHlQSwUGAAAAAAIAAgB0AAAAbAAAAAAA"
+  },
+  {
+    "name": "export Agent package preserves owner not found",
+    "operation": "export-agent-package",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-packages/agent%201/versions/1.0.0/export",
+    "agent_id": "agent 1",
+    "version": "1.0.0",
+    "status": 404,
+    "response_headers": {"X-Request-ID": "request-agent-package-export-1"},
+    "response": {"code": 3, "message": "agent package not found", "details": {"agent_id": "agent 1", "version": "1.0.0"}}
+  }
+]

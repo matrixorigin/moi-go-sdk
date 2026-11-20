@@ -1,0 +1,288 @@
+[
+  {
+    "name": "permission schema route",
+    "operation": "permission-schema",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/schema",
+    "query": {},
+    "input": {
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role list route",
+    "operation": "roles",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles",
+    "query": {},
+    "input": {
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "user role bindings read route",
+    "operation": "user-role-bindings",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/users/user%2F1/role-bindings",
+    "query": {},
+    "input": {
+      "user_id": "user/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role permission view route",
+    "operation": "role-permission-view",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/permission-view",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role lifecycle write route",
+    "operation": "update-role-lifecycle",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/lifecycle",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "target_state": "disabled",
+        "reason_code": "test",
+        "expected_lifecycle_version": 4,
+        "request_id": "life-1"
+      }
+    },
+    "request": {
+      "target_state": "disabled",
+      "reason_code": "test",
+      "expected_lifecycle_version": 4,
+      "request_id": "life-1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role delete route",
+    "operation": "delete-role",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "reason_code": "cleanup",
+        "expected_lifecycle_version": 5,
+        "request_id": "delete-1"
+      }
+    },
+    "request": {
+      "reason_code": "cleanup",
+      "expected_lifecycle_version": 5,
+      "request_id": "delete-1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "ownership transfer route",
+    "operation": "transfer-object-ownership",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/objects/connector/connector%2F1/owner",
+    "query": {},
+    "input": {
+      "resource_type": "connector",
+      "resource_id": "connector/1",
+      "request": {
+        "target_role_id": "role/2",
+        "expected_ownership_version": 3,
+        "request_id": "transfer-1"
+      }
+    },
+    "request": {
+      "target_role_id": "role/2",
+      "expected_ownership_version": 3,
+      "request_id": "transfer-1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "object permission view route",
+    "operation": "object-permission-view",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/objects/connector/connector%2F1/permission-view",
+    "query": {},
+    "input": {
+      "resource_type": "connector",
+      "resource_id": "connector/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "data privilege view route",
+    "operation": "data-privileges",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/data-privileges",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "data privilege operation route",
+    "operation": "data-privilege-operation",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/data-privilege-operations/request%2F1",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request_id": "request/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "current principal roles route",
+    "operation": "current-principal-roles",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/me/roles",
+    "query": {},
+    "input": {
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "current principal capabilities repeats ids",
+    "operation": "current-principal-capabilities",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/me/capabilities",
+    "query": {
+      "capability_id": [
+        "agent.run",
+        "workflow.run"
+      ]
+    },
+    "input": {
+      "capability_ids": [
+        "agent.run",
+        "workflow.run"
+      ],
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role inheritance route",
+    "operation": "role-inheritance",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/inheritance",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "role inheritance graph route",
+    "operation": "role-inheritance-graph",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/inheritance-graph",
+    "query": {},
+    "input": {
+      "role_id": "role/1",
+      "request": null
+    },
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  }
+]

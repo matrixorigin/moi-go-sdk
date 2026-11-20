@@ -1,0 +1,62 @@
+[
+  {
+    "name": "create catalog forwards description and int64 result",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/catalog/create",
+    "input": {"name": "internal", "description": "内部目录"},
+    "request": {"name": "internal", "description": "内部目录"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 9007199254740993}},
+    "status": 200
+  },
+  {
+    "name": "update catalog preserves explicit empty description",
+    "operation": "update",
+    "method": "POST",
+    "path": "/newmoi/catalog/update",
+    "input": {"catalog_id": 11, "name": "renamed", "description": ""},
+    "request": {"id": 11, "name": "renamed", "description": ""},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "create database omits description",
+    "operation": "create-database",
+    "method": "POST",
+    "path": "/newmoi/catalog/database/create",
+    "input": {"catalog_id": 11, "name": "sales"},
+    "request": {"catalog_id": 11, "name": "sales"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 21}},
+    "status": 200
+  },
+  {
+    "name": "update database description preserves explicit empty value",
+    "operation": "update-database-description",
+    "method": "POST",
+    "path": "/newmoi/catalog/database/update",
+    "input": {"database_id": 21, "description": ""},
+    "request": {"id": 21, "description": ""},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 21}},
+    "status": 200
+  },
+  {
+    "name": "create volume forwards unicode description",
+    "operation": "create-volume",
+    "method": "POST",
+    "path": "/newmoi/catalog/volume/create",
+    "input": {"database_id": 21, "name": "documents", "description": "共享文件"},
+    "request": {"database_id": 21, "name": "documents", "description": "共享文件"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 31}},
+    "status": 200
+  },
+  {
+    "name": "update volume omits description",
+    "operation": "update-volume",
+    "method": "POST",
+    "path": "/newmoi/catalog/volume/update",
+    "input": {"volume_id": 31, "name": "documents-v2"},
+    "request": {"id": 31, "name": "documents-v2"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 31}},
+    "status": 200
+  }
+]

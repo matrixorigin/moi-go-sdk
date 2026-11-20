@@ -1,0 +1,121 @@
+[
+  {
+    "name": "download workspace file escapes id",
+    "operation": "download-workspace-file",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1/download",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "content_base64": "d29ya3NwYWNlIGRvd25sb2Fk",
+    "status": 200
+  },
+  {
+    "name": "preview workspace file escapes id",
+    "operation": "preview-workspace-file",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1/preview",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "content_base64": "d29ya3NwYWNlIHByZXZpZXc=",
+    "status": 200
+  },
+  {
+    "name": "catalog file content preserves capability query",
+    "operation": "catalog-file-content",
+    "method": "GET",
+    "path": "/newmoi/catalog-files/file%2F1/content",
+    "query": {"capability": ["signed capability"]},
+    "input": {"file_id": "file/1", "capability": "signed capability"},
+    "request": null,
+    "content_base64": "Y2FwYWJpbGl0eSBjb250ZW50",
+    "status": 200
+  },
+  {
+    "name": "download workspace file escapes id",
+    "operation": "download-workspace-file",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1/download",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "content_base64": "d29ya3NwYWNlIGRvd25sb2Fk",
+    "status": 200
+  },
+  {
+    "name": "preview workspace file escapes id",
+    "operation": "preview-workspace-file",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1/preview",
+    "input": {"file_id": "file/1"},
+    "request": null,
+    "content_base64": "d29ya3NwYWNlIHByZXZpZXc=",
+    "status": 200
+  },
+  {
+    "name": "catalog file content preserves capability query",
+    "operation": "catalog-file-content",
+    "method": "GET",
+    "path": "/newmoi/catalog-files/file%2F1/content",
+    "query": {"capability": ["signed capability"]},
+    "input": {"file_id": "file/1", "capability": "signed capability"},
+    "request": null,
+    "content_base64": "Y2FwYWJpbGl0eSBjb250ZW50",
+    "status": 200
+  },
+  {
+    "name": "download table streams csv",
+    "operation": "download-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/download",
+    "input": {"table_id": 41},
+    "request": {"id": 41},
+    "content_base64": "aWQsbmFtZQoxLG9yZGVycwo=",
+    "status": 200
+  },
+  {
+    "name": "download table streams csv",
+    "operation": "download-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/download",
+    "input": {"table_id": 41},
+    "request": {"id": 41},
+    "content_base64": "aWQsbmFtZQoxLG9yZGVycwo=",
+    "status": 200
+  },
+  {
+    "name": "download omits as zip",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/download",
+    "input": {"volume_id": "30", "file_id": "file-1"},
+    "request": {"volume_id": "30", "file_id": "file-1"},
+    "content_base64": "ZG93bmxvYWRlZCBieXRlcw==",
+    "status": 200
+  },
+  {
+    "name": "download preserves explicit false as zip",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/download",
+    "input": {"volume_id": "30", "file_id": "file-1", "as_zip": false},
+    "request": {"volume_id": "30", "file_id": "file-1", "as_zip": false},
+    "content_base64": "cGxhaW4gY29udGVudA==",
+    "status": 200
+  },
+  {
+    "name": "download preserves true as zip and binary content",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/download",
+    "input": {"volume_id": "30", "file_id": "folder-1", "as_zip": true},
+    "request": {"volume_id": "30", "file_id": "folder-1", "as_zip": true},
+    "content_base64": "UEsDBAAAAA==",
+    "status": 200
+  },
+  {
+    "name": "preview file streams raw content",
+    "operation": "preview-file",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/preview_stream",
+    "input": {"volume_id": "30", "file_id": "file-1"},
+    "request": {"volume_id": "30", "file_id": "file-1"},
+    "content_base64": "cHJldmlldyBieXRlcw==",
+    "status": 200
+  }
+]

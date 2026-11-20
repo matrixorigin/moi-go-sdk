@@ -1,0 +1,45 @@
+{
+  "id": "wf-8002",
+  "name": "hourly-etl",
+  "description": "hourly warehouse load",
+  "source_type": "nl2dsl",
+  "status": "paused",
+  "available_actions": ["update", "delete"],
+  "execution_mode": "cron",
+  "cron_expression": "0 * * * *",
+  "draft_id": "draft-7",
+  "candidate_id": "cand-3",
+  "compute_resource_id": "cr-9",
+  "compute_resource_bindings": [
+    {"id": "cr-9", "name": "etl-pool", "workflow_level": true}
+  ],
+  "latest_workflow_version_id": "wfv-8",
+  "latest_version": 8,
+  "latest_version_status": "draft",
+  "parameter_summary": {
+    "status": "incomplete",
+    "total_fields": 4,
+    "required_fields": 2,
+    "filled_required_fields": 1,
+    "missing_required_fields": 1,
+    "missing_required_field_ids": ["target_db"],
+    "missing_required_field_labels": ["Target Database"]
+  },
+  "execution_summary": {
+    "total_executions": 2400,
+    "active_executions": 1,
+    "latest_execution_id": "run-955",
+    "latest_execution_status": "failed",
+    "latest_execution_at": "2026-10-19T02:00:00Z",
+    "active_execution_id": "run-956",
+    "active_execution_status": "running"
+  },
+  "trigger_summary": {
+    "mode": "cron",
+    "configured": true,
+    "enabled": false,
+    "cron_expression": "0 * * * *"
+  },
+  "created_at": "2026-07-15T06:00:00Z",
+  "updated_at": "2026-10-19T02:05:00Z"
+}

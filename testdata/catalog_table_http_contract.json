@@ -1,0 +1,126 @@
+[
+  {
+    "name": "multi table info preserves ids",
+    "operation": "multi-table-info",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/multi_info",
+    "input": {"table_ids": [41, 42]},
+    "request": {"ids": [41, 42]},
+    "response": {"code": "OK", "msg": "success", "data": {"tables": [{"name": "orders", "columns": [], "stats": []}, {"name": "customers", "columns": [], "stats": []}]}},
+    "status": 200
+  },
+  {
+    "name": "delete table",
+    "operation": "delete-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/delete",
+    "input": {"table_id": 41},
+    "request": {"id": 41},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "table exists returns boolean data",
+    "operation": "table-exists",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/exist",
+    "input": {"database_id": 20, "name": "orders"},
+    "request": {"database_id": 20, "name": "orders"},
+    "response": {"code": "OK", "msg": "success", "data": {"data": true}},
+    "status": 200
+  },
+  {
+    "name": "table full path",
+    "operation": "table-full-path",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/full_path",
+    "input": {"table_id": 41},
+    "request": {"id": 41},
+    "response": {"code": "OK", "msg": "success", "data": {"path": "internal/sales/orders"}},
+    "status": 200
+  },
+  {
+    "name": "truncate table",
+    "operation": "truncate-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/truncate",
+    "input": {"table_id": 41},
+    "request": {"id": 41},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "table overview",
+    "operation": "table-overview",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/overview",
+    "input": {"database_id": 20},
+    "request": {"id": 20},
+    "response": {"code": "OK", "msg": "success", "data": {"tables": [{"name": "orders", "columns": ["id", "amount"]}]}},
+    "status": 200
+  },
+  {
+    "name": "create table preserves typed columns and all create options",
+    "operation": "create-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/create",
+    "input": {
+      "database_id": 20,
+      "name": "orders",
+      "columns": [{"name": "id", "type": "BIGINT", "is_pk": false, "comment": "", "precision": [], "default": ""}],
+      "comment": "",
+      "data_file_url": "https://files.example.test/orders.csv",
+      "column_load_options": [{"column": "id", "data_from": "source_id"}]
+    },
+    "request": {
+      "database_id": 20,
+      "name": "orders",
+      "columns": [{"name": "id", "type": "BIGINT", "is_pk": false, "default": ""}],
+      "comment": "",
+      "data_file_url": "https://files.example.test/orders.csv",
+      "column_load_options": [{"column": "id", "data_from": "source_id"}]
+    },
+    "response": {"code": "OK", "msg": "success", "data": {"id": 9007199254740993}},
+    "status": 200
+  },
+  {
+    "name": "table info by id disables statistics",
+    "operation": "table-info",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/info",
+    "input": {"table_id": 41, "include_stats": false},
+    "request": {"id": 41, "include_stats": false},
+    "response": {"code": "OK", "msg": "success", "data": {"name": "orders", "lines": 0, "size": 0, "columns": [{"name": "id", "type": "BIGINT", "is_pk": false}], "stats": []}},
+    "status": 200
+  },
+  {
+    "name": "table info resolves system table by names",
+    "operation": "table-info",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/info",
+    "input": {"table_id": 0, "name": "statement_info", "database_name": "system", "include_stats": true},
+    "request": {"name": "statement_info", "database_name": "system", "include_stats": true},
+    "response": {"code": "OK", "msg": "success", "data": {"name": "statement_info", "columns": [], "stats": []}},
+    "status": 200
+  },
+  {
+    "name": "table data preserves zero pagination and false total",
+    "operation": "table-data",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/data",
+    "input": {"table_id": 41, "page": 0, "page_size": 0, "preview_lines": 0, "include_total": false},
+    "request": {"id": 41, "page": 0, "page_size": 0, "preview_lines": 0, "include_total": false},
+    "response": {"code": "OK", "msg": "success", "data": {"data": [["1", "订单"], []], "columns": [{"name": "id", "type": "BIGINT"}], "total_rows": 0, "page": 0, "page_size": 0}},
+    "status": 200
+  },
+  {
+    "name": "preview table resolves system table and includes total",
+    "operation": "preview-table",
+    "method": "POST",
+    "path": "/newmoi/catalog/table/preview",
+    "input": {"table_id": 0, "name": "statement_info", "database_name": "system", "preview_lines": 25, "include_total": true},
+    "request": {"name": "statement_info", "database_name": "system", "preview_lines": 25, "include_total": true},
+    "response": {"code": "OK", "msg": "success", "data": {"data": [], "columns": [], "total_rows": 9007199254740993, "page": 1, "page_size": 25}},
+    "status": 200
+  }
+]

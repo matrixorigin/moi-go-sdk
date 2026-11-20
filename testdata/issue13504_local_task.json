@@ -1,0 +1,73 @@
+{
+  "id": "local-task-1",
+  "name": "local import",
+  "config_type": 1,
+  "source_connector_id": "connector-1",
+  "source_connector_type": 1,
+  "connector_name": "local",
+  "volume_id": "volume-1",
+  "volume_name": "uploads",
+  "volume_path": {
+    "id_list": ["catalog-1", "database-1", "volume-1"],
+    "name_list": ["catalog", "database", "uploads"]
+  },
+  "creator": "user-1",
+  "status": 3,
+  "source_config": {
+    "file_type": "csv"
+  },
+  "start_at": 1767225600,
+  "end_at": 1767225660,
+  "created_at": 1767225500,
+  "updated_at": 1767225660,
+  "file_types": [1],
+  "path_regex": "*.csv",
+  "unzip_keep_structure": false,
+  "dedup": {
+    "policy": "skip"
+  },
+  "table_path": {
+    "id_list": ["catalog-1", "database-1", "table-1"],
+    "name_list": ["catalog", "database", "orders"]
+  },
+  "table_paths": [
+    {
+      "id_list": ["catalog-1", "database-1", "table-1"],
+      "name_list": ["catalog", "database", "orders"]
+    }
+  ],
+  "load_results": [
+    {
+      "lines": 4,
+      "reason": ""
+    }
+  ],
+  "source_files": [
+    ["local", "orders.csv"],
+    ["local", "orders-2.csv"]
+  ],
+  "load_type": 1,
+  "total_rows": 4,
+  "imported_rows": 3,
+  "success_file_count": 1,
+  "failed_file_count": 1,
+  "latest_rows": {
+    "read_rows": 4,
+    "succeeded_rows": 3,
+    "failed_rows": 0,
+    "skipped_rows": 1,
+    "complete": true
+  },
+  "cumulative_rows": {
+    "read_rows": 4,
+    "succeeded_rows": 3,
+    "failed_rows": 0,
+    "skipped_rows": 1,
+    "complete": true
+  },
+  "error_code": "LOCAL_IMPORT_EXECUTION_FAILED",
+  "error_summary": "本地导入执行失败",
+  "target_path_state": "resolved",
+  "target_path_error_code": "",
+  "target_path_error_summary": ""
+}

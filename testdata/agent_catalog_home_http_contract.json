@@ -1,0 +1,45 @@
+[
+  {
+    "name": "catalog cards preserve CLI default pagination",
+    "operation": "list-agent-catalog-cards",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-cards",
+    "query": {"limit": ["50"], "offset": ["0"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [], "total": 0, "limit": 50, "offset": 0}}
+  },
+  {
+    "name": "catalog cards preserve filters false and zero pagination",
+    "operation": "list-agent-catalog-cards",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-cards",
+    "query": {"catalog": ["system"], "query": [" review "], "include_development": ["false"], "limit": ["0"], "offset": ["0"]},
+    "input": {"catalog": "system", "query": " review ", "include_development": false, "limit": 0, "offset": 0},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"kind": "agent", "id": "agent-1", "workspace_id": "workspace-1", "name": "Review", "description": "", "status": "active", "version": 0, "updated_at": "2026-01-02T03:04:05Z", "actions": [], "requires_agent_model": false}], "total": 9007199254740993, "limit": 0, "offset": 0}}
+  },
+  {
+    "name": "home guide sample locale uses existing raw resource",
+    "operation": "agent-home-guide-sample-locale",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-home-guide/sample-locale",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "data": {"region": "", "language": "zh-CN"}}
+  },
+  {
+    "name": "home guide sample locale preserves owner error",
+    "operation": "agent-home-guide-sample-locale",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-home-guide/sample-locale",
+    "input": {},
+    "request": null,
+    "status": 404,
+    "response_headers": {"X-Request-ID": "request-home-guide-1"},
+    "response": {"code": "sample_not_found", "msg": "Sample not found", "data": null, "details": {"region": ""}}
+  }
+]

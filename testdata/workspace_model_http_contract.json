@@ -1,0 +1,612 @@
+[
+  {
+    "name": "llm-create-backend",
+    "kind": "llm",
+    "operation": "create-backend",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends",
+    "request": {
+      "name": "backend",
+      "type": 2,
+      "api_key_encrypted": "encrypted-reference",
+      "timeout_seconds": 30,
+      "models": [
+        "m1"
+      ],
+      "reasoning_control_protocol": 1,
+      "provider_origin": "external_provider",
+      "origin_ref": "ref",
+      "origin_version": "v1"
+    },
+    "input": {
+      "name": "backend",
+      "type": 2,
+      "api_key_encrypted": "encrypted-reference",
+      "timeout_seconds": 30,
+      "models": [
+        "m1"
+      ],
+      "reasoning_control_protocol": 1,
+      "provider_origin": "external_provider",
+      "origin_ref": "ref",
+      "origin_version": "v1"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    }
+  },
+  {
+    "name": "llm-list-backends",
+    "kind": "llm",
+    "operation": "list-backends",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "backends": [
+          {
+            "id": 9007199254740993,
+            "name": "backend",
+            "type": 2,
+            "timeout_seconds": 30,
+            "models": [
+              "m1"
+            ],
+            "reasoning_control_protocol": 1,
+            "provider_origin": "external_provider",
+            "origin_ref": "ref",
+            "origin_version": "v1"
+          }
+        ],
+        "total": 1
+      }
+    }
+  },
+  {
+    "name": "llm-get-backend",
+    "kind": "llm",
+    "operation": "get-backend",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    },
+    "id": 9007199254740993
+  },
+  {
+    "name": "llm-update-backend",
+    "kind": "llm",
+    "operation": "update-backend",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993",
+    "request": {
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "input": {
+      "name": "",
+      "api_key_encrypted": "",
+      "timeout_seconds": 0,
+      "models": [],
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    },
+    "id": 9007199254740993
+  },
+  {
+    "name": "llm-delete-backend",
+    "kind": "llm",
+    "operation": "delete-backend",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993",
+    "request": null,
+    "input": null,
+    "status": 204,
+    "response": null,
+    "id": 9007199254740993
+  },
+  {
+    "name": "llm-create-endpoint",
+    "kind": "llm",
+    "operation": "create-endpoint",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993/endpoints",
+    "request": {
+      "address": "http://127.0.0.1:1"
+    },
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740995,
+        "backend_id": 9007199254740993,
+        "address": "http://127.0.0.1:1",
+        "status": 0
+      }
+    },
+    "id": 9007199254740993,
+    "address": "http://127.0.0.1:1"
+  },
+  {
+    "name": "llm-list-endpoints",
+    "kind": "llm",
+    "operation": "list-endpoints",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993/endpoints",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": [
+        {
+          "id": 9007199254740995,
+          "backend_id": 9007199254740993,
+          "address": "http://127.0.0.1:1",
+          "status": 0
+        }
+      ]
+    },
+    "id": 9007199254740993,
+    "endpoint_id": 9007199254740995
+  },
+  {
+    "name": "llm-router",
+    "kind": "llm",
+    "operation": "router",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/router-config",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "config": {
+          "id": 1,
+          "strategy": 1,
+          "health_check_interval_seconds": 30,
+          "max_retries": 2,
+          "enable_session_affinity": true
+        }
+      }
+    }
+  },
+  {
+    "name": "llm-update-router",
+    "kind": "llm",
+    "operation": "update-router",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/router-config",
+    "request": {
+      "strategy": 1,
+      "health_check_interval_seconds": 30,
+      "max_retries": 2,
+      "enable_session_affinity": true
+    },
+    "input": {
+      "strategy": 1,
+      "health_check_interval_seconds": 30,
+      "max_retries": 2,
+      "enable_session_affinity": true
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "config": {
+          "id": 1,
+          "strategy": 1,
+          "health_check_interval_seconds": 30,
+          "max_retries": 2,
+          "enable_session_affinity": true
+        }
+      }
+    }
+  },
+  {
+    "name": "llm-set-endpoint-status",
+    "kind": "llm",
+    "operation": "set-endpoint-status",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993/endpoints/9007199254740995/status",
+    "request": {
+      "status": 1
+    },
+    "input": null,
+    "status": 204,
+    "response": null,
+    "id": 9007199254740993,
+    "endpoint_id": 9007199254740995,
+    "status_value": 1
+  },
+  {
+    "name": "embedding-create-backend",
+    "kind": "embedding",
+    "operation": "create-backend",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends",
+    "request": {
+      "name": "backend",
+      "type": 2,
+      "api_key_encrypted": "encrypted-reference",
+      "timeout_seconds": 30,
+      "models": [
+        "m1"
+      ],
+      "reasoning_control_protocol": 1,
+      "provider_origin": "external_provider",
+      "origin_ref": "ref",
+      "origin_version": "v1"
+    },
+    "input": {
+      "name": "backend",
+      "type": 2,
+      "api_key_encrypted": "encrypted-reference",
+      "timeout_seconds": 30,
+      "models": [
+        "m1"
+      ],
+      "reasoning_control_protocol": 1,
+      "provider_origin": "external_provider",
+      "origin_ref": "ref",
+      "origin_version": "v1"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    }
+  },
+  {
+    "name": "embedding-list-backends",
+    "kind": "embedding",
+    "operation": "list-backends",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "backends": [
+          {
+            "id": 9007199254740993,
+            "name": "backend",
+            "type": 2,
+            "timeout_seconds": 30,
+            "models": [
+              "m1"
+            ],
+            "reasoning_control_protocol": 1,
+            "provider_origin": "external_provider",
+            "origin_ref": "ref",
+            "origin_version": "v1"
+          }
+        ],
+        "total": 1
+      }
+    }
+  },
+  {
+    "name": "embedding-get-backend",
+    "kind": "embedding",
+    "operation": "get-backend",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    },
+    "id": 9007199254740993
+  },
+  {
+    "name": "embedding-update-backend",
+    "kind": "embedding",
+    "operation": "update-backend",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993",
+    "request": {
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "input": {
+      "name": "",
+      "api_key_encrypted": "",
+      "timeout_seconds": 0,
+      "models": [],
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740993,
+        "name": "backend",
+        "type": 2,
+        "timeout_seconds": 30,
+        "models": [
+          "m1"
+        ],
+        "reasoning_control_protocol": 1,
+        "provider_origin": "external_provider",
+        "origin_ref": "ref",
+        "origin_version": "v1"
+      }
+    },
+    "id": 9007199254740993
+  },
+  {
+    "name": "embedding-delete-backend",
+    "kind": "embedding",
+    "operation": "delete-backend",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993",
+    "request": null,
+    "input": null,
+    "status": 204,
+    "response": null,
+    "id": 9007199254740993
+  },
+  {
+    "name": "embedding-create-endpoint",
+    "kind": "embedding",
+    "operation": "create-endpoint",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993/endpoints",
+    "request": {
+      "address": "http://127.0.0.1:1"
+    },
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": 9007199254740995,
+        "backend_id": 9007199254740993,
+        "address": "http://127.0.0.1:1",
+        "status": 0
+      }
+    },
+    "id": 9007199254740993,
+    "address": "http://127.0.0.1:1"
+  },
+  {
+    "name": "embedding-list-endpoints",
+    "kind": "embedding",
+    "operation": "list-endpoints",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993/endpoints",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": [
+        {
+          "id": 9007199254740995,
+          "backend_id": 9007199254740993,
+          "address": "http://127.0.0.1:1",
+          "status": 0
+        }
+      ]
+    },
+    "id": 9007199254740993,
+    "endpoint_id": 9007199254740995
+  },
+  {
+    "name": "embedding-router",
+    "kind": "embedding",
+    "operation": "router",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/router-config",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "config": {
+          "id": 1,
+          "strategy": 1,
+          "health_check_interval_seconds": 30,
+          "max_retries": 2,
+          "enable_session_affinity": true
+        }
+      }
+    }
+  },
+  {
+    "name": "embedding-update-router",
+    "kind": "embedding",
+    "operation": "update-router",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/router-config",
+    "request": {
+      "strategy": 1,
+      "health_check_interval_seconds": 30,
+      "max_retries": 2,
+      "enable_session_affinity": true
+    },
+    "input": {
+      "strategy": 1,
+      "health_check_interval_seconds": 30,
+      "max_retries": 2,
+      "enable_session_affinity": true
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "config": {
+          "id": 1,
+          "strategy": 1,
+          "health_check_interval_seconds": 30,
+          "max_retries": 2,
+          "enable_session_affinity": true
+        }
+      }
+    }
+  },
+  {
+    "name": "embedding-set-endpoint-status",
+    "kind": "embedding",
+    "operation": "set-endpoint-status",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/embeddings/backends/9007199254740993/endpoints/9007199254740995/status",
+    "request": {
+      "status": 1
+    },
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "updated": true
+      }
+    },
+    "id": 9007199254740993,
+    "endpoint_id": 9007199254740995,
+    "status_value": 1
+  },
+  {
+    "name": "llm-list-models",
+    "kind": "llm",
+    "operation": "list-models",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/llm/models",
+    "request": null,
+    "input": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "models": [
+          {
+            "model": "m1",
+            "backend_id": 9007199254740993,
+            "backend_name": "backend"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "llm-update-owner-error",
+    "kind": "llm",
+    "operation": "update-backend",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/backends/9007199254740993",
+    "request": {
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "input": {
+      "name": "",
+      "api_key_encrypted": "",
+      "timeout_seconds": 0,
+      "models": [],
+      "reasoning_control_protocol": 0,
+      "provider_origin": "",
+      "origin_ref": "",
+      "origin_version": ""
+    },
+    "status": 409,
+    "response": {
+      "code": "ErrConflict",
+      "msg": "Synthetic backend conflict"
+    },
+    "id": 9007199254740993
+  }
+]

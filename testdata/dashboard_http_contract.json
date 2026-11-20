@@ -1,0 +1,1064 @@
+[
+  {
+    "name": "task overview exact integer counts",
+    "operation": "task-execution-overview",
+    "method": "GET",
+    "path": "/newmoi/dashboard/task-execution-overview",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "running": 1,
+        "success": 9007199254740993,
+        "failed": 2,
+        "pending": 3,
+        "total": 9007199254740999,
+        "window_days": 7,
+        "since": "2026-01-01T00:00:00Z",
+        "until": "2026-01-08T00:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "empty task overview preserves time window",
+    "operation": "task-execution-overview",
+    "method": "GET",
+    "path": "/newmoi/dashboard/task-execution-overview",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "running": 0,
+        "success": 0,
+        "failed": 0,
+        "pending": 0,
+        "total": 0,
+        "window_days": 7,
+        "since": "2026-01-01T00:00:00.000000007Z",
+        "until": "2026-01-08T00:00:00.000000007Z"
+      }
+    }
+  },
+  {
+    "name": "create omits description default",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards",
+    "input": {
+      "name": "看板 0007",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "request": {
+      "name": "看板 0007",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "ID": "00000000-0000-4000-8000-000000000101",
+        "Name": "看板 0007",
+        "Description": "说明",
+        "LifecycleStatus": "active",
+        "sources": [
+          {
+            "ID": "source-1",
+            "DashboardID": "00000000-0000-4000-8000-000000000101",
+            "TableID": 9007199254740993,
+            "DatabaseName": "analytics",
+            "TableName": "facts",
+            "Status": "active"
+          }
+        ],
+        "charts": [],
+        "alerts": [],
+        "active_alert_count": 0
+      }
+    }
+  },
+  {
+    "name": "create full mutation fields",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards",
+    "input": {
+      "name": "看板 0007",
+      "description": "说明",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "request": {
+      "name": "看板 0007",
+      "description": "说明",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "ID": "00000000-0000-4000-8000-000000000101",
+        "Name": "看板 0007",
+        "Description": "说明",
+        "LifecycleStatus": "active",
+        "sources": [
+          {
+            "ID": "source-1",
+            "DashboardID": "00000000-0000-4000-8000-000000000101",
+            "TableID": 9007199254740993,
+            "DatabaseName": "analytics",
+            "TableName": "facts",
+            "Status": "active"
+          }
+        ],
+        "charts": [],
+        "alerts": [],
+        "active_alert_count": 0
+      }
+    }
+  },
+  {
+    "name": "list owner pagination defaults",
+    "operation": "list",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/list",
+    "input": {},
+    "request": {},
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [],
+        "total": 0,
+        "has_more": false
+      }
+    }
+  },
+  {
+    "name": "list search and opaque cursor",
+    "operation": "list",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/list",
+    "input": {
+      "search": "看板 + 0007",
+      "page_size": 2,
+      "page_token": "eyJDcmVhdGVkQXQiOiIyMDI2LTAxLTAyVDAzOjA0OjA1WiIsIklEIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMTAxIn0"
+    },
+    "request": {
+      "search": "看板 + 0007",
+      "page_size": 2,
+      "page_token": "eyJDcmVhdGVkQXQiOiIyMDI2LTAxLTAyVDAzOjA0OjA1WiIsIklEIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMTAxIn0"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [
+          {
+            "ID": "00000000-0000-4000-8000-000000000101",
+            "Name": "看板 0007",
+            "Description": "说明",
+            "LifecycleStatus": "active",
+            "sources": [
+              {
+                "ID": "source-1",
+                "DashboardID": "00000000-0000-4000-8000-000000000101",
+                "TableID": 9007199254740993,
+                "DatabaseName": "analytics",
+                "TableName": "facts",
+                "Status": "active"
+              }
+            ],
+            "charts": [],
+            "alerts": [],
+            "active_alert_count": 0
+          }
+        ],
+        "total": 3,
+        "has_more": true,
+        "next_page_token": "eyJDcmVhdGVkQXQiOiIyMDI2LTAxLTAyVDAzOjA0OjA1WiIsIklEIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMTAxIn0"
+      }
+    }
+  },
+  {
+    "name": "get source integer and PascalCase response",
+    "operation": "get",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "ID": "00000000-0000-4000-8000-000000000101",
+        "Name": "看板 0007",
+        "Description": "说明",
+        "LifecycleStatus": "active",
+        "sources": [
+          {
+            "ID": "source-1",
+            "DashboardID": "00000000-0000-4000-8000-000000000101",
+            "TableID": 9007199254740993,
+            "DatabaseName": "analytics",
+            "TableName": "facts",
+            "Status": "active"
+          }
+        ],
+        "charts": [],
+        "alerts": [],
+        "active_alert_count": 0
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "update complete sources with omitted description",
+    "operation": "update",
+    "method": "PATCH",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101",
+    "input": {
+      "name": "新看板",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "request": {
+      "name": "新看板",
+      "sources": [
+        {
+          "table_id": 9007199254740993
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "updated": true
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "delete acknowledgement",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "deleted": true
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "create chart default false omitted",
+    "operation": "create-chart",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts",
+    "input": {
+      "name": "总量",
+      "chart_type": "metric",
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_config": "{\"value\":\"value\"}",
+      "layout_config": "{}",
+      "refresh_interval": "manual",
+      "alert_enabled": false
+    },
+    "request": {
+      "name": "总量",
+      "chart_type": "metric",
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_config": "{\"value\":\"value\"}",
+      "layout_config": "{}",
+      "refresh_interval": "manual"
+    },
+    "query": {},
+    "status": 201,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "ID": "00000000-0000-4000-8000-000000000102",
+        "DashboardID": "00000000-0000-4000-8000-000000000101",
+        "Name": "总量",
+        "ChartType": "metric",
+        "SQLText": "SELECT count(*) AS value FROM analytics.facts",
+        "DatabaseName": "analytics",
+        "ChartConfig": "{\"value\":\"value\"}",
+        "LayoutConfig": "{}",
+        "RefreshInterval": "manual",
+        "ScheduleStatus": "ready",
+        "ScheduleVersion": 1,
+        "AlertEnabled": false
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "update chart all fields",
+    "operation": "update-chart",
+    "method": "PATCH",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102",
+    "input": {
+      "name": "编辑图表",
+      "chart_type": "metric",
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_config": "{\"value\":\"value\"}",
+      "layout_config": "{}",
+      "refresh_interval": "1h",
+      "alert_enabled": true,
+      "alert_config": "{\"field\":\"value\",\"operator\":\">\",\"threshold\":100,\"level\":\"warning\",\"notification_interval\":\"1h\"}"
+    },
+    "request": {
+      "name": "编辑图表",
+      "chart_type": "metric",
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_config": "{\"value\":\"value\"}",
+      "layout_config": "{}",
+      "refresh_interval": "1h",
+      "alert_enabled": true,
+      "alert_config": "{\"field\":\"value\",\"operator\":\">\",\"threshold\":100,\"level\":\"warning\",\"notification_interval\":\"1h\"}"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "ID": "00000000-0000-4000-8000-000000000102",
+        "DashboardID": "00000000-0000-4000-8000-000000000101",
+        "Name": "编辑图表",
+        "ChartType": "metric",
+        "SQLText": "SELECT count(*) AS value FROM analytics.facts",
+        "DatabaseName": "analytics",
+        "ChartConfig": "{\"value\":\"value\"}",
+        "LayoutConfig": "{}",
+        "RefreshInterval": "1h",
+        "ScheduleStatus": "ready",
+        "ScheduleVersion": 1,
+        "AlertEnabled": true,
+        "AlertConfig": "{\"field\":\"value\",\"operator\":\">\",\"threshold\":100,\"level\":\"warning\",\"notification_interval\":\"1h\"}"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "delete chart acknowledgement",
+    "operation": "delete-chart",
+    "method": "DELETE",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "deleted": true
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "chart order retains IDs",
+    "operation": "update-chart-order",
+    "method": "PATCH",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/chart-order",
+    "input": {
+      "chart_ids": [
+        "00000000-0000-4000-8000-000000000102"
+      ]
+    },
+    "request": {
+      "chart_ids": [
+        "00000000-0000-4000-8000-000000000102"
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "chart_ids": [
+          "00000000-0000-4000-8000-000000000102"
+        ]
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "chart order empty array remains required array",
+    "operation": "update-chart-order",
+    "method": "PATCH",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/chart-order",
+    "input": {
+      "chart_ids": []
+    },
+    "request": {
+      "chart_ids": []
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "chart_ids": null
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "preview SQL preserves literal strings",
+    "operation": "preview-sql",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/preview",
+    "input": {
+      "sql_text": "SELECT '0007' AS value FROM analytics.facts"
+    },
+    "request": {
+      "sql_text": "SELECT '0007' AS value FROM analytics.facts"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "query_id": "q-0007",
+        "db_name": "analytics",
+        "status": "completed",
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "result": [
+          [
+            7
+          ],
+          [
+            null
+          ]
+        ],
+        "total": 2,
+        "limit": 200,
+        "elapsed_ms": 3,
+        "truncated": false
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "generate SQL question and empty title",
+    "operation": "generate-sql",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/generate-sql",
+    "input": {
+      "question": "统计数量 0007",
+      "title": ""
+    },
+    "request": {
+      "question": "统计数量 0007",
+      "title": ""
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+        "chart_type": "metric"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "refresh returns execution identities",
+    "operation": "refresh",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/refresh",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "runs": [
+          {
+            "chart_id": "00000000-0000-4000-8000-000000000102",
+            "execution_id": "execution-0007",
+            "status": "pending"
+          }
+        ]
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "run chart returns same execution identity",
+    "operation": "run-chart",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/run",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "chart_id": "00000000-0000-4000-8000-000000000102",
+        "execution_id": "execution-0007",
+        "status": "pending"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "chart result default query",
+    "operation": "chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "execution_id": "execution-0007",
+        "status": "completed",
+        "mode": "manual",
+        "requested_at": "2026-01-02T03:04:05Z",
+        "refreshed_at": "2026-01-02T03:04:06Z",
+        "result": {
+          "query_id": "q-0007",
+          "db_name": "analytics",
+          "status": "completed",
+          "columns": [
+            {
+              "name": "value",
+              "type": "BIGINT"
+            }
+          ],
+          "result": [
+            [
+              7
+            ],
+            [
+              null
+            ]
+          ],
+          "total": 2,
+          "limit": 200,
+          "elapsed_ms": 3,
+          "truncated": false
+        }
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "drill through explicit null",
+    "operation": "drill-through",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/drill-through",
+    "input": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": null
+        }
+      ]
+    },
+    "request": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": null
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "rows": [
+          [
+            null
+          ],
+          [
+            0
+          ]
+        ],
+        "preview_limit": 200,
+        "visible_total": 2,
+        "truncated": false,
+        "sql_text": "SELECT * FROM analytics.facts",
+        "database": "analytics"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "drill through zero scalar",
+    "operation": "drill-through",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/drill-through",
+    "input": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": 0
+        }
+      ]
+    },
+    "request": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": 0
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "rows": [
+          [
+            null
+          ],
+          [
+            0
+          ]
+        ],
+        "preview_limit": 200,
+        "visible_total": 2,
+        "truncated": false,
+        "sql_text": "SELECT * FROM analytics.facts",
+        "database": "analytics"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "drill through bool scalar",
+    "operation": "drill-through",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/drill-through",
+    "input": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": false
+        }
+      ]
+    },
+    "request": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": false
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "rows": [
+          [
+            null
+          ],
+          [
+            0
+          ]
+        ],
+        "preview_limit": 200,
+        "visible_total": 2,
+        "truncated": false,
+        "sql_text": "SELECT * FROM analytics.facts",
+        "database": "analytics"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "drill through opaque string",
+    "operation": "drill-through",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/drill-through",
+    "input": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": "0007"
+        }
+      ]
+    },
+    "request": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": "0007"
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "rows": [
+          [
+            null
+          ],
+          [
+            0
+          ]
+        ],
+        "preview_limit": 200,
+        "visible_total": 2,
+        "truncated": false,
+        "sql_text": "SELECT * FROM analytics.facts",
+        "database": "analytics"
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "download chart CSV",
+    "operation": "download-chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result/download",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": null
+    },
+    "csv": "value,label\n0,0007\n7,报告\n",
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "download drill through null from file",
+    "operation": "download-drill-through",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/drill-through/download",
+    "input": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": null
+        }
+      ]
+    },
+    "request": {
+      "dimensions": [
+        {
+          "role": "x",
+          "value": null
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": null
+    },
+    "csv": "value,label\n0,0007\n7,报告\n",
+    "json_file": true,
+    "download_file": true,
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "chart result exact at timestamp",
+    "operation": "chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result",
+    "input": null,
+    "request": null,
+    "query": {
+      "at": "2026-01-02T03:04:05.123456789+08:00"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "execution_id": "execution-0007",
+        "status": "completed",
+        "mode": "scheduled",
+        "result": {
+          "query_id": "q-0007",
+          "db_name": "analytics",
+          "status": "completed",
+          "columns": [
+            {
+              "name": "value",
+              "type": "BIGINT"
+            }
+          ],
+          "result": [
+            [
+              7
+            ],
+            [
+              null
+            ]
+          ],
+          "total": 2,
+          "limit": 200,
+          "elapsed_ms": 3,
+          "truncated": false
+        }
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "download chart at snapshot to file",
+    "operation": "download-chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result/download",
+    "input": null,
+    "request": null,
+    "query": {
+      "at": "2026-01-02T03:04:05.123456789+08:00"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": null
+    },
+    "csv": "value,label\n0,0007\n7,报告\n",
+    "download_file": true,
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "preview chart scope",
+    "operation": "preview-sql",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/preview",
+    "input": {
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_id": "00000000-0000-4000-8000-000000000102"
+    },
+    "request": {
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_id": "00000000-0000-4000-8000-000000000102"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "query_id": "q-0007",
+        "db_name": "analytics",
+        "status": "completed",
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "result": [
+          [
+            7
+          ],
+          [
+            null
+          ]
+        ],
+        "total": 2,
+        "limit": 200,
+        "elapsed_ms": 3,
+        "truncated": false
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "preview explicit empty chart selector",
+    "operation": "preview-sql",
+    "method": "POST",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/preview",
+    "input": {
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_id": ""
+    },
+    "request": {
+      "sql_text": "SELECT count(*) AS value FROM analytics.facts",
+      "chart_id": ""
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "query_id": "q-0007",
+        "db_name": "analytics",
+        "status": "completed",
+        "columns": [
+          {
+            "name": "value",
+            "type": "BIGINT"
+          }
+        ],
+        "result": [
+          [
+            7
+          ],
+          [
+            null
+          ]
+        ],
+        "total": 2,
+        "limit": 200,
+        "elapsed_ms": 3,
+        "truncated": false
+      }
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101"
+  },
+  {
+    "name": "simulated owner rejects bad at",
+    "operation": "chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result",
+    "input": null,
+    "request": null,
+    "query": {
+      "at": "not-a-time"
+    },
+    "status": 400,
+    "response": {
+      "code": "ErrParamInvalid",
+      "msg": "模拟：时间格式错误",
+      "data": null
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  },
+  {
+    "name": "simulated owner download rejection",
+    "operation": "download-chart-result",
+    "method": "GET",
+    "path": "/newmoi/data-dashboards/00000000-0000-4000-8000-000000000101/charts/00000000-0000-4000-8000-000000000102/result/download",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 409,
+    "response": {
+      "code": "ErrDataDashboardRefreshPaused",
+      "msg": "模拟：图表刷新已暂停",
+      "data": null
+    },
+    "dashboard_id": "00000000-0000-4000-8000-000000000101",
+    "chart_id": "00000000-0000-4000-8000-000000000102"
+  }
+]

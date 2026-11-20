@@ -1,0 +1,10 @@
+{
+  "id": 7002,
+  "name": "scratch-kb",
+  "tables": [],
+  "created_at": 1760400000,
+  "updated_at": 1760400000,
+  "source_counts": {"files": 0, "tables": 0, "total": 0},
+  "can_write": false,
+  "allowed_actions": []
+}

@@ -1,0 +1,115 @@
+[
+  {
+    "name": "ingress-capabilities",
+    "operation": "list-ingress-capabilities",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/ingress-capabilities",
+    "response": {"code": 0, "data": {"items": [{"provider": "wecom", "channel_type": "wecom_ai_bot", "receive_modes": ["managed_stream", "callback"]}]}},
+    "status": 200
+  },
+  {
+    "name": "ingress-list-target",
+    "operation": "list-ingress-connections",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections",
+    "target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"},
+    "query": {"target_kind": ["agent"], "target_workspace_id": ["workspace /1"], "target_id": ["agent/1"]},
+    "response": {"code": 0, "data": {"items": [{"id": "ingress/1", "workspace_id": "workspace-1", "target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"}, "provider": "wecom", "channel_type": "wecom_ai_bot", "receive_mode": "callback", "enabled": false, "association_version": 0, "config_version": 0}], "total": 1}},
+    "status": 200
+  },
+  {
+    "name": "ingress-create-callback",
+    "operation": "create-ingress-connection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections",
+    "input": {"target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"}, "provider": "wecom", "channel_type": "wecom_ai_bot", "receive_mode": "callback", "agent_model": "fast", "callback": {"channel_instance_id": "channel/1"}},
+    "response": {"code": 0, "data": {"id": "ingress/1", "workspace_id": "workspace-1", "target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"}, "provider": "wecom", "channel_type": "wecom_ai_bot", "receive_mode": "callback", "channel_instance_id": "channel/1", "agent_model": "fast", "enabled": false, "association_version": 1, "config_version": 1}},
+    "status": 201
+  },
+  {
+    "name": "ingress-create-managed-stream",
+    "operation": "create-ingress-connection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections",
+    "input": {"target": {"kind": "agent", "workspace_id": "workspace-1", "id": "agent/2"}, "provider": "slack", "channel_type": "slack_app", "receive_mode": "managed_stream", "managed_stream": {"app_id": "A1", "app_secret": "app-secret", "app_token": "xapp-test", "bot_token": "xoxb-test"}},
+    "response": {"code": 0, "data": {"id": "ingress/2", "workspace_id": "workspace-1", "target": {"kind": "agent", "workspace_id": "workspace-1", "id": "agent/2"}, "provider": "slack", "channel_type": "slack_app", "receive_mode": "managed_stream", "enabled": true, "association_version": 1, "config_version": 1}},
+    "status": 201
+  },
+  {
+    "name": "ingress-wecom-qr-empty-session",
+    "operation": "resolve-we-com-qr-binding",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/wecom-qr",
+    "target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"},
+    "input": {"target": {"kind": "agent", "workspace_id": "workspace /1", "id": "agent/1"}, "session_token": ""},
+    "response": {"code": 0, "data": {"status": "pending", "session_token": "sealed-session", "qr_url": "https://example.test/qr"}},
+    "status": 200
+  },
+  {
+    "name": "ingress-delete-explicit-zero-versions",
+    "operation": "delete-ingress-connection",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/ingress%20%2F1",
+    "connection_id": "ingress /1",
+    "query": {"expected_association_version": ["0"], "expected_config_version": ["0"]},
+    "response": {"code": 0, "data": {"id": "ingress /1", "enabled": false, "association_version": 0, "config_version": 0}},
+    "status": 200
+  },
+  {
+    "name": "ingress-get",
+    "operation": "get-ingress-connection",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/ingress%20%2F1",
+    "connection_id": "ingress /1",
+    "response": {"code": 0, "data": {"id": "ingress /1", "enabled": false, "association_version": 0, "config_version": 0}},
+    "status": 200
+  },
+  {
+    "name": "ingress-get-owner-not-found",
+    "operation": "get-ingress-connection",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/missing",
+    "connection_id": "missing",
+    "response": {"code": 3, "message": "ingress connection not found"},
+    "response_headers": {"X-Request-ID": "request-ingress-1"},
+    "status": 404
+  },
+  {
+    "name": "ingress-update-disabled-empty-model",
+    "operation": "update-ingress-connection",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/ingress%20%2F1",
+    "connection_id": "ingress /1",
+    "input": {"enabled": false, "agent_model": "", "managed_stream": {"app_secret": "rotated"}, "expected_association_version": 0, "expected_config_version": 0},
+    "response": {"code": 0, "data": {"id": "ingress /1", "enabled": false, "agent_model": "", "association_version": 0, "config_version": 0}},
+    "status": 200
+  },
+  {
+    "name": "ingress-verify-connection",
+    "operation": "verify-ingress-connection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/ingress%20%2F1/test",
+    "connection_id": "ingress /1",
+    "input": {"expected_association_version": 7, "expected_config_version": 8, "callback_url": "https://moi.example/callback"},
+    "response": {"code": 0, "data": {"id": "ingress /1", "enabled": true, "observed_state": "connected", "association_version": 7, "config_version": 9, "callback_path": "/newmoi/ingress-callbacks/wecom/workspace-1/ingress%20%2F1"}},
+    "status": 200
+  },
+  {
+    "name": "ingress-verify-probe-rejected",
+    "operation": "verify-ingress-connection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/ingress-connections/ingress%20%2F1/test",
+    "connection_id": "ingress /1",
+    "input": {"expected_association_version": 7, "expected_config_version": 8},
+    "response": {"code": 0, "data": {"ok": false, "status": "COMPLETED", "last_test_status": "failed", "last_test_error": "denied", "error_code": "AUTH_DENIED", "error_stage": "credentials", "last_tested_at": "2026-11-10T00:00:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "wecom-callback-secrets",
+    "operation": "generate-we-com-callback-secrets",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/tools/wecom/callback-secrets/generate",
+    "response": {"code": 0, "data": {"callback_token": "token", "callback_encoding_aes_key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}},
+    "status": 200
+  }
+]

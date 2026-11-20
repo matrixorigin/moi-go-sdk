@@ -1,0 +1,1007 @@
+[
+  {
+    "name": "runner-create-one-time-connect-command",
+    "domain": "runner",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/agent-runners/custom",
+    "input": {
+      "name": "Local runner"
+    },
+    "request": {
+      "name": "Local runner"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "runner-1",
+        "workspace_id": "workspace-1",
+        "name": "Local runner",
+        "runner_type": "custom",
+        "phase": "ready",
+        "edge_agent_id": "edge-1",
+        "connect_cmd": "momo runner connect --token synthetic-connect-token",
+        "token_expires_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "cli_args": [
+      "create",
+      "--name",
+      "Local runner"
+    ]
+  },
+  {
+    "name": "runner-list",
+    "domain": "runner",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agent-runners",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": [
+        {
+          "id": "runner-1",
+          "workspace_id": "workspace-1",
+          "name": "Local runner",
+          "runner_type": "custom",
+          "phase": "ready",
+          "edge_agent_id": "edge-1"
+        }
+      ]
+    },
+    "cli_args": [
+      "list"
+    ]
+  },
+  {
+    "name": "runner-list-empty",
+    "domain": "runner",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agent-runners",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": []
+    },
+    "cli_args": [
+      "list"
+    ]
+  },
+  {
+    "name": "runner-get-no-connect-command",
+    "domain": "runner",
+    "operation": "get",
+    "method": "GET",
+    "path": "/newmoi/agent-runners/runner-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "runner-1",
+        "workspace_id": "workspace-1",
+        "name": "Local runner",
+        "runner_type": "custom",
+        "phase": "ready",
+        "edge_agent_id": "edge-1"
+      }
+    },
+    "cli_args": [
+      "get",
+      "--runner-id",
+      "runner-1"
+    ],
+    "id": "runner-1"
+  },
+  {
+    "name": "runner-refresh-one-time-command",
+    "domain": "runner",
+    "operation": "refresh",
+    "method": "POST",
+    "path": "/newmoi/agent-runners/runner-1/refresh-token",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "runner-1",
+        "workspace_id": "workspace-1",
+        "name": "Local runner",
+        "runner_type": "custom",
+        "phase": "ready",
+        "edge_agent_id": "edge-1",
+        "connect_cmd": "momo runner connect --token synthetic-rotated-token"
+      }
+    },
+    "cli_args": [
+      "refresh",
+      "--runner-id",
+      "runner-1"
+    ],
+    "id": "runner-1"
+  },
+  {
+    "name": "runner-delete",
+    "domain": "runner",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/agent-runners/runner-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {}
+    },
+    "cli_args": [
+      "delete",
+      "--runner-id",
+      "runner-1"
+    ],
+    "id": "runner-1"
+  },
+  {
+    "name": "runner-invalid-name-forward-owner-error",
+    "domain": "runner",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/agent-runners/custom",
+    "input": {
+      "name": ""
+    },
+    "request": {},
+    "query": {},
+    "status": 400,
+    "response": {
+      "code": "ErrParamInvalid",
+      "msg": "Synthetic runner name rejection"
+    },
+    "cli_args": [
+      "create",
+      "--name",
+      ""
+    ]
+  },
+  {
+    "name": "sandbox-create-all-settings",
+    "domain": "sandbox",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/agent-sandboxes",
+    "input": {
+      "name": "sdk-sandbox",
+      "compute_resource_id": "compute-1",
+      "spec": "small",
+      "disk_gi": 10,
+      "network_mode": "limited",
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443,
+            8443
+          ]
+        }
+      ]
+    },
+    "request": {
+      "name": "sdk-sandbox",
+      "compute_resource_id": "compute-1",
+      "spec": "small",
+      "disk_gi": 10,
+      "network_mode": "limited",
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443,
+            8443
+          ]
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "workspace_id": "workspace-1",
+        "name": "sdk-sandbox",
+        "phase": "ready",
+        "network_mode": "limited",
+        "network_tools": [
+          "git"
+        ],
+        "egress_endpoints": [
+          {
+            "host": "example.test",
+            "ports": [
+              443,
+              8443
+            ]
+          }
+        ],
+        "spec": "small",
+        "disk_gi": 10,
+        "compute_resource_id": "compute-1",
+        "update_available": false
+      }
+    },
+    "cli_args": [
+      "create"
+    ]
+  },
+  {
+    "name": "sandbox-create-optional-compute-omitted-json-file",
+    "domain": "sandbox",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/agent-sandboxes",
+    "input": {
+      "name": "minimal-sandbox",
+      "spec": "small",
+      "disk_gi": 10,
+      "network_mode": "limited"
+    },
+    "request": {
+      "name": "minimal-sandbox",
+      "spec": "small",
+      "disk_gi": 10,
+      "network_mode": "limited"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-2",
+        "name": "minimal-sandbox",
+        "spec": "small",
+        "disk_gi": 10,
+        "network_mode": "limited"
+      }
+    },
+    "cli_args": [
+      "create"
+    ],
+    "json_file": true
+  },
+  {
+    "name": "sandbox-list",
+    "domain": "sandbox",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": [
+        {
+          "id": "sandbox-1",
+          "workspace_id": "workspace-1",
+          "name": "sdk-sandbox",
+          "phase": "ready",
+          "network_mode": "limited",
+          "network_tools": [
+            "git"
+          ],
+          "egress_endpoints": [
+            {
+              "host": "example.test",
+              "ports": [
+                443,
+                8443
+              ]
+            }
+          ],
+          "spec": "small",
+          "disk_gi": 10,
+          "compute_resource_id": "compute-1",
+          "update_available": false
+        }
+      ]
+    },
+    "cli_args": [
+      "list"
+    ]
+  },
+  {
+    "name": "sandbox-list-empty",
+    "domain": "sandbox",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": []
+    },
+    "cli_args": [
+      "list"
+    ]
+  },
+  {
+    "name": "sandbox-get",
+    "domain": "sandbox",
+    "operation": "get",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes/sandbox-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "workspace_id": "workspace-1",
+        "name": "sdk-sandbox",
+        "phase": "ready",
+        "network_mode": "limited",
+        "network_tools": [
+          "git"
+        ],
+        "egress_endpoints": [
+          {
+            "host": "example.test",
+            "ports": [
+              443,
+              8443
+            ]
+          }
+        ],
+        "spec": "small",
+        "disk_gi": 10,
+        "compute_resource_id": "compute-1",
+        "update_available": false
+      }
+    },
+    "cli_args": [
+      "get",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-delete",
+    "domain": "sandbox",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/agent-sandboxes/sandbox-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {}
+    },
+    "cli_args": [
+      "delete",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-update-network",
+    "domain": "sandbox",
+    "operation": "update-network",
+    "method": "PATCH",
+    "path": "/newmoi/agent-sandboxes/sandbox-1/network",
+    "input": {
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443,
+            8443
+          ]
+        }
+      ]
+    },
+    "request": {
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443,
+            8443
+          ]
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "workspace_id": "workspace-1",
+        "name": "sdk-sandbox",
+        "phase": "ready",
+        "network_mode": "limited",
+        "network_tools": [
+          "git"
+        ],
+        "egress_endpoints": [
+          {
+            "host": "example.test",
+            "ports": [
+              443,
+              8443
+            ]
+          }
+        ],
+        "spec": "small",
+        "disk_gi": 10,
+        "compute_resource_id": "compute-1",
+        "update_available": false
+      }
+    },
+    "cli_args": [
+      "update-network",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-clear-network-lists",
+    "domain": "sandbox",
+    "operation": "update-network",
+    "method": "PATCH",
+    "path": "/newmoi/agent-sandboxes/sandbox-1/network",
+    "input": {
+      "network_tools": [],
+      "egress_endpoints": []
+    },
+    "request": {},
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "network_tools": [],
+        "egress_endpoints": []
+      }
+    },
+    "cli_args": [
+      "update-network",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-quota-default",
+    "domain": "sandbox",
+    "operation": "get-quota",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes/quota",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "current": 1,
+        "limit": 2,
+        "default_egress_endpoints": [
+          {
+            "host": "default.example.test",
+            "ports": [
+              443
+            ]
+          }
+        ]
+      }
+    },
+    "cli_args": [
+      "get-quota"
+    ]
+  },
+  {
+    "name": "sandbox-quota-network-capability-false",
+    "domain": "sandbox",
+    "operation": "get-quota",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes/quota",
+    "input": null,
+    "request": null,
+    "query": {
+      "include_network_capabilities": "true"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "current": 1,
+        "limit": 2,
+        "unrestricted_network_allowed": false
+      }
+    },
+    "cli_args": [
+      "get-quota",
+      "--query-param",
+      "include_network_capabilities=true"
+    ]
+  },
+  {
+    "name": "sandbox-quota-explicit-query-false",
+    "domain": "sandbox",
+    "operation": "get-quota",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes/quota",
+    "input": null,
+    "request": null,
+    "query": {
+      "include_network_capabilities": "false"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "current": 1,
+        "limit": 2
+      }
+    },
+    "cli_args": [
+      "get-quota",
+      "--query-param",
+      "include_network_capabilities=false"
+    ]
+  },
+  {
+    "name": "sandbox-update-quota-explicit-zero",
+    "domain": "sandbox",
+    "operation": "update-quota",
+    "method": "PATCH",
+    "path": "/newmoi/agent-sandboxes/quota",
+    "input": {
+      "max_managed_count": 0,
+      "max_ephemeral_count": 0,
+      "auto_ephemeral": "disabled"
+    },
+    "request": {
+      "max_managed_count": 0,
+      "max_ephemeral_count": 0,
+      "auto_ephemeral": "disabled"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "workspace_id": "workspace-1",
+        "auto_ephemeral_override": 2
+      }
+    },
+    "cli_args": [
+      "update-quota"
+    ]
+  },
+  {
+    "name": "sandbox-update-partial-quota-preserves-absence",
+    "domain": "sandbox",
+    "operation": "update-quota",
+    "method": "PATCH",
+    "path": "/newmoi/agent-sandboxes/quota",
+    "input": {
+      "max_managed_count": 2
+    },
+    "request": {
+      "max_managed_count": 2
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "workspace_id": "workspace-1",
+        "max_managed_count": 2,
+        "max_ephemeral_count": 1,
+        "auto_ephemeral_override": 2,
+        "updated_by": "user-1"
+      }
+    },
+    "cli_args": [
+      "update-quota"
+    ]
+  },
+  {
+    "name": "sandbox-terminal-short-lived-token",
+    "domain": "sandbox",
+    "operation": "terminal-token",
+    "method": "GET",
+    "path": "/newmoi/agent-sandboxes/sandbox-1/terminal",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "token": "synthetic-terminal-token",
+        "expires_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "cli_args": [
+      "terminal-token",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-create-ssh-session-large-expiry",
+    "domain": "sandbox",
+    "operation": "create-ssh-session",
+    "method": "POST",
+    "path": "/newmoi/agent-sandboxes/sandbox-1/ssh-session",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "token": "synthetic-ssh-token",
+        "gateway_host": "ssh.example.test",
+        "gateway_port": 2222,
+        "gateway_scheme": "ssh",
+        "host_key_fingerprint": "SHA256:synthetic",
+        "expires_at_ms": 9007199254740993
+      }
+    },
+    "cli_args": [
+      "create-ssh-session",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-admin-list-filter-pagination",
+    "domain": "sandbox",
+    "operation": "admin-list",
+    "method": "GET",
+    "path": "/newmoi/admin/agent-sandboxes",
+    "input": null,
+    "request": null,
+    "query": {
+      "workspace_id": "target-workspace",
+      "limit": "2",
+      "offset": "3"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "items": [
+          {
+            "id": "sandbox-1",
+            "workspace_id": "workspace-1",
+            "name": "sdk-sandbox",
+            "phase": "ready",
+            "network_mode": "limited",
+            "network_tools": [
+              "git"
+            ],
+            "egress_endpoints": [
+              {
+                "host": "example.test",
+                "ports": [
+                  443,
+                  8443
+                ]
+              }
+            ],
+            "spec": "small",
+            "disk_gi": 10,
+            "compute_resource_id": "compute-1",
+            "update_available": false,
+            "workspace": {
+              "id": "target-workspace",
+              "name": "目标空间",
+              "owner_id": "owner-1",
+              "account_name": "Synthetic account"
+            }
+          }
+        ],
+        "limit": 2,
+        "offset": 3,
+        "has_more": true
+      }
+    },
+    "cli_args": [
+      "admin-list",
+      "--query-param",
+      "workspace_id=target-workspace",
+      "--query-param",
+      "limit=2",
+      "--query-param",
+      "offset=3"
+    ]
+  },
+  {
+    "name": "sandbox-admin-list-default",
+    "domain": "sandbox",
+    "operation": "admin-list",
+    "method": "GET",
+    "path": "/newmoi/admin/agent-sandboxes",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "items": [],
+        "limit": 50,
+        "offset": 0,
+        "has_more": false
+      }
+    },
+    "cli_args": [
+      "admin-list"
+    ]
+  },
+  {
+    "name": "sandbox-admin-get",
+    "domain": "sandbox",
+    "operation": "admin-get",
+    "method": "GET",
+    "path": "/newmoi/admin/agent-sandboxes/sandbox-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "workspace_id": "workspace-1",
+        "name": "sdk-sandbox",
+        "phase": "ready",
+        "network_mode": "limited",
+        "network_tools": [
+          "git"
+        ],
+        "egress_endpoints": [
+          {
+            "host": "example.test",
+            "ports": [
+              443,
+              8443
+            ]
+          }
+        ],
+        "spec": "small",
+        "disk_gi": 10,
+        "compute_resource_id": "compute-1",
+        "update_available": false,
+        "workspace": {
+          "id": "target-workspace",
+          "name": "目标空间",
+          "owner_id": "owner-1",
+          "account_name": "Synthetic account"
+        }
+      }
+    },
+    "cli_args": [
+      "admin-get",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-admin-delete",
+    "domain": "sandbox",
+    "operation": "admin-delete",
+    "method": "DELETE",
+    "path": "/newmoi/admin/agent-sandboxes/sandbox-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {}
+    },
+    "cli_args": [
+      "admin-delete",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-admin-network",
+    "domain": "sandbox",
+    "operation": "admin-update-network",
+    "method": "PATCH",
+    "path": "/newmoi/admin/agent-sandboxes/sandbox-1/network",
+    "input": {
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443
+          ]
+        }
+      ]
+    },
+    "request": {
+      "network_tools": [
+        "git"
+      ],
+      "egress_endpoints": [
+        {
+          "host": "example.test",
+          "ports": [
+            443
+          ]
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "id": "sandbox-1",
+        "workspace_id": "workspace-1",
+        "name": "sdk-sandbox",
+        "phase": "ready",
+        "network_mode": "limited",
+        "network_tools": [
+          "git"
+        ],
+        "egress_endpoints": [
+          {
+            "host": "example.test",
+            "ports": [
+              443,
+              8443
+            ]
+          }
+        ],
+        "spec": "small",
+        "disk_gi": 10,
+        "compute_resource_id": "compute-1",
+        "update_available": false,
+        "workspace": {
+          "id": "target-workspace",
+          "name": "目标空间",
+          "owner_id": "owner-1",
+          "account_name": "Synthetic account"
+        }
+      }
+    },
+    "cli_args": [
+      "admin-update-network",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-admin-quota-explicit-target",
+    "domain": "sandbox",
+    "operation": "admin-update-quota",
+    "method": "PATCH",
+    "path": "/newmoi/admin/workspaces/target-workspace/sandbox-quota",
+    "input": {
+      "max_managed_count": 0,
+      "max_ephemeral_count": 3,
+      "auto_ephemeral": "inherit"
+    },
+    "request": {
+      "max_managed_count": 0,
+      "max_ephemeral_count": 3,
+      "auto_ephemeral": "inherit"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "data": {
+        "workspace_id": "target-workspace",
+        "max_ephemeral_count": 3
+      }
+    },
+    "cli_args": [
+      "admin-update-quota",
+      "--target-workspace-id",
+      "target-workspace"
+    ],
+    "target_workspace_id": "target-workspace"
+  },
+  {
+    "name": "sandbox-admin-permission-error",
+    "domain": "sandbox",
+    "operation": "admin-delete",
+    "method": "DELETE",
+    "path": "/newmoi/admin/agent-sandboxes/sandbox-1",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 403,
+    "response": {
+      "code": "ErrComputeResourceSpecForbidden",
+      "msg": "Synthetic platform admission rejection"
+    },
+    "cli_args": [
+      "admin-delete",
+      "--sandbox-id",
+      "sandbox-1"
+    ],
+    "id": "sandbox-1"
+  },
+  {
+    "name": "sandbox-iam-unavailable-error",
+    "domain": "sandbox",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/agent-sandboxes",
+    "input": {
+      "name": "sdk-sandbox",
+      "spec": "small"
+    },
+    "request": {
+      "name": "sdk-sandbox",
+      "spec": "small"
+    },
+    "query": {},
+    "status": 503,
+    "response": {
+      "code": "SANDBOX_IAM_UNAVAILABLE",
+      "msg": "Synthetic authorization dependency unavailable"
+    },
+    "cli_args": [
+      "create"
+    ]
+  }
+]

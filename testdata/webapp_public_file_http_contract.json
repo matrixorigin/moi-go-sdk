@@ -1,0 +1,83 @@
+[
+  {
+    "name": "download-task-file",
+    "operation": "download-task-file",
+    "method": "GET",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1/tasks/task%2F1/files/file%2F1/download",
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "status": 200,
+    "response_base64": "JVBERi0xLjcKAGJpbmFyef8=",
+    "response_content_type": "application/pdf",
+    "response_headers": {
+      "Content-Disposition": "attachment; filename*=UTF-8''report.pdf",
+      "Cache-Control": "private, no-store, max-age=0"
+    }
+  },
+  {
+    "name": "preview-task-file",
+    "operation": "preview-task-file",
+    "method": "GET",
+    "path": "/newmoi/public/webapp/conversations/conversation%2F1/tasks/task%2F1/files/file%2F1/preview",
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ]
+    },
+    "status": 200,
+    "response_base64": "5L2g5aW977yM6aKE6KeICg==",
+    "response_content_type": "text/plain; charset=utf-8",
+    "response_headers": {
+      "Content-Disposition": "inline; filename*=UTF-8''preview.txt"
+    }
+  },
+  {
+    "name": "upload-file",
+    "operation": "upload-file",
+    "method": "POST",
+    "path": "/newmoi/public/webapp/files",
+    "query": {
+      "webapp": [
+        "agent-1"
+      ],
+      "t": [
+        "link token/+"
+      ],
+      "s": [
+        "session token/+"
+      ],
+      "conversation_id": [
+        "conversation/1"
+      ]
+    },
+    "input": {
+      "filename": "报告.txt",
+      "content_base64": "5L2g5aW977yM5paH5Lu2Cg==",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "file_id": "file/1",
+        "conversation_id": "conversation/1",
+        "size": 0
+      }
+    }
+  }
+]

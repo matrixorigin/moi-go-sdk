@@ -1,0 +1,73 @@
+[
+  {
+    "name": "file list preserves filters ordering fuzzy and zero pagination",
+    "operation": "files",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/list",
+    "input": {"volume_key": "30", "parent_id": "", "name": "订单", "extensions": ["csv", "txt"], "file_ids": ["f1", "f2"], "file_type": "file", "page": 0, "page_size": 0, "order": "", "order_by": ""},
+    "request": {
+      "page": 0, "page_size": 0, "order": "", "order_by": "",
+      "filters": [
+        {"name": "file_ext", "values": ["csv", "txt"]},
+        {"name": "file_ids", "values": ["f1", "f2"]},
+        {"name": "file_type", "values": ["file"]},
+        {"name": "file_name", "values": ["订单"], "fuzzy": true},
+        {"name": "parent_id", "values": [""]},
+        {"name": "volume_id", "values": ["30"]}
+      ]
+    },
+    "response": {"code": "OK", "msg": "success", "data": {"total": 9007199254740993, "list": [{"id": "f1", "name": "订单.csv", "file_type": "file", "file_ext": "csv", "size": 9007199254740993, "parent_id": "", "volume_id": "30", "volume_reserved": false}]}},
+    "status": 200
+  },
+  {
+    "name": "create file references",
+    "operation": "create-file",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/create",
+    "input": {"volume_id": 30, "file_ids": ["f1", "f2"]},
+    "request": {"volume_id": 30, "file_ids": ["f1", "f2"]},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "file info returns external storage metadata",
+    "operation": "file-info",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/info",
+    "input": {"file_id": "f1"},
+    "request": {"file_id": "f1"},
+    "response": {"code": "OK", "msg": "success", "data": {"file_id": "f1", "file_name": "订单.csv", "size": 9007199254740993, "storage_mode": "external", "external_connector_id": "connector-1", "external_uri": "https://files.example.test/f1"}},
+    "status": 200
+  },
+  {
+    "name": "delete file keeps string volume id",
+    "operation": "delete-file",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/delete",
+    "input": {"file_id": "f1", "volume_key": "30"},
+    "request": {"id": "f1", "volume_id": "30"},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "delete file references forwards owner not found",
+    "operation": "delete-file-ref",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/delete_ref",
+    "input": {"volume_id": 30, "file_ids": ["missing"]},
+    "request": {"volume_id": 30, "file_ids": ["missing"]},
+    "response": {"code": "ErrNotFound", "msg": "file reference not found", "data": null},
+    "response_headers": {"X-Request-ID": "file-request-1"},
+    "status": 404
+  },
+  {
+    "name": "trigger file workflow returns zero count",
+    "operation": "trigger-file-workflow",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/trigger_workflow",
+    "input": {"volume_id": 30, "file_ids": ["f1"]},
+    "request": {"volume_id": 30, "file_ids": ["f1"]},
+    "response": {"code": "OK", "msg": "success", "data": {"triggered": 0}},
+    "status": 200
+  }
+]

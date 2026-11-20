@@ -1,0 +1,31 @@
+[
+  {
+    "name": "native bootstrap uses bearer and typed product response",
+    "operation": "bootstrap-native",
+    "method": "POST",
+    "path": "/newmoi/auth/cli/bootstrap",
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "issuer": "https://uc.example.test",
+        "subject": "uc-user",
+        "session_id": "session",
+        "principal_id": "product-user",
+        "catalog_user_id": "catalog-user",
+        "workspaces": [
+          {
+            "id": "workspace",
+            "status": "ACTIVE",
+            "access_status": "accepted"
+          }
+        ],
+        "workspace_initialization": {
+          "status": "ready"
+        }
+      }
+    },
+    "status": 200
+  }
+]

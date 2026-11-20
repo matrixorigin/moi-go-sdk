@@ -1,0 +1,121 @@
+[
+  {
+    "name": "conversation list preserves scope filters false and zero",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations",
+    "resource": "conversations",
+    "tail_path": "",
+    "query": {"agent_workspace_id": [""], "agent_id": ["agent-1"], "status": ["active"], "purpose": ["chat"], "visibility": ["visible"], "parent_conversation_id": [""], "pinned": ["false"], "keyword": [""], "include_latest_task": ["false"], "limit": ["0"], "offset": ["0"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"id": "conversation 1", "workspace_id": "workspace-1", "agent_workspace_id": "workspace-1", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "workspace-1", "display_name": "Agent One", "avatar_ref": "avatar-1", "status": "active", "available": true}, "title_user_edited": false, "status": "active", "purpose": "chat", "visibility": "visible", "pinned": false, "created_at": "2026-01-02T03:04:05Z", "updated_at": "2026-01-02T03:04:05Z"}], "total": 1, "limit": 50, "offset": 0}}
+  },
+  {
+    "name": "conversation create preserves explicit empty and false fields",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/conversations",
+    "resource": "conversations",
+    "tail_path": "",
+    "input": {"body": {"id": "conversation 1", "agent_workspace_id": "", "agent_id": "agent-1", "title": "", "status": "active", "purpose": "chat", "visibility": "visible", "parent_conversation_id": "", "pinned": false}},
+    "request": {"id": "conversation 1", "agent_workspace_id": "", "agent_id": "agent-1", "title": "", "status": "active", "purpose": "chat", "visibility": "visible", "parent_conversation_id": "", "pinned": false},
+    "status": 201,
+    "response": {"code": 0, "data": {"id": "conversation 1", "workspace_id": "workspace-1", "agent_workspace_id": "workspace-1", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "workspace-1", "display_name": "Agent One", "avatar_ref": "avatar-1", "status": "active", "available": true}, "title_user_edited": false, "status": "active", "purpose": "chat", "visibility": "visible", "pinned": false, "created_at": "2026-01-02T03:04:05Z", "updated_at": "2026-01-02T03:04:05Z"}}
+  },
+  {
+    "name": "conversation agent groups preserve availability projection",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations/agent-groups",
+    "resource": "conversations",
+    "tail_path": "/agent-groups",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"agent_workspace_id": "workspace-1", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "workspace-1", "display_name": "Agent One", "avatar_ref": "avatar-1", "status": "archived", "available": false, "unavailable_reason": "archived"}, "conversation_count": 2, "last_activity_at": "2026-01-02T03:04:05Z"}], "total": 1}}
+  },
+  {
+    "name": "conversation get preserves escaped id scope and task projection",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201",
+    "resource": "conversations",
+    "tail_path": "/conversation%201",
+    "query": {"agent_workspace_id": ["system"], "agent_id": ["agent-1"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"id": "conversation 1", "workspace_id": "workspace-1", "agent_workspace_id": "system", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "system", "display_name": "Agent One", "available": true}, "title": "Conversation", "title_user_edited": true, "status": "active", "purpose": "chat", "visibility": "visible", "pinned": true, "head_message_id": "message-2", "active_task_id": "task-2", "latest_task_id": "task-2", "latest_task_state": "working", "last_message_at": "2026-01-02T03:04:05Z", "created_at": "2026-01-02T03:00:00Z", "updated_at": "2026-01-02T03:04:05Z"}}
+  },
+  {
+    "name": "conversation update preserves all presence fields",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201",
+    "resource": "conversations",
+    "tail_path": "/conversation%201",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"]},
+    "input": {"body": {"title": "", "status": "archived", "pinned": false, "head_message_id": ""}},
+    "request": {"title": "", "status": "archived", "pinned": false, "head_message_id": ""},
+    "status": 200,
+    "response": {"code": 0, "data": {"id": "conversation 1", "workspace_id": "workspace-1", "agent_workspace_id": "workspace-1", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "workspace-1", "display_name": "Agent One", "available": true}, "title_user_edited": true, "status": "archived", "purpose": "chat", "visibility": "visible", "pinned": false, "latest_task_id": "task-1", "latest_task_state": "completed", "created_at": "2026-01-02T03:00:00Z", "updated_at": "2026-01-02T03:04:05Z"}}
+  },
+  {
+    "name": "conversation fork preserves request and lineage",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201/forks",
+    "resource": "conversations",
+    "tail_path": "/conversation%201/forks",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"]},
+    "input": {"body": {"request_id": "request-1", "source_message_id": "message-1", "title": "Fork"}},
+    "request": {"request_id": "request-1", "source_message_id": "message-1", "title": "Fork"},
+    "status": 201,
+    "response": {"code": 0, "data": {"id": "conversation-2", "workspace_id": "workspace-1", "agent_workspace_id": "workspace-1", "agent_id": "agent-1", "agent_summary": {"id": "agent-1", "workspace_id": "workspace-1", "display_name": "Agent One", "available": true}, "title": "Fork", "title_user_edited": true, "status": "active", "purpose": "chat", "visibility": "visible", "parent_conversation_id": "conversation 1", "source_message_id": "message-1", "pinned": false, "head_message_id": "message-1", "created_at": "2026-01-02T03:04:05Z", "updated_at": "2026-01-02T03:04:05Z"}}
+  },
+  {
+    "name": "conversation fork preserves owner failure",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201/forks",
+    "resource": "conversations",
+    "tail_path": "/conversation%201/forks",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"]},
+    "input": {"body": {"request_id": "request-2", "source_message_id": "message-2", "title": ""}},
+    "request": {"request_id": "request-2", "source_message_id": "message-2", "title": ""},
+    "status": 409,
+    "response": {"code": "conversation_fork_not_ready", "msg": "Conversation fork is not ready."},
+    "response_headers": {"X-Request-ID": "conversation-request-1"}
+  },
+  {
+    "name": "conversation messages preserve filters raw parts and large sequence",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201/messages",
+    "resource": "conversations",
+    "tail_path": "/conversation%201/messages",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"], "role": ["user"], "view": ["all"], "all": ["false"], "limit": ["0"], "offset": ["0"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"id": "message-1", "workspace_id": "workspace-1", "conversation_id": "conversation 1", "task_id": "task-1", "agent_id": "agent-1", "manifest_id": "manifest-1", "role": "user", "parts": [{"kind": "text", "text": "hello", "metadata": {"big": 9007199254740993}}], "parent_message_id": "message-0", "seq": 9007199254740993, "created_at": "2026-01-02T03:04:05Z"}], "total": 1, "limit": 50, "offset": 0}}
+  },
+  {
+    "name": "conversation messages all preserves true and empty page",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201/messages",
+    "resource": "conversations",
+    "tail_path": "/conversation%201/messages",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"], "role": [""], "view": [""], "all": ["true"], "limit": ["0"], "offset": ["0"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [], "total": 0, "limit": 0, "offset": 0}}
+  },
+  {
+    "name": "conversation tasks preserve complete A2A projection",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/conversations/conversation%201/tasks",
+    "resource": "conversations",
+    "tail_path": "/conversation%201/tasks",
+    "query": {"agent_workspace_id": ["workspace-1"], "agent_id": ["agent-1"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"kind": "task", "id": "task-1", "contextId": "conversation 1", "status": {"state": "completed", "timestamp": "2026-01-02T03:04:05Z"}, "history": [{"kind": "message", "messageId": "message-1", "role": "user", "parts": [{"kind": "text", "text": "hello"}], "taskId": "task-1", "contextId": "conversation 1"}], "metadata": {"big": 9007199254740993}}]}}
+  }
+]

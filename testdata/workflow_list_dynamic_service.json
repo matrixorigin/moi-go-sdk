@@ -1,0 +1,38 @@
+{
+  "id": "wf-8003",
+  "name": "invoice-lookup-service",
+  "description": "dynamic invoice lookup service",
+  "source_type": "manual_dsl",
+  "status": "ready",
+  "available_actions": ["update", "delete", "enable", "run"],
+  "execution_mode": "dynamic_service",
+  "latest_workflow_version_id": "wfv-23",
+  "latest_version": 23,
+  "latest_version_status": "published",
+  "parameter_summary": {
+    "status": "complete",
+    "total_fields": 4,
+    "required_fields": 2,
+    "filled_required_fields": 2,
+    "missing_required_fields": 0
+  },
+  "execution_summary": {
+    "total_executions": 42,
+    "active_executions": 1,
+    "latest_execution_id": "run-912",
+    "latest_execution_status": "running",
+    "latest_execution_at": "2026-10-27T04:00:00Z",
+    "active_execution_id": "run-913",
+    "active_execution_status": "running"
+  },
+  "trigger_summary": {
+    "mode": "dynamic_service",
+    "configured": true,
+    "enabled": true,
+    "service_name": "invoice_lookup",
+    "input_schema": "{\"type\":\"object\",\"required\":[\"invoice_id\"]}",
+    "output_schema": "{\"type\":\"object\",\"required\":[\"invoice_total\"]}"
+  },
+  "created_at": "2026-08-02T03:00:00Z",
+  "updated_at": "2026-10-27T05:30:00Z"
+}

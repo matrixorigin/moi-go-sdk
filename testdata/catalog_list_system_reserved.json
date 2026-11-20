@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "name": "system",
+  "description": "",
+  "database_count": 1,
+  "reserved": true,
+  "allowed_actions": ["catalog.read"]
+}

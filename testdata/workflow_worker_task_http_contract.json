@@ -1,0 +1,32 @@
+[
+  {
+    "name": "worker task complete payload and accepted identity",
+    "input": {"name": "downstream", "workflow_version_id": "version-1", "data": "{\"input\":0}", "vars": "{\"enabled\":false}"},
+    "request": {"task": {"name": "downstream", "workflow_version_id": "version-1", "data": "{\"input\":0}", "vars": "{\"enabled\":false}"}},
+    "response": {"task": {"id": "task-1", "name": "downstream", "workflow_version_id": "version-1", "workflow_execution_id": "execution-1"}},
+    "status": 200
+  },
+  {
+    "name": "worker task omits unused JSON payloads",
+    "input": {"name": "downstream", "workflow_version_id": "version-2"},
+    "request": {"task": {"name": "downstream", "workflow_version_id": "version-2"}},
+    "response": {"task": {"id": "task-2", "name": "downstream", "workflow_version_id": "version-2", "workflow_execution_id": "execution-2"}},
+    "status": 200
+  },
+  {
+    "name": "worker task preserves owner rejection",
+    "input": {"name": "", "workflow_version_id": ""},
+    "request": {"task": {}},
+    "response": {"code": "ErrParamInvalid", "msg": "Bad Request"},
+    "response_headers": {"X-Request-ID": "worker-task-request-1"},
+    "status": 400
+  },
+  {
+    "name": "worker task rejects null success task",
+    "input": {"name": "downstream", "workflow_version_id": "version-1"},
+    "request": {"task": {"name": "downstream", "workflow_version_id": "version-1"}},
+    "response": {"task": null},
+    "status": 200,
+    "error_code": "ErrResponseInvalid"
+  }
+]

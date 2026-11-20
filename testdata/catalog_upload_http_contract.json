@@ -1,0 +1,86 @@
+[
+  {
+    "name": "private upload preserves MIME and scoped route",
+    "operation": "upload-private",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/catalog-files/uploads",
+    "input": {"filename": "private.txt", "content_base64": "cHJpdmF0ZQ==", "content_type": "text/plain"},
+    "multipart": {"fields": {}, "file": {"filename": "private.txt", "content_type": "text/plain", "content_base64": "cHJpdmF0ZQ=="}},
+    "response": {"code": "OK", "msg": "OK", "data": {"file_id": "private-1", "original_name": "private.txt", "size": 7, "md5": "md5-private", "catalog_file": {"workspace_id": "workspace-1", "volume_id": 30, "file_id": "private-1", "path": "private.txt", "name": "private.txt", "size": 7, "md5": "md5-private"}}},
+    "status": 201
+  },
+  {
+    "name": "catalog upload defaults",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/upload",
+    "input": {
+      "filename": "plain.csv",
+      "content_base64": "YSxiCjEsMgo="
+    },
+    "multipart": {
+      "fields": {},
+      "file": {
+        "filename": "plain.csv",
+        "content_type": "application/octet-stream",
+        "content_base64": "YSxiCjEsMgo="
+      }
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {"file_id": "file-1", "original_name": "plain.csv", "size": 8, "md5": "md5-1"}
+    },
+    "status": 200
+  },
+  {
+    "name": "catalog upload preserves MIME origin unicode name and binary content",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/upload",
+    "input": {
+      "filename": "订单 数据.bin",
+      "content_base64": "AP8BgAo=",
+      "content_type": "application/x-moi-test",
+      "external_source_uri": "  https://files.example.test/source?id=7  "
+    },
+    "multipart": {
+      "fields": {"external_source_uri": "https://files.example.test/source?id=7"},
+      "file": {
+        "filename": "订单 数据.bin",
+        "content_type": "application/x-moi-test",
+        "content_base64": "AP8BgAo="
+      }
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {"file_id": "file-2", "original_name": "订单 数据.bin", "size": 9007199254740993, "md5": "md5-2"}
+    },
+    "status": 200
+  },
+  {
+    "name": "catalog upload forwards external source conflict",
+    "method": "POST",
+    "path": "/newmoi/catalog/file/upload",
+    "input": {
+      "filename": "external.txt",
+      "content_base64": "ZXh0ZXJuYWw=",
+      "content_type": "text/plain",
+      "external_source_uri": "https://files.example.test/conflict"
+    },
+    "multipart": {
+      "fields": {"external_source_uri": "https://files.example.test/conflict"},
+      "file": {
+        "filename": "external.txt",
+        "content_type": "text/plain",
+        "content_base64": "ZXh0ZXJuYWw="
+      }
+    },
+    "response": {
+      "code": "ErrExternalSourceURIConflict",
+      "msg": "external source URI conflicts with an existing file",
+      "data": null
+    },
+    "response_headers": {"X-Request-ID": "upload-request-1"},
+    "status": 409
+  }
+]
