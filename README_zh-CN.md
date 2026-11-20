@@ -14,9 +14,7 @@
 go get github.com/matrixorigin/moi-go-sdk/v5@v5.2.3
 ```
 
-如需其他版本，请在 [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) 选择与部署匹配的 `v5.Y.Z`。安装后，在自己的模块中保存下方示例并运行 `go run .`。
-
-[官方 SDK 下载页](https://docs.matrixorigin.cn/moi/zh/5.0/developer/quickstart/downloads/ai-studio.html)另有旧版 `0.1.0-r2` 离线归档。使用该归档时，请保留随包的 `go.work` 和模块布局，并按下载页验证随包示例。
+如需其他版本，请在 [GitHub Releases](https://github.com/matrixorigin/moi-go-sdk/releases) 选择与部署匹配的 `v5.Y.Z`。
 
 ## 认证与最小示例
 
@@ -27,7 +25,7 @@ export PRODUCT_API_BASE_URL='https://api.moi.matrixorigin.cn/v5'
 export PRODUCT_API_KEY='YOUR_PERSONAL_ACCESS_TOKEN'
 ```
 
-以下示例按名称绑定工作区并输出其 ID，使用受推荐的 `EnsureWorkspace` 用户故事入口。绑定工作区后，后续操作请继续使用 `WorkspaceHandle`。只有在已经拿到工作区 ID 时才使用 `client.Workspace(workspaceID)`。
+在自己的 Go 模块中将以下代码保存为 `main.go`，运行 `go run .`，列出当前账号可访问的工作区。
 
 ```go
 package main
@@ -49,31 +47,24 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	workspace, err := client.EnsureWorkspace(context.Background(), "my-first-workspace")
+
+	result, err := client.Workspaces().List(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(workspace.ID(), workspace.Name())
+	for _, workspace := range result.GetWorkspaces() {
+		fmt.Printf("%s\t%s\n", workspace.GetId(), workspace.GetName())
+	}
 }
 ```
 
-也可以直接调用与 API 路由对应的底层服务：
-
-```go
-result, err := client.Workspaces().List(context.Background())
-if err != nil {
-	log.Fatal(err)
-}
-for _, workspace := range result.GetWorkspaces() {
-	fmt.Println(workspace.GetId(), workspace.GetName())
-}
-```
+如需按名称查找工作区并在不存在时创建，使用 `client.EnsureWorkspace(ctx, "my-first-workspace")`。已知 ID 时，可使用 `client.Workspace(workspaceID)`。
 
 PAT 标识账号。工作区请求默认使用服务端的 Default Role，也可以在创建客户端时使用 `sdk.WithWorkspaceCurrentRoleID` 为指定工作区选择角色。 请使用已绑定的角色 ID。服务端会验证角色，显式选择无效时请求会失败。
 
 ## 版本兼容性与许可证
 
-Go SDK 5.2.3 面向 MOI 5.2.3 的 AI Studio API（`/v5`）。使用其他 MOI 版本时，请按部署说明选择匹配的制品。旧离线包的能力覆盖可能不同。
+Go SDK 5.2.3 面向 MOI 5.2.3 的 AI Studio API（`/v5`）。使用其他 MOI 版本时，请按部署说明选择匹配的制品。
 
 [旧版 Catalog SDK](https://github.com/matrixorigin/moi-go-sdk/tree/legacy) 面向 MOI 4.0。迁移到 MOI 5.x 时，请检查获取的版本确为 Product SDK，并切换 API 地址、认证方式和客户端方法，再重新验证各业务调用。
 
