@@ -1,0 +1,17 @@
+{
+  "id": 3101,
+  "name": "retail_dw",
+  "display_name": "Retail Warehouse",
+  "description": "retail domain catalog",
+  "display_description": "Retail domain catalog",
+  "database_count": 4,
+  "volume_count": 2,
+  "file_count": 128,
+  "table_count": 56,
+  "created_at": "2026-09-30T03:12:00Z",
+  "created_by": "u-100",
+  "updated_at": "2026-10-10T11:45:00Z",
+  "updated_by": "u-101",
+  "reserved": false,
+  "allowed_actions": ["catalog.read", "catalog.update"]
+}

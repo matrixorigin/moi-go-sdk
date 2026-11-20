@@ -1,0 +1,560 @@
+[
+  {
+    "name": "find selected files",
+    "operation": "find-files",
+    "input": {
+      "request_id": "r-find",
+      "query": "年度报告 0007",
+      "top_k": 5
+    },
+    "request": {
+      "request_id": "r-find",
+      "query": "年度报告 0007",
+      "top_k": 5
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-0",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "keyword search",
+    "operation": "search",
+    "input": {
+      "request_id": "r-search",
+      "keywords": [
+        "预算",
+        "0007"
+      ],
+      "file_ids": [
+        "f-1"
+      ],
+      "volume_id": "v-1",
+      "max_hits": 8,
+      "max_rows": 10,
+      "before": 2,
+      "after": 1,
+      "fulltext_only": true
+    },
+    "request": {
+      "request_id": "r-search",
+      "keywords": [
+        "预算",
+        "0007"
+      ],
+      "file_ids": [
+        "f-1"
+      ],
+      "volume_id": "v-1",
+      "max_hits": 8,
+      "max_rows": 10,
+      "before": 2,
+      "after": 1,
+      "fulltext_only": true
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-1",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "source page exact int64",
+    "operation": "search",
+    "input": {
+      "request_id": "r-page",
+      "source_page": {
+        "semantic_model_id": 9007199254740993,
+        "file_id": "f-1",
+        "page_size": 3
+      }
+    },
+    "request": {
+      "request_id": "r-page",
+      "source_page": {
+        "semantic_model_id": 9007199254740993,
+        "file_id": "f-1",
+        "page_size": 3
+      }
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-2",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "read parsed document zero cursor",
+    "operation": "read-document",
+    "input": {
+      "request_id": "r-doc",
+      "markdown_file_id": "md-1",
+      "cursor": 0,
+      "limit_chars": 1200
+    },
+    "request": {
+      "request_id": "r-doc",
+      "markdown_file_id": "md-1",
+      "limit_chars": 1200
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-3",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "search parsed document",
+    "operation": "search-document",
+    "input": {
+      "request_id": "r-doc-search",
+      "markdown_file_id": "md-1",
+      "query": "0007",
+      "max_matches": 3,
+      "context_chars": 80
+    },
+    "request": {
+      "request_id": "r-doc-search",
+      "markdown_file_id": "md-1",
+      "query": "0007",
+      "max_matches": 3,
+      "context_chars": 80
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-4",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "search visual evidence",
+    "operation": "search-images",
+    "input": {
+      "request_id": "r-image",
+      "query_text": "图纸 0007",
+      "top_k": 3
+    },
+    "request": {
+      "request_id": "r-image",
+      "query_text": "图纸 0007",
+      "top_k": 3
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-5",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "read evidence integer ID opaque string cursor",
+    "operation": "read-evidence",
+    "input": {
+      "request_id": "r-evidence",
+      "artifact_id": "artifact-1",
+      "chunk_id": "chunk-1",
+      "file_id": "f-1",
+      "semantic_model_id": 9007199254740993,
+      "cursor": "9007199254740993",
+      "limit_chars": 300
+    },
+    "request": {
+      "request_id": "r-evidence",
+      "artifact_id": "artifact-1",
+      "chunk_id": "chunk-1",
+      "file_id": "f-1",
+      "semantic_model_id": 9007199254740993,
+      "cursor": "9007199254740993",
+      "limit_chars": 300
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-6",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "batch local reads optional model ID",
+    "operation": "read-evidence",
+    "input": {
+      "request_id": "r-batch",
+      "local_reads": [
+        {
+          "artifact_id": "artifact-1",
+          "chunk_id": "chunk-1",
+          "file_id": "f-1",
+          "semantic_model_id": 9007199254740993,
+          "local_content_sha256": "8121d79aa4545afb6e09233ba2ff050e4dcb80a48e1ff0825cfa8c11b8202543"
+        },
+        {
+          "artifact_id": "artifact-2",
+          "chunk_id": "chunk-2",
+          "file_id": "f-2",
+          "local_content_sha256": "15c1eed1f12318a571782a559fc17453f8676dae6b87a3fd70557782f19b2783"
+        }
+      ]
+    },
+    "request": {
+      "request_id": "r-batch",
+      "local_reads": [
+        {
+          "artifact_id": "artifact-1",
+          "chunk_id": "chunk-1",
+          "file_id": "f-1",
+          "semantic_model_id": 9007199254740993,
+          "local_content_sha256": "8121d79aa4545afb6e09233ba2ff050e4dcb80a48e1ff0825cfa8c11b8202543"
+        },
+        {
+          "artifact_id": "artifact-2",
+          "chunk_id": "chunk-2",
+          "file_id": "f-2",
+          "local_content_sha256": "15c1eed1f12318a571782a559fc17453f8676dae6b87a3fd70557782f19b2783"
+        }
+      ]
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-7",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "explicit zero model ID reaches owner rejection",
+    "operation": "read-evidence",
+    "input": {
+      "request_id": "r-denied",
+      "artifact_id": "artifact-1",
+      "semantic_model_id": 0
+    },
+    "request": {
+      "request_id": "r-denied",
+      "artifact_id": "artifact-1",
+      "semantic_model_id": 0
+    },
+    "status": 403,
+    "response": {
+      "code": "ErrPermissionDenied",
+      "msg": "当前任务无读取权限",
+      "data": null
+    }
+  },
+  {
+    "name": "describe bound tables",
+    "operation": "describe-tables",
+    "input": {
+      "request_id": "r-tables",
+      "table_names": [
+        "sales.orders"
+      ],
+      "include_samples": 2,
+      "max_ddl_chars": 1000,
+      "keywords": [
+        "金额"
+      ]
+    },
+    "request": {
+      "request_id": "r-tables",
+      "table_names": [
+        "sales.orders"
+      ],
+      "include_samples": 2,
+      "max_ddl_chars": 1000,
+      "keywords": [
+        "金额"
+      ]
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-9",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "query bound knowledge",
+    "operation": "query",
+    "input": {
+      "request_id": "r-query",
+      "sql": "SELECT '0007' AS code",
+      "max_rows": 10
+    },
+    "request": {
+      "request_id": "r-query",
+      "sql": "SELECT '0007' AS code",
+      "max_rows": 10
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-10",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "complete empty citation selection",
+    "operation": "cite",
+    "input": {
+      "request_id": "r-cite",
+      "sources": [],
+      "complete_read_requirements": true
+    },
+    "request": {
+      "request_id": "r-cite",
+      "complete_read_requirements": true
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-11",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "explicit false citation report",
+    "operation": "cite",
+    "input": {
+      "request_id": "r-cite-false",
+      "sources": [],
+      "complete_read_requirements": false
+    },
+    "request": {
+      "request_id": "r-cite-false"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-12",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    }
+  },
+  {
+    "name": "search flags keep documented defaults",
+    "operation": "search",
+    "input": {
+      "request_id": "r-flags",
+      "keywords": [
+        "预算"
+      ],
+      "max_hits": 8,
+      "before": 2,
+      "after": 1
+    },
+    "request": {
+      "request_id": "r-flags",
+      "keywords": [
+        "预算"
+      ],
+      "max_hits": 8,
+      "before": 2,
+      "after": 1
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-13",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    },
+    "cli_args": [
+      "--request-id",
+      "r-flags",
+      "--keywords",
+      "预算"
+    ]
+  },
+  {
+    "name": "JSON search preserves explicit flags",
+    "operation": "search",
+    "input": {
+      "request_id": "r-mixed",
+      "keywords": [
+        "预算"
+      ],
+      "max_hits": 4,
+      "max_rows": 7
+    },
+    "request": {
+      "request_id": "r-mixed",
+      "keywords": [
+        "预算"
+      ],
+      "max_hits": 4,
+      "max_rows": 7
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "call_id": "call-14",
+        "output": {
+          "text": "证据 0007",
+          "cursor": "9007199254740993"
+        },
+        "artifacts": [],
+        "metadata": {
+          "origin": "protocol-test"
+        },
+        "failed": false
+      }
+    },
+    "cli_args": [
+      "--keywords",
+      "预算",
+      "--max-hits",
+      "4",
+      "--json",
+      "{\"request_id\": \"r-mixed\", \"max_rows\": 7}"
+    ]
+  }
+]

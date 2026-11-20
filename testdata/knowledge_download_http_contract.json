@@ -1,0 +1,6 @@
+[
+  {"name":"preview source file stream","operation":"preview-source-file","method":"GET","path":"/newmoi/semantic-models/model-1/sources/file/file%2F1/preview","input":{"model_id":"model-1","file_id":"file/1"},"status":200,"content_base64":"cHJldmlldw=="},
+  {"name":"preview source file owner error","operation":"preview-source-file","method":"GET","path":"/newmoi/semantic-models/model-1/sources/file/file%2F1/preview","input":{"model_id":"model-1","file_id":"file/1"},"status":404,"response_headers":{"X-Request-ID":"request-preview-1"},"response":{"code":"ErrNotFound","msg":"来源文件不存在","data":null}},
+  {"name":"preview artifact stream","operation":"preview-artifact","method":"GET","path":"/newmoi/semantic-models/model-1/artifacts/artifact%2F1/preview","input":{"model_id":"model-1","file_id":"artifact/1"},"status":200,"content_base64":"YXJ0aWZhY3Q="},
+  {"name":"preview artifact owner error","operation":"preview-artifact","method":"GET","path":"/newmoi/semantic-models/model-1/artifacts/artifact%2F1/preview","input":{"model_id":"model-1","file_id":"artifact/1"},"status":403,"response_headers":{"X-Request-ID":"request-artifact-1"},"response":{"code":"ErrForbidden","msg":"无权读取图片产物","data":null}}
+]

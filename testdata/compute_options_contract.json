@@ -1,0 +1,65 @@
+[
+  {
+    "name": "create spec with all optional fields", "command": "create-spec", "id": "custom-task", "method": "POST", "path": "/compute-resource-specs",
+    "input": {"kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192,"gpu_count":1,"gpu_memory_mib":1024,"gpu_cores":50,"credit_per_hour":0.125,"description":"说明","enabled":false,"node_placement":{"node_selector":{"matrixorigin.io/pool":"gpu"}}},
+    "request": {"id":"custom-task","kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192,"gpu_count":1,"gpu_memory_mib":1024,"gpu_cores":50,"credit_per_hour":0.125,"description":"说明","enabled":false,"node_placement":{"node_selector":{"matrixorigin.io/pool":"gpu"}}},
+    "response": {"id":"custom-task","kind":"task","enabled":false,"node_placement":{"node_selector":{"matrixorigin.io/pool":"gpu"}}}
+  },
+  {
+    "name": "create spec leaves optional fields omitted", "command": "create-spec", "id": "custom-task", "method": "POST", "path": "/compute-resource-specs",
+    "input": {"kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192},
+    "request": {"id":"custom-task","kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192},
+    "response": {"id":"custom-task","kind":"task"}
+  },
+  {
+    "name": "update spec preserves submitted zero false and empty values", "command": "update-spec", "id": "custom-task", "method": "PUT", "path": "/compute-resource-specs/custom-task",
+    "input": {"kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192,"gpu_count":0,"gpu_memory_mib":0,"gpu_cores":0,"credit_per_hour":0.125,"description":"","enabled":false,"node_placement":{}},
+    "request": {"kind":"task","family":"custom","family_name":"任务资源","family_name_en":"Task","cpu_milli":2000,"memory_mib":8192,"gpu_count":0,"gpu_memory_mib":0,"gpu_cores":0,"credit_per_hour":0.125,"description":"","enabled":false,"node_placement":{}},
+    "response": {"id":"custom-task","kind":"task","enabled":true,"gpu_count":1,"description":"persisted description","node_placement":null}
+  },
+  {
+    "name": "update spec explicit null placement", "command": "update-spec", "id": "custom-task", "method": "PUT", "path": "/compute-resource-specs/custom-task",
+    "input": {"node_placement":null}, "request": {"node_placement":null},
+    "response": {"id":"custom-task","kind":"task","enabled":true,"node_placement":null}
+  },
+  {
+    "name": "create resource with optional settings", "command": "create", "method": "POST", "path": "/compute-resources",
+    "input": {"name":"任务资源","kind":"task","spec_id":"custom-task","cpu":2,"memory_gib":8,"description":"说明","gpu":1,"min_replicas":0,"max_replicas":2,"auto_suspend_minutes":30,"worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}],"go_worker_image_id":"go-default","python_worker_image_id":"python-default","platform":"linux/amd64","py_requirements_txt":"requests==2.31.0\n"},
+    "request": {"name":"任务资源","kind":"task","spec_id":"custom-task","cpu":2,"memory_gib":8,"description":"说明","gpu":1,"min_replicas":0,"max_replicas":2,"auto_suspend_minutes":30,"worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}],"go_worker_image_id":"go-default","python_worker_image_id":"python-default","platform":"linux/amd64","py_requirements_txt":"requests==2.31.0\n"},
+    "response": {"id":"cr-1","name":"任务资源","kind":"task","status":"suspended","py_requirements_txt":"requests==2.31.0\n","py_requirements_sha":"sha-test"}
+  },
+  {
+    "name": "create resource keeps SDK default idle timeout", "command": "create", "method": "POST", "path": "/compute-resources",
+    "input": {"name":"任务资源","spec_id":"custom-task","cpu":2,"memory_gib":8},
+    "request": {"name":"任务资源","spec_id":"custom-task","cpu":2,"memory_gib":8,"auto_suspend_minutes":10},
+    "response": {"id":"cr-1","name":"任务资源","kind":"task","status":"suspended"}
+  },
+  {
+    "name": "update resource with all optional settings", "command": "update", "id":"cr-1", "method": "PUT", "path": "/compute-resources/cr-1",
+    "input": {"name":"更新资源","kind":"task","spec_id":"custom-task","cpu":2,"memory_gib":8,"description":"说明","gpu":1,"min_replicas":0,"max_replicas":2,"auto_suspend_minutes":30,"worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}],"go_worker_image_id":"go-default","python_worker_image_id":"python-default","platform":"linux/amd64","py_requirements_txt":"requests==2.31.0\n"},
+    "request": {"name":"更新资源","kind":"task","spec_id":"custom-task","cpu":2,"memory_gib":8,"description":"说明","gpu":1,"min_replicas":0,"max_replicas":2,"auto_suspend_minutes":30,"worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}],"go_worker_image_id":"go-default","python_worker_image_id":"python-default","platform":"linux/amd64","py_requirements_txt":"requests==2.31.0\n"},
+    "response": {"id":"cr-1","name":"更新资源","kind":"task","py_requirements_txt":"requests==2.31.0\n","py_requirements_sha":"sha-test"}
+  },
+  {
+    "name": "update resource clears dependencies and worker selection", "command": "update", "id":"cr-1", "method": "PUT", "path": "/compute-resources/cr-1",
+    "input": {"description":"","py_requirements_txt":"","worker_images":[]},
+    "request": {"description":"","py_requirements_txt":"","worker_images":[]},
+    "response": {"id":"cr-1","kind":"task","status":"suspended"}
+  },
+  {
+    "name": "administrator update shares resource settings", "command": "admin-update", "id":"cr-1", "method": "PUT", "path": "/admin/compute-resources/cr-1",
+    "input": {"kind":"task","py_requirements_txt":"requests==2.31.0\n","worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}]},
+    "request": {"kind":"task","py_requirements_txt":"requests==2.31.0\n","worker_images":[{"worker_type":"python-worker","image_id":"python-default","platform":"linux/amd64"}]},
+    "response": {"id":"cr-1","kind":"task","py_requirements_txt":"requests==2.31.0\n","py_requirements_sha":"sha-test"}
+  },
+  {
+    "name": "get resource with dependency observations", "command": "get", "id":"cr-1", "method": "GET", "path": "/compute-resources/cr-1",
+    "input": {}, "request":null,
+    "response": {"id":"cr-1","kind":"task","py_requirements_txt":"requests==2.31.0\n","py_requirements_sha":"sha-test","py_deps":{"status":"FAILED","ready_count":0,"total_count":2,"last_error":"dependency install failed"}}
+  },
+  {
+    "name": "administrator list with dependency configuration", "command": "admin-list", "method": "GET", "path": "/admin/compute-resources",
+    "input": {}, "query":{"limit":["20"],"offset":["0"]}, "request":null,
+    "response": {"items":[{"id":"cr-1","workspace_id":"workspace-1","py_requirements_txt":"requests==2.31.0\n","py_requirements_sha":"sha-test","workspace":{"id":"workspace-1","name":"sdk test"}}],"total":1,"limit":20,"offset":0}
+  }
+]

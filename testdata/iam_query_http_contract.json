@@ -1,0 +1,99 @@
+[
+  {
+    "name": "role delete impact omits ownership options",
+    "operation": "role-delete-impact",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/5/delete-impact",
+    "query": {"expected_lifecycle_version": "2"},
+    "input": {"role_id": "5", "expected_lifecycle_version": 2},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"role": {"role_id": "5", "lifecycle_state": "active", "lifecycle_version": "2"}, "active_ownership_count": "0", "blocked": false, "transfer_blocked": false}},
+    "status": 200
+  },
+  {
+    "name": "role delete impact includes the ownership page and transfer check",
+    "operation": "role-delete-impact",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/5/delete-impact",
+    "query": {"expected_lifecycle_version": "5", "include_ownership": "true", "ownership_cursor": "cursor-1", "ownership_limit": "1", "transfer_requested": "true"},
+    "input": {"role_id": "5", "expected_lifecycle_version": 5, "include_ownership": true, "ownership_cursor": "cursor-1", "ownership_limit": 1, "transfer_requested": true},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"role": {"role_id": "5", "lifecycle_state": "active", "lifecycle_version": "5"}, "active_ownership_count": "2", "blocked": true, "transfer_blocked": false, "ownership": {"owned_count": "2", "ownership_version": "ownership-v1", "next_cursor": "cursor-2", "items": [{"resource_type": "workflow", "resource_id": "workflow-1", "display_name": "Order cleaning", "ownership_version": "7"}]}}},
+    "status": 200
+  },
+  {
+    "name": "role delete ownerships omits defaults",
+    "operation": "role-delete-ownerships",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/5/delete-ownerships",
+    "input": {"role_id": "5"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"items": [], "ownership_version": "ownership-v1", "next_cursor": ""}},
+    "status": 200
+  },
+  {
+    "name": "role delete ownerships forwards cursor limit and transfer",
+    "operation": "role-delete-ownerships",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/5/delete-ownerships",
+    "query": {"cursor": "next-key", "limit": "100", "transfer_requested": "true"},
+    "input": {"role_id": "5", "cursor": "next-key", "limit": 100, "transfer_requested": true},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"items": [{"resource_type": "workflow", "resource_id": "workflow-1", "display_name": "Order cleaning", "ownership_version": "7"}], "ownership_version": "ownership-v1", "next_cursor": "next-key-2"}},
+    "status": 200
+  },
+  {
+    "name": "role members forwards cursor and limit",
+    "operation": "role-members",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role-1/members",
+    "query": {"cursor": "user-0", "limit": "1"},
+    "input": {"role_id": "role-1"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"role_id": "role-1", "members": [{"user_id": "user-1", "display_name": "Alice Chen", "email": "alice@example.test", "default_role": true, "default_role_version": "4", "binding_created_at": "1700000000"}], "next_cursor": "user-1", "request_id": "members-request", "trace_id": "members-trace"}},
+    "status": 200
+  },
+  {
+    "name": "role members preserves empty cursor and zero limit for owner rejection",
+    "operation": "role-members",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role-1/members",
+    "query": {"cursor": "", "limit": "0"},
+    "input": {"role_id": "role-1"},
+    "request": null,
+    "response": {"code": "ErrParamInvalid", "msg": "Bad Request", "data": null},
+    "status": 400
+  },
+  {
+    "name": "permission resource list preserves required and optional query",
+    "operation": "list-permission-resources",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/resources",
+    "query": {"resource_type": "connector", "action_id": "connector.read", "purpose": "data_privilege", "parent_id": "catalog/1", "cursor": "next", "q": "sales", "limit": "1"},
+    "input": {"resource_type": "connector", "action_id": "connector.read", "purpose": "data_privilege"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"items": [{"resource_id": "connector/1", "display_name": "Sales"}], "next_cursor": "next-2"}},
+    "status": 200
+  },
+  {
+    "name": "permission resource list preserves empty filters and zero limit",
+    "operation": "list-permission-resources",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/resources",
+    "query": {"resource_type": "connector", "action_id": "connector.read", "purpose": "data_privilege", "parent_id": "", "cursor": "", "q": "", "limit": "0"},
+    "input": {"resource_type": "connector", "action_id": "connector.read", "purpose": "data_privilege"},
+    "request": null,
+    "response": {"code": "ErrParamInvalid", "msg": "Bad Request", "data": null},
+    "status": 400
+  },
+  {
+    "name": "permission resource batch describe returns business data",
+    "operation": "batch-describe-permission-resources",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/resources:batchDescribe",
+    "input": {"resource_type": "connector", "action_id": "connector.read", "purpose": "data_privilege", "resource_ids": ["connector/1", "connector/2"]},
+    "request": {"resource_type": "connector", "resource_ids": ["connector/1", "connector/2"], "action_id": "connector.read", "purpose": "data_privilege"},
+    "response": {"code": "OK", "msg": "success", "data": {"items": [{"resource_id": "connector/1"}, {"resource_id": "connector/2"}]}},
+    "status": 200
+  }
+]

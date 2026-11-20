@@ -1,0 +1,29 @@
+[
+  {
+    "name": "download query result preserves arbitrary bytes",
+    "operation": "download-query-result",
+    "method": "POST",
+    "path": "/newmoi/query/result/download",
+    "query": {},
+    "request": {
+      "statement_id": "statement/1"
+    },
+    "response_base64": "aWQsbmFtZQoxLOa1i+ivlQoA/w==",
+    "response_content_type": "text/csv",
+    "status": 200,
+    "statement_id": "statement/1"
+  },
+  {
+    "name": "preview query visual preserves arbitrary bytes",
+    "operation": "preview-query-visual",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/query-visuals/file%2F1/preview",
+    "query": {},
+    "request": null,
+    "response_base64": "iVBORw0KGgoA/2JpbmFyeQ==",
+    "response_content_type": "image/png",
+    "status": 200,
+    "agent_id": "agent/1",
+    "file_id": "file/1"
+  }
+]

@@ -1,0 +1,268 @@
+[
+  {
+    "name": "list omits optional query",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/semantic-models",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"id":9007199254740993,"name":"资料","can_write":false,"allowed_actions":["semantic_model.read"],"source_counts":{"files":0,"tables":2,"total":2}}],"total":9007199254740993,"next_page_token":""}}
+  },
+  {
+    "name": "list preserves query presence and repeated tags",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/semantic-models",
+    "query": {"include_append_capability":["false"],"page_size":["20"],"page_token":[""],"search":[""],"tags":["","财务"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[],"total":0,"next_page_token":"next/1"}}
+  },
+  {
+    "name": "list tags",
+    "operation": "list-tags",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/tags",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"tag":"","count":0},{"tag":"财务","count":9007199254740993}]}}
+  },
+  {
+    "name": "create empty omits options",
+    "operation": "create-empty",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/create-empty",
+    "input": {"name":"empty"},
+    "request": {"name":"empty"},
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"model":{"id":101,"name":"empty"},"data_domain":{"model_id":101,"catalog_id":17}}}
+  },
+  {
+    "name": "create empty preserves empty description and false",
+    "operation": "create-empty",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/create-empty",
+    "input": {"name":"empty","description_present":true,"description":"","image_index_enabled_present":true,"image_index_enabled":false},
+    "request": {"name":"empty","description":"","image_index_enabled":false},
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"model":{"id":101,"name":"empty","description":"","tables":[],"files":null},"data_domain":{"model_id":101,"catalog_id":0,"database_id":0}}}
+  },
+  {
+    "name": "import model preserves value presence without scalar defaults",
+    "operation": "import-model",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/import",
+    "input": {"request":{"name":"imported","description":"","tables":[],"files":null,"entries":[{"domain":"","kind":"metric","key":"revenue","tables":[],"spec":{"expression":"sum(amount)"}}]}},
+    "request": {"name":"imported","tables":[],"files":null,"entries":[{"kind":"metric","key":"revenue","spec":{"expression":"sum(amount)"}}]},
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"id":102,"name":"imported","tables":[],"files":null}}
+  },
+  {
+    "name": "import model batch",
+    "operation": "import-models",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/import",
+    "input": {"requests":[{"name":"batch","description":"","tables":[],"entries":[]}]},
+    "request": [{"name":"batch","tables":[]}],
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"id":103,"name":"batch","tables":[]}],"total":1,"next_page_token":""}}
+  },
+  {
+    "name": "upload local file multipart",
+    "operation": "upload-local-file",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/local-files/upload",
+    "input": {"filename":"资料.md","content_base64":"55+l6K+G5paH5Lu2Cg=="},
+    "request": null,
+    "multipart": {"fields":{},"file":{"filename":"资料.md","content_type":"application/octet-stream","content_base64":"55+l6K+G5paH5Lu2Cg=="}},
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"file_id":"file-1","original_name":"资料.md","size":10,"md5":"abc"}}
+  },
+  {
+    "name": "get escapes model id",
+    "operation": "get",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model%2F1",
+    "input": {"model_id":"model/1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"id":101,"name":"model","description":"","can_write":false}}
+  },
+  {
+    "name": "update preserves explicit empty description",
+    "operation": "update",
+    "method": "PUT",
+    "path": "/newmoi/semantic-models/model-1",
+    "input": {"model_id":"model-1","name":"model","description_present":true,"description":""},
+    "request": {"name":"model","description":""},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"updated":true,"deleted":false}}
+  },
+  {
+    "name": "delete model",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/semantic-models/model-1",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"updated":false,"deleted":true}}
+  },
+  {
+    "name": "preview source selections preserves zero and large IDs",
+    "operation": "preview-source-selection-counts",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/source-selections/preview",
+    "input": {"selections":[{"kind":"database_tables","database_id":17,"all_selected":false,"selected_table_ids":[0,9007199254740993],"excluded_table_ids":[],"filters":{"table_name":"","file_ext":[]}}]},
+    "request": {"source_selections":[{"kind":"database_tables","database_id":17,"all_selected":false,"selected_table_ids":[0,9007199254740993]}]},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"file_count":0,"table_count":2,"total_count":2}}
+  },
+  {
+    "name": "preview model source selections keeps explicit empty array",
+    "operation": "preview-model-source-selection-counts",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/source-selections/preview",
+    "input": {"model_id":"model-1","selections":[]},
+    "request": {"source_selections":[]},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"file_count":0,"table_count":0,"total_count":0}}
+  },
+  {
+    "name": "referencing agents uses owner default when omitted",
+    "operation": "list-referencing-agents",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/referencing-agents",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"id":"agent-1","workspace_id":"workspace-1","name":"Agent","description":"","status":"published","updated_at":"2026-01-02T03:04:05Z","knowledge_base_count":1}],"limit":50,"next_cursor":""}}
+  },
+  {
+    "name": "referencing agents paginates",
+    "operation": "list-referencing-agents",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/referencing-agents",
+    "query": {"limit":["10"],"cursor":["cursor/1"]},
+    "input": {"model_id":"model-1","limit_present":true,"limit":10,"cursor":"cursor/1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[],"limit":10,"next_cursor":"next/1"}}
+  },
+  {
+    "name": "list source jobs returns complete fields",
+    "operation": "list-source-jobs",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/source-jobs",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"job_id":"job-1","source_id":"source-1","job_status":"failed","source_file_id":"file-1","kb_file_id":"kb-file-1","source_table_id":0,"kb_table_id":9007199254740993,"error":"owner error","updated_at":1,"reconcile_required":true,"created_at":0}],"total":1,"reconcile_required":true}}
+  },
+  {
+    "name": "source jobs propagate owner error",
+    "operation": "list-source-jobs",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/source-jobs",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 403,
+    "response_headers": {"X-Request-ID":"request-knowledge-1"},
+    "response": {"code":"ErrForbidden","msg":"无权读取来源任务","data":null}
+  },
+  {
+    "name": "reconcile source jobs omits body",
+    "operation": "reconcile-source-jobs",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/source-jobs/reconcile",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"updated":true,"deleted":false}}
+  },
+  {
+    "name": "reconcile source jobs retries selected source",
+    "operation": "reconcile-source-jobs",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/source-jobs/reconcile",
+    "input": {"model_id":"model-1","retry_present":true,"retry_source_row_id":"source/1"},
+    "request": {"retry_source_row_id":"source/1"},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"updated":true,"deleted":false}}
+  },
+  {
+    "name": "list sources omits optional query",
+    "operation": "list-sources",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/sources",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[],"total":0,"legacy_backfill_required":false,"page":0,"page_size":0}}
+  },
+  {
+    "name": "list sources page includes display status",
+    "operation": "list-sources-page",
+    "method": "GET",
+    "path": "/newmoi/semantic-models/model-1/sources",
+    "query": {"page":["1"],"page_size":["20"],"include_display_status":["true"]},
+    "input": {"model_id":"model-1","page":1,"page_size":20,"include_display_status_present":true,"include_display_status":true},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"items":[{"row_id":"row-1","source_id":"file-1","source_type":"catalog_file","model_id":101,"source_file_id":"file-1","kb_file_id":"kb-1","source_table_id":0,"kb_table_id":0,"display_name":"资料","path":[],"size_bytes":0,"row_count":9007199254740993,"ingest_status":"ready","enabled":false,"expires_at":0,"expired":false,"effective_enabled":false,"force_enabled_after_expiry":false,"tags":[],"created_by":"alice","updated_by":"","updated_at":0,"error":"","governance_status":"disabled"}],"total":1,"legacy_backfill_required":false,"page":1,"page_size":20,"display_status":"ready"}}
+  },
+  {
+    "name": "check source existence",
+    "operation": "check-source-existence",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/sources/existence",
+    "input": {"model_id":"model-1","file_ids":["file/1","file-2"],"table_ids":[0,9007199254740993]},
+    "request": {"file_ids":["file/1","file-2"],"table_ids":[0,9007199254740993]},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"file_ids":["file/1"],"table_ids":[9007199254740993]}}
+  },
+  {
+    "name": "check source existence preserves explicit empty arrays",
+    "operation": "check-source-existence",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/sources/existence",
+    "input": {"model_id":"model-1","file_ids":[],"table_ids":[]},
+    "request": {"file_ids":[],"table_ids":[]},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"file_ids":[],"table_ids":[]}}
+  },
+  {
+    "name": "append sources preserves explicit empty sources and selections",
+    "operation": "append-sources",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/sources",
+    "input": {"model_id":"model-1","sources":[],"selections_present":true,"selections":[]},
+    "request": {"sources":[],"source_selections":[]},
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"data_domain":{"model_id":101,"catalog_id":17},"sources":[],"jobs":[],"skipped_existing_file_ids":[],"skipped_existing_table_ids":[]}}
+  },
+  {
+    "name": "backfill legacy sources",
+    "operation": "backfill-legacy-sources",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/sources/backfill-legacy",
+    "input": {"model_id":"model-1"},
+    "request": null,
+    "status": 200,
+    "response": {"code":"OK","msg":"ok","data":{"updated":true,"deleted":false}}
+  },
+  {
+    "name": "upload model local file multipart",
+    "operation": "upload-model-local-file",
+    "method": "POST",
+    "path": "/newmoi/semantic-models/model-1/local-files/upload",
+    "input": {"model_id":"model-1","filename":"model.md","content_base64":"bW9kZWwgZmlsZQo="},
+    "request": null,
+    "multipart": {"fields":{},"file":{"filename":"model.md","content_type":"application/octet-stream","content_base64":"bW9kZWwgZmlsZQo="}},
+    "status": 201,
+    "response": {"code":"OK","msg":"ok","data":{"file_id":"file-2","original_name":"model.md","size":11,"md5":"def"}}
+  }
+]

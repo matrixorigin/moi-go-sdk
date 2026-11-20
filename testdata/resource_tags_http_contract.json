@@ -1,0 +1,614 @@
+[
+  {
+    "name": "create complete definition",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/tags",
+    "input": {
+      "type": "workflow",
+      "name": "业务 + 0007",
+      "description": "分类",
+      "values": [
+        "分析 0007",
+        "测试"
+      ]
+    },
+    "request": {
+      "type": "workflow",
+      "name": "业务 + 0007",
+      "description": "分类",
+      "values": [
+        "分析 0007",
+        "测试"
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "type": "workflow",
+        "name": "业务 + 0007",
+        "description": "分类",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "json_file": true
+  },
+  {
+    "name": "create without optional values",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/tags",
+    "input": {
+      "type": "workflow",
+      "name": "业务 + 0007",
+      "values": []
+    },
+    "request": {
+      "type": "workflow",
+      "name": "业务 + 0007"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "type": "workflow",
+        "name": "业务 + 0007",
+        "description": "分类",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "definition list all filters",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/tags",
+    "input": {
+      "type": "workflow",
+      "name_search": "业务 + 0007",
+      "resource_id": "00000000-0000-4000-8000-000000000003",
+      "offset": 2,
+      "limit": 5
+    },
+    "request": null,
+    "query": {
+      "type": "workflow",
+      "name_search": "业务 + 0007",
+      "resource_id": "00000000-0000-4000-8000-000000000003",
+      "offset": "2",
+      "limit": "5"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "type": "workflow",
+            "name": "业务 + 0007",
+            "description": "分类",
+            "created_at": "2026-11-10T01:00:00Z",
+            "updated_at": "2026-11-10T01:00:00Z"
+          }
+        ],
+        "total": 7
+      }
+    }
+  },
+  {
+    "name": "definition list defaults",
+    "operation": "list",
+    "method": "GET",
+    "path": "/newmoi/tags",
+    "input": {
+      "type": "workflow"
+    },
+    "request": null,
+    "query": {
+      "type": "workflow",
+      "name_search": "",
+      "resource_id": "",
+      "offset": "0",
+      "limit": "0"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [],
+        "total": 0
+      }
+    }
+  },
+  {
+    "name": "update explicit empty description",
+    "operation": "update",
+    "method": "PATCH",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001",
+    "input": {
+      "description": ""
+    },
+    "request": {
+      "description": ""
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "type": "workflow",
+        "name": "业务 + 0007",
+        "description": "",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "update omitted description",
+    "operation": "update",
+    "method": "PATCH",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001",
+    "input": {
+      "name": "新分类"
+    },
+    "request": {
+      "name": "新分类"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "type": "workflow",
+        "name": "新分类",
+        "description": "分类",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "delete definition",
+    "operation": "delete",
+    "method": "DELETE",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {}
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "create value",
+    "operation": "create-value",
+    "method": "POST",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001/values",
+    "input": {
+      "value": "分析 0007"
+    },
+    "request": {
+      "value": "分析 0007"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000002",
+        "tag_id": "00000000-0000-4000-8000-000000000001",
+        "value": "分析 0007",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "value list filters",
+    "operation": "list-values",
+    "method": "GET",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001/values",
+    "input": {
+      "value_search": "分析 + 0007",
+      "offset": 1,
+      "limit": 2
+    },
+    "request": null,
+    "query": {
+      "value_search": "分析 + 0007",
+      "offset": "1",
+      "limit": "2"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000002",
+            "tag_id": "00000000-0000-4000-8000-000000000001",
+            "value": "分析 0007",
+            "created_at": "2026-11-10T01:00:00Z",
+            "updated_at": "2026-11-10T01:00:00Z"
+          }
+        ],
+        "total": 3
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "value list defaults",
+    "operation": "list-values",
+    "method": "GET",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001/values",
+    "input": {},
+    "request": null,
+    "query": {
+      "value_search": "",
+      "offset": "0",
+      "limit": "0"
+    },
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [],
+        "total": 0
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001"
+  },
+  {
+    "name": "rename value",
+    "operation": "update-value",
+    "method": "PATCH",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001/values/00000000-0000-4000-8000-000000000002",
+    "input": {
+      "value": "生产 0007"
+    },
+    "request": {
+      "value": "生产 0007"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": "00000000-0000-4000-8000-000000000002",
+        "tag_id": "00000000-0000-4000-8000-000000000001",
+        "value": "生产 0007",
+        "created_at": "2026-11-10T01:00:00Z",
+        "updated_at": "2026-11-10T01:00:00Z"
+      }
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001",
+    "value_id": "00000000-0000-4000-8000-000000000002"
+  },
+  {
+    "name": "delete value",
+    "operation": "delete-value",
+    "method": "DELETE",
+    "path": "/newmoi/tags/00000000-0000-4000-8000-000000000001/values/00000000-0000-4000-8000-000000000002",
+    "input": null,
+    "request": null,
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {}
+    },
+    "tag_id": "00000000-0000-4000-8000-000000000001",
+    "value_id": "00000000-0000-4000-8000-000000000002"
+  },
+  {
+    "name": "set and remove relations",
+    "operation": "update-relations",
+    "method": "POST",
+    "path": "/newmoi/tags/relations/update",
+    "input": {
+      "type": "workflow",
+      "set": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "value_id": "00000000-0000-4000-8000-000000000002",
+          "resource_id": "00000000-0000-4000-8000-000000000003"
+        }
+      ],
+      "remove": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "resource_id": "00000000-0000-4000-8000-000000000004"
+        }
+      ]
+    },
+    "request": {
+      "type": "workflow",
+      "set": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "value_id": "00000000-0000-4000-8000-000000000002",
+          "resource_id": "00000000-0000-4000-8000-000000000003"
+        }
+      ],
+      "remove": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "resource_id": "00000000-0000-4000-8000-000000000004"
+        }
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {}
+    }
+  },
+  {
+    "name": "groups with assigned and unassigned filters",
+    "operation": "groups",
+    "method": "POST",
+    "path": "/newmoi/tags/groups/query",
+    "input": {
+      "type": "workflow",
+      "group_by": "00000000-0000-4000-8000-000000000001",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000006",
+          "value_id": "00000000-0000-4000-8000-000000000007"
+        },
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000005",
+          "value_id": null
+        }
+      ],
+      "name_search": "业务",
+      "status": "ready",
+      "execution_mode": "one_shot",
+      "include_dynamic_service": true,
+      "offset": 1,
+      "limit": 5
+    },
+    "request": {
+      "type": "workflow",
+      "group_by": "00000000-0000-4000-8000-000000000001",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000006",
+          "value_id": "00000000-0000-4000-8000-000000000007"
+        },
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000005",
+          "value_id": null
+        }
+      ],
+      "name_search": "业务",
+      "status": "ready",
+      "execution_mode": "one_shot",
+      "include_dynamic_service": true,
+      "offset": 1,
+      "limit": 5
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "tag": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "type": "workflow",
+          "name": "业务 + 0007",
+          "description": "分类",
+          "created_at": "2026-11-10T01:00:00Z",
+          "updated_at": "2026-11-10T01:00:00Z"
+        },
+        "items": [
+          {
+            "value_id": "00000000-0000-4000-8000-000000000002",
+            "value": "分析 0007",
+            "resource_count": 9007199254740993
+          },
+          {
+            "value_id": null,
+            "value": null,
+            "resource_count": 2
+          }
+        ],
+        "total": 2
+      }
+    }
+  },
+  {
+    "name": "unassigned resource filter preserves null",
+    "operation": "resources",
+    "method": "POST",
+    "path": "/newmoi/tags/resources/query",
+    "input": {
+      "type": "workflow",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "value_id": null
+        }
+      ],
+      "limit": 5
+    },
+    "request": {
+      "type": "workflow",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001",
+          "value_id": null
+        }
+      ],
+      "limit": 5
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000003",
+            "name": "业务工作流",
+            "status": "ready"
+          }
+        ],
+        "total": 1
+      }
+    }
+  },
+  {
+    "name": "resource query scalar defaults omitted",
+    "operation": "resources",
+    "method": "POST",
+    "path": "/newmoi/tags/resources/query",
+    "input": {
+      "type": "workflow",
+      "include_dynamic_service": false,
+      "filters": []
+    },
+    "request": {
+      "type": "workflow"
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [],
+        "total": 0
+      }
+    }
+  },
+  {
+    "name": "query exact resource assignments",
+    "operation": "assignments",
+    "method": "POST",
+    "path": "/newmoi/tags/resources/tags/query",
+    "input": {
+      "type": "workflow",
+      "resource_ids": [
+        "00000000-0000-4000-8000-000000000003"
+      ],
+      "tag_ids": [
+        "00000000-0000-4000-8000-000000000001"
+      ]
+    },
+    "request": {
+      "type": "workflow",
+      "resource_ids": [
+        "00000000-0000-4000-8000-000000000003"
+      ],
+      "tag_ids": [
+        "00000000-0000-4000-8000-000000000001"
+      ]
+    },
+    "query": {},
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "items": [
+          {
+            "resource_id": "00000000-0000-4000-8000-000000000003",
+            "tags": [
+              {
+                "tag_id": "00000000-0000-4000-8000-000000000001",
+                "tag_name": "业务 + 0007",
+                "value_id": "00000000-0000-4000-8000-000000000002",
+                "value": "分析 0007"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "simulated duplicate definition owner error",
+    "operation": "create",
+    "method": "POST",
+    "path": "/newmoi/tags",
+    "input": {
+      "type": "workflow",
+      "name": "业务 + 0007"
+    },
+    "request": {
+      "type": "workflow",
+      "name": "业务 + 0007"
+    },
+    "query": {},
+    "status": 409,
+    "response": {
+      "code": "RESOURCE_TAG_DUPLICATE",
+      "msg": "模拟：标签名称已存在",
+      "data": null
+    }
+  },
+  {
+    "name": "missing value selector reaches owner",
+    "operation": "resources",
+    "method": "POST",
+    "path": "/newmoi/tags/resources/query",
+    "input": {
+      "type": "workflow",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001"
+        }
+      ]
+    },
+    "request": {
+      "type": "workflow",
+      "filters": [
+        {
+          "tag_id": "00000000-0000-4000-8000-000000000001"
+        }
+      ]
+    },
+    "query": {},
+    "status": 400,
+    "response": {
+      "code": "RESOURCE_TAG_INVALID_ARGUMENT",
+      "msg": "模拟：标签筛选缺少值",
+      "data": null
+    }
+  }
+]

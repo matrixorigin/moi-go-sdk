@@ -1,0 +1,60 @@
+[
+  {
+    "name": "browser token posts no body and preserves expiry",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-runtime-tasks/task-1/browser/token",
+    "resource": "agent-runtime-tasks",
+    "tail_path": "/task-1/browser/token",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response_headers": {"Cache-Control": "no-store"},
+    "response": {"code": 0, "data": {"token": "browser-proof-1", "expires_at": "2026-01-02T03:04:05Z"}}
+  },
+  {
+    "name": "runtime events preserve scope cursor and nested payload values",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-runtime-tasks/task-1/events",
+    "resource": "agent-runtime-tasks",
+    "tail_path": "/task-1/events",
+    "query": {"agent_id": [""], "agent_workspace_id": ["workspace-1"], "after_seq": ["0"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"items": [{"id": "event-1", "workspace_id": "workspace-1", "task_id": "task-1", "seq": 9007199254740993, "kind": "message", "a2a_state": "working", "payload": {"big": 9007199254740993, "zero": 0, "enabled": false, "empty": "", "items": [], "object": {}, "nothing": null}, "visible": false, "created_at": "2026-01-02T03:04:05Z"}], "total": 9007199254740993, "after_seq": 9007199254740993}}
+  },
+  {
+    "name": "MCP App call preserves optional tool id and arbitrary arguments",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-runtime-tasks/task-1/mcp-apps/call",
+    "resource": "agent-runtime-tasks",
+    "tail_path": "/task-1/mcp-apps/call",
+    "input": {"body": {"tool_id": "", "tool_name": "external_echo", "arguments": {"text": "", "count": 0, "enabled": false, "items": [], "object": {}, "nothing": null, "big": 9007199254740993}}},
+    "request": {"tool_id": "", "tool_name": "external_echo", "arguments": {"text": "", "count": 0, "enabled": false, "items": [], "object": {}, "nothing": null, "big": 9007199254740993}},
+    "status": 200,
+    "response": {"code": 0, "data": {"content": [{"type": "text", "text": "echo"}], "structuredContent": {"big": 9007199254740993, "enabled": false}, "isError": false}}
+  },
+  {
+    "name": "MCP App call preserves owner task not found",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-runtime-tasks/task-1/mcp-apps/call",
+    "resource": "agent-runtime-tasks",
+    "tail_path": "/task-1/mcp-apps/call",
+    "input": {"body": {"tool_name": "missing_tool", "arguments": {}}},
+    "request": {"tool_name": "missing_tool", "arguments": {}},
+    "status": 404,
+    "response_headers": {"X-Request-ID": "request-runtime-mcp-1"},
+    "response": {"code": 3, "message": "runtime task not found", "details": {"reason": "TASK_NOT_FOUND"}}
+  },
+  {
+    "name": "MCP App resource preserves empty tool id and URI",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-runtime-tasks/task-1/mcp-apps/resource",
+    "resource": "agent-runtime-tasks",
+    "tail_path": "/task-1/mcp-apps/resource",
+    "input": {"body": {"tool_id": "", "uri": "ui://credential-echo/app.html"}},
+    "request": {"tool_id": "", "uri": "ui://credential-echo/app.html"},
+    "status": 200,
+    "response": {"code": 0, "data": {"contents": [{"uri": "ui://credential-echo/app.html", "mimeType": "text/html;profile=mcp-app", "text": "<html></html>", "blob": ""}]}}
+  }
+]

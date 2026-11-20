@@ -1,0 +1,20 @@
+{
+  "id": "account-1",
+  "iam_user_id": "member-1",
+  "name": "Alice",
+  "status": "deletion_incomplete",
+  "created_at": "2026-10-28T01:00:00Z",
+  "updated_at": "2026-10-30T01:00:00Z",
+  "reserved": false,
+  "role_list": [],
+  "tag_list": [],
+  "deletion": {
+    "state": "failed",
+    "phase": "delete_tenant_member_facts",
+    "code": "WORKSPACE_MEMBER_DELETE_BINDINGS_FAILED",
+    "message": "删除失败，请重试。",
+    "request_id": "delete-request-1",
+    "trace_id": "delete-trace-1",
+    "updated_at": "2026-10-30T01:02:00Z"
+  }
+}

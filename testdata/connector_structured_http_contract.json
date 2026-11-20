@@ -1,0 +1,82 @@
+[
+  {
+    "name": "structured sources",
+    "operation": "structured-sources",
+    "method": "GET",
+    "path": "/newmoi/connectors/structured/v1/sources",
+    "input": {},
+    "request": null,
+    "response": {"code":"OK","msg":"success","data":{"sources":[{"connector_id":"mysql-1","connector_name":"MySQL","source_type":"SOURCE_TYPE_MYSQL","enabled":false,"disabled_reason":"DISABLED","capability_profile_hash":"profile-1","capabilities":{"list_databases":true,"list_schemas":false,"list_tables":true,"describe_schema":true,"sample":false,"backfill_start_resolve":true,"hive_partitions":false,"mongodb_flatten":false}}]}},
+    "status": 200
+  },
+  {
+    "name": "structured source databases",
+    "operation": "structured-source-databases",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/databases",
+    "input": {"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL"},
+    "request": {"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL"},
+    "response": {"code":"OK","msg":"success","data":{"databases":[{"name":"sales","display_name":"Sales"}],"endpoint_results":[]}},
+    "status": 200
+  },
+  {
+    "name": "structured source schemas",
+    "operation": "structured-source-schemas",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/schemas",
+    "input": {"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales"},
+    "request": {"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales"},
+    "response": {"code":"OK","msg":"success","data":{"schemas":[{"name":"public","display_name":"Public"}],"endpoint_results":[]}},
+    "status": 200
+  },
+  {
+    "name": "structured source objects",
+    "operation": "structured-source-objects",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/objects",
+    "input": {"body":{"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales","schema":"public"}},
+    "request": {"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales","schema":"public"},
+    "response": {"code":"OK","msg":"success","data":{"objects":[{"database":"sales","schema":"public","table":"orders","display_name":"Orders","object_kind":"table"}],"endpoint_results":[]}},
+    "status": 200
+  },
+  {
+    "name": "structured mongo schema preserves zero sample limit and owner result",
+    "operation": "structured-source-schema",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/schema",
+    "input": {"body":{"connector_id":"mongo-1","source":{"connector_id":"mongo-1","source_type":"SOURCE_TYPE_MONGODB","database":"sales","collection":"orders"},"mongo_sample_limit":0}},
+    "request": {"connector_id":"mongo-1","source":{"connector_id":"mongo-1","source_type":"SOURCE_TYPE_MONGODB","database":"sales","collection":"orders"},"mongo_sample_limit":0},
+    "response": {"code":"OK","msg":"success","data":{"schema_snapshot":{"fields":[{"name":"_id"}]},"mapping_draft":[{"source":"_id","target":"id"}],"target_type_catalog":[{"target_type":"STRING"}],"field_compatibilities":[{"source":"_id","compatible":false}],"source_schema_hash":"schema-1","source_object_hash":"object-1","connector_config_hash":"config-1","mapping_hash":"mapping-1","flatten_hash":"flatten-1","endpoint_results":[]}},
+    "status": 200
+  },
+  {
+    "name": "structured kafka schema",
+    "operation": "structured-source-schema",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/schema",
+    "input": {"body":{"connector_id":"kafka-1","source":{"connector_id":"kafka-1","source_type":"SOURCE_TYPE_KAFKA"},"kafka_schema":{"key_format":"string","value_format":"json","schema_source":"sample","sample":{"topic_mode":"topics","topics":["orders"],"topic_pattern":""},"sample_limit":2}}},
+    "request": {"connector_id":"kafka-1","source":{"connector_id":"kafka-1","source_type":"SOURCE_TYPE_KAFKA"},"kafka_schema":{"key_format":"string","value_format":"json","schema_source":"sample","sample":{"topic_mode":"topics","topics":["orders"]},"sample_limit":2}},
+    "response": {"code":"OK","msg":"success","data":{"schema_snapshot":{"fields":[]},"endpoint_results":[]}},
+    "status": 200
+  },
+  {
+    "name": "structured kafka sample omits empty source fields",
+    "operation": "structured-source-sample",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/sample",
+    "input": {"body":{"connector_id":"kafka-1","source":{"connector_id":"kafka-1","source_type":"SOURCE_TYPE_KAFKA"},"limit":1,"kafka_sample":{"topic_mode":"topics","topics":[]}}},
+    "request": {"connector_id":"kafka-1","source":{"connector_id":"kafka-1","source_type":"SOURCE_TYPE_KAFKA"},"limit":1,"kafka_sample":{"topic_mode":"topics"}},
+    "response": {"code":"OK","msg":"success","data":{"rows":[{"value":{"id":0}}],"next_position":{"offset":0},"has_more":false}},
+    "status": 200
+  },
+  {
+    "name": "structured backfill resolve preserves zero and empty custom value",
+    "operation": "structured-backfill-start-resolve",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/backfill-start/resolve",
+    "input": {"body":{"connector_id":"mysql-1","source":{"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales","table":"orders"},"watermark":0,"start_mode":"custom","custom_start_value":""}},
+    "request": {"connector_id":"mysql-1","source":{"connector_id":"mysql-1","source_type":"SOURCE_TYPE_MYSQL","database":"sales","table":"orders"},"watermark":0,"start_mode":"custom","custom_start_value":""},
+    "response": {"code":"OK","msg":"success","data":{"start_position":{"offset":0},"source_object_hash":"object-1","source_schema_hash":"schema-1"}},
+    "status": 200
+  }
+]

@@ -1,0 +1,252 @@
+[
+  {
+    "name": "native source conflict preserves nested tables",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 409,
+    "response": {
+      "code": 4,
+      "message": "模拟：来源仍被图表使用",
+      "details": {
+        "reason": "DATA_DASHBOARD_SOURCE_IN_USE",
+        "domain": "moi-core.catalog.data_dashboard",
+        "request_id": "owner-detail-request",
+        "tables": [
+          {
+            "table_id": 9007199254740993,
+            "database_name": "analytics",
+            "table_name": "0007",
+            "charts": [
+              {
+                "id": "chart-1",
+                "name": "Revenue"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "expected_code": "4"
+  },
+  {
+    "name": "Product business rejection envelope decoding",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 200,
+    "response": {
+      "code": 4,
+      "message": "模拟：来源仍被图表使用",
+      "details": {
+        "reason": "DATA_DASHBOARD_SOURCE_IN_USE",
+        "domain": "moi-core.catalog.data_dashboard",
+        "request_id": "owner-detail-request",
+        "tables": [
+          {
+            "table_id": 9007199254740993,
+            "database_name": "analytics",
+            "table_name": "0007",
+            "charts": [
+              {
+                "id": "chart-1",
+                "name": "Revenue"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "expected_code": "4"
+  },
+  {
+    "name": "typed diagnostic values and A2A correlation",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 400,
+    "response": {
+      "code": "ErrParamInvalid",
+      "msg": "模拟：保留诊断值",
+      "details": {
+        "reason": "VALIDATION_REJECTED",
+        "domain": "product",
+        "task_id": "old-task",
+        "metadata": {
+          "id": 9007199254740993,
+          "count": 0,
+          "ratio": 1.25,
+          "enabled": false,
+          "nullable": null,
+          "values": [],
+          "context": {},
+          "text": "0007"
+        }
+      },
+      "data": {
+        "diagnostics": [
+          {
+            "field": "name",
+            "reason": "required"
+          }
+        ]
+      }
+    },
+    "expected_code": "ErrParamInvalid",
+    "follow_task_id": "current-task"
+  },
+  {
+    "name": "flat string diagnostics remain unchanged",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 403,
+    "response": {
+      "code": "ErrForbidden",
+      "message": "模拟：访问被拒绝",
+      "details": {
+        "reason": "ACCESS_DENIED",
+        "domain": "product",
+        "field": "source"
+      }
+    },
+    "expected_code": "ErrForbidden"
+  },
+  {
+    "name": "explicit null details remain empty",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 400,
+    "response": {
+      "code": "ErrParamInvalid",
+      "msg": "模拟：无诊断详情",
+      "details": null,
+      "data": null
+    },
+    "expected_code": "ErrParamInvalid"
+  },
+  {
+    "name": "absent details remain empty",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 404,
+    "response": {
+      "code": "ErrNotFound",
+      "message": "模拟：不存在"
+    },
+    "expected_code": "ErrNotFound"
+  },
+  {
+    "name": "download error preserves owner diagnostics",
+    "operation": "download-chart-result",
+    "input": null,
+    "status": 409,
+    "response": {
+      "code": "ErrDataDashboardRefreshPaused",
+      "message": "模拟：刷新已暂停",
+      "details": {
+        "reason": "DASHBOARD_REFRESH_PAUSED",
+        "domain": "dashboard",
+        "chart_id": "chart-1"
+      }
+    },
+    "expected_code": "ErrDataDashboardRefreshPaused"
+  },
+  {
+    "name": "array details are a broken envelope",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 409,
+    "response": {
+      "code": "ErrConflict",
+      "msg": "RAW-SECRET",
+      "details": []
+    },
+    "expected_code": "ErrResponseInvalid"
+  },
+  {
+    "name": "existing reason string contract remains enforced",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 409,
+    "response": {
+      "code": "ErrConflict",
+      "msg": "RAW-SECRET",
+      "details": {
+        "reason": false
+      }
+    },
+    "expected_code": "ErrResponseInvalid"
+  },
+  {
+    "name": "broken business envelope keeps HTTP status",
+    "operation": "update",
+    "input": {
+      "name": "replacement",
+      "sources": [
+        {
+          "table_id": 9007199254740995
+        }
+      ]
+    },
+    "status": 200,
+    "response": {
+      "code": 4,
+      "message": "RAW-SECRET",
+      "details": 17
+    },
+    "expected_code": "ErrResponseInvalid"
+  }
+]

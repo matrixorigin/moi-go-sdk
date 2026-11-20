@@ -1,0 +1,16 @@
+{
+  "id": 7001,
+  "name": "orders-kb",
+  "description": "订单知识库",
+  "tables": ["dw.orders", "dw.order_items"],
+  "files": ["notes/refund-policy.md"],
+  "created_at": 1760227200,
+  "updated_at": 1760486400,
+  "source_counts": {"files": 1, "tables": 2, "total": 3},
+  "can_write": true,
+  "allowed_actions": ["semantic_model.delete", "semantic_model.update", "semantic_model.use"],
+  "semantic_model_kind": "drawing",
+  "drawing_structured_enabled": true,
+  "drawing_number_policy": "keep_versions",
+  "can_append_sources": false
+}

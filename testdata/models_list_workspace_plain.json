@@ -1,0 +1,8 @@
+{
+  "model": "qwen2.5-72b",
+  "backend_id": 12,
+  "backend_name": "workspace-llm",
+  "model_type": "chat",
+  "source": "workspace",
+  "system_default": false
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "name": "versions",
+    "operation": "versions",
+    "method": "GET",
+    "path": "/newmoi/system/versions",
+    "request": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "backend_components": [
+          {
+            "component": "moi",
+            "version": "v1.2.3",
+            "status": "ok",
+            "build_time": "2026-11-10T01:02:03Z",
+            "git_commit": "abc123",
+            "branch_name": "dev",
+            "go_version": "go1.25.0"
+          }
+        ],
+        "request_time": "2026-11-10T01:02:04Z"
+      }
+    }
+  },
+  {
+    "name": "webapp-config",
+    "operation": "webapp-config",
+    "method": "GET",
+    "path": "/newmoi/webapp/config",
+    "request": null,
+    "status": 200,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "name": "Matrixflow",
+        "title": "MOI",
+        "auth_provider": "uc",
+        "logo": {
+          "favicon": "/favicon.ico",
+          "primary": "/logo.svg",
+          "mini": ""
+        }
+      }
+    }
+  },
+  {
+    "name": "versions-owner-error",
+    "operation": "versions",
+    "method": "GET",
+    "path": "/newmoi/system/versions",
+    "request": null,
+    "status": 503,
+    "response": {
+      "code": "ErrUnavailable",
+      "msg": "服务暂不可用",
+      "data": null
+    },
+    "response_headers": {
+      "X-Request-ID": "request-system-versions"
+    }
+  }
+]

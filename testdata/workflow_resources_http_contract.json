@@ -1,0 +1,383 @@
+[
+  {
+    "name": "custom operators retain filters and explicit false",
+    "operation": "custom-operators",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/custom-operators",
+    "query": {"enabled": ["false"], "kind": [""], "node_id": ["moi:custom.operator:text"], "page_size": ["25"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"items": [{"id": 7, "node_id": "moi:custom.operator:text", "name": "Text", "enabled": false}], "total": 1, "next_page_token": ""}}
+  },
+  {
+    "name": "create custom operator preserves all optional values",
+    "operation": "create-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators",
+    "input": {
+      "request": {
+        "node_id": "moi:custom.operator:text",
+        "name": "Text",
+        "identifier": "text",
+        "description": "desc",
+        "kind": "CODE",
+        "language": "python",
+        "handler": "",
+        "version": "v1",
+        "isolation_level": "",
+        "input_schema": {},
+        "output_schema": {"type": "object"},
+        "enabled": false,
+        "code": "def handle(workspace_id, sdk, input):\n    return input\n",
+        "source_file_id": "",
+        "base_node_id": "moi:base",
+        "base_node_version": "",
+        "binding_config": {},
+        "catalog_id": 0,
+        "database_id": 9
+      }
+    },
+    "request": {
+      "node_id": "moi:custom.operator:text",
+      "name": "Text",
+      "identifier": "text",
+      "description": "desc",
+      "kind": "CODE",
+      "language": "python",
+      "handler": "",
+      "version": "v1",
+      "isolation_level": "",
+      "input_schema": {},
+      "output_schema": {"type": "object"},
+      "enabled": false,
+      "code": "def handle(workspace_id, sdk, input):\n    return input\n",
+      "source_file_id": "",
+      "base_node_id": "moi:base",
+      "base_node_version": "",
+      "binding_config": {},
+      "catalog_id": 0,
+      "database_id": 9
+    },
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "node_id": "moi:custom.operator:text", "name": "Text", "identifier": "text", "description": "desc", "enabled": false, "catalog_id": 0, "database_id": 9}}
+  },
+  {
+    "name": "create custom operator omits optional values",
+    "operation": "create-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators",
+    "input": {"request": {"name": "Minimal", "identifier": "minimal", "description": "desc", "input_schema": {}, "output_schema": {}}},
+    "request": {"name": "Minimal", "identifier": "minimal", "description": "desc", "input_schema": {}, "output_schema": {}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 8, "name": "Minimal", "identifier": "minimal", "description": "desc", "enabled": true}}
+  },
+  {
+    "name": "custom operator source with task",
+    "operation": "get-custom-operator-source",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/custom-operators/source",
+    "query": {"node_id": ["moi:custom.operator:text"], "task_id": ["task/1"], "version": ["v1"]},
+    "input": {"node_id": "moi:custom.operator:text", "version": "v1", "task_id": "task/1"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"source": "def handle(workspace_id, sdk, input):\n    return input\n", "origin": "workspace", "node_id": "moi:custom.operator:text", "version": "v1", "language": "python", "handler": "main.handle", "name": "Text", "identifier": "text"}}
+  },
+  {
+    "name": "custom operator source omits task",
+    "operation": "get-custom-operator-source",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/custom-operators/source",
+    "query": {"node_id": ["moi:custom.operator:text"], "version": ["v1"]},
+    "input": {"node_id": "moi:custom.operator:text", "version": "v1", "task_id": ""},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"source": "published", "origin": "published", "node_id": "moi:custom.operator:text", "version": "v1"}}
+  },
+  {
+    "name": "delete custom operator",
+    "operation": "delete-custom-operator",
+    "method": "DELETE",
+    "path": "/newmoi/workflow/v2/custom-operators/7",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"deleted": true}}
+  },
+  {
+    "name": "get custom operator",
+    "operation": "get-custom-operator",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/custom-operators/7",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "name": "Text", "enabled": true}}
+  },
+  {
+    "name": "update custom operator preserves explicit zero empty and false",
+    "operation": "update-custom-operator",
+    "method": "PUT",
+    "path": "/newmoi/workflow/v2/custom-operators/7",
+    "input": {
+      "operator_id": "7",
+      "request": {
+        "name": "",
+        "description": "",
+        "kind": "CODE",
+        "language": "python",
+        "handler": "",
+        "version": "v2",
+        "isolation_level": "",
+        "input_schema": {},
+        "output_schema": {},
+        "enabled": false,
+        "code": "",
+        "source_file_id": "",
+        "base_node_id": "",
+        "base_node_version": "",
+        "binding_config": {},
+        "catalog_id": 0,
+        "database_id": 0
+      }
+    },
+    "request": {"name": "", "description": "", "kind": "CODE", "language": "python", "handler": "", "version": "v2", "isolation_level": "", "input_schema": {}, "output_schema": {}, "enabled": false, "code": "", "source_file_id": "", "base_node_id": "", "base_node_version": "", "binding_config": {}, "catalog_id": 0, "database_id": 0},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "name": "", "description": "", "enabled": false, "catalog_id": 0, "database_id": 0}}
+  },
+  {
+    "name": "update custom operator empty patch",
+    "operation": "update-custom-operator",
+    "method": "PUT",
+    "path": "/newmoi/workflow/v2/custom-operators/7",
+    "input": {"operator_id": "7", "request": {}},
+    "request": {},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "name": "Text", "enabled": true}}
+  },
+  {
+    "name": "get custom operator code",
+    "operation": "get-custom-operator-code",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/custom-operators/7/code",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"source": "def handle(workspace_id, sdk, input):\n    return input\n"}}
+  },
+  {
+    "name": "disable custom operator uses empty request body",
+    "operation": "disable-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators/7/disable",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "enabled": false}}
+  },
+  {
+    "name": "enable custom operator uses empty request body",
+    "operation": "enable-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators/7/enable",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"id": 7, "enabled": true}}
+  },
+  {
+    "name": "test custom operator retains explicit zero timeout",
+    "operation": "test-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators/7/test-run",
+    "input": {"operator_id": "7", "request": {"input": {"text": "hello", "count": 0, "enabled": false, "items": [], "nothing": null}, "wait_timeout_seconds": 0}},
+    "request": {"input": {"text": "hello", "count": 0, "enabled": false, "items": [], "nothing": null}, "wait_timeout_seconds": 0},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"test_run": {"operator_id": 7, "node_id": "moi:custom.operator:text", "version": "v1", "task_id": "task-1", "status": "completed", "runtime_input": {"text": "hello", "count": 0}, "runtime_output": {"length": 5}, "wait_timeout_seconds": 0}}}
+  },
+  {
+    "name": "test custom operator omits timeout",
+    "operation": "test-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators/7/test-run",
+    "input": {"operator_id": "7", "request": {"input": {}}},
+    "request": {"input": {}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"test_run": {"operator_id": 7, "status": "completed"}}}
+  },
+  {
+    "name": "invoke workflow dynamic service with version and trace",
+    "operation": "invoke-workflow-dynamic-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/dynamic-services/invoke",
+    "input": {"request": {"service_name": "automation-api", "version": "v7", "payload": {"symbol": "MO", "count": 0, "enabled": false, "items": [], "nothing": null}, "version_number": 7, "trace": {"enabled": true, "level": 1, "include_payloads": false, "max_attr_bytes": 0}}},
+    "request": {"service_name": "automation-api", "version": "v7", "payload": {"symbol": "MO", "count": 0, "enabled": false, "items": [], "nothing": null}, "version_number": 7, "trace": {"enabled": true, "level": 1, "include_payloads": false, "max_attr_bytes": 0}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"case_id": "case/1", "status": "succeeded", "result": {"answer": null, "count": 0, "ok": false, "items": []}}}
+  },
+  {
+    "name": "invoke workflow dynamic service omits optional values",
+    "operation": "invoke-workflow-dynamic-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/dynamic-services/invoke",
+    "input": {"request": {"service_name": "automation-api", "payload": {}}},
+    "request": {"service_name": "automation-api", "payload": {}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"run_id": "run-1", "status": "running", "result_url": "/runs/run-1"}}
+  },
+  {
+    "name": "invoke workflow dynamic service distinguishes zero and null trace",
+    "operation": "invoke-workflow-dynamic-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/dynamic-services/invoke",
+    "input": {"request": {"service_name": "automation-api", "payload": {}, "version_number": 0, "trace": null}},
+    "request": {"service_name": "automation-api", "payload": {}, "trace": null},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"case_id": "case-2", "status": "succeeded", "result": null}}
+  },
+  {
+    "name": "ensure test scratch retains int64 json number",
+    "operation": "ensure-test-scratch",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workflow-test-scratch/ensure",
+    "input": {"request": {"workspace_id": "workspace-from-request", "task_id": "task-1", "user_id": "user-1", "effective_role_id": "role-1", "context_id": "context-1", "catalog_id": 9007199254740993}},
+    "request": {"workspace_id": "workspace-from-request", "task_id": "task-1", "user_id": "user-1", "effective_role_id": "role-1", "context_id": "context-1", "catalog_id": 9007199254740993},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"workspace_id": "workspace-1", "task_id": "task-1", "user_id": "user-1", "effective_role_id": "role-1", "context_id": "context-1", "operation_id": "operation-1", "catalog_id": 9007199254740993, "database_name": "wf_test", "database_id": 10, "input_volume_id": 11, "output_volume_id": 12, "state": "active"}}
+  },
+  {
+    "name": "ensure test scratch omits zero catalog",
+    "operation": "ensure-test-scratch",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workflow-test-scratch/ensure",
+    "input": {"request": {"task_id": "task-1", "catalog_id": 0}},
+    "request": {"task_id": "task-1"},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"task_id": "task-1", "catalog_id": 9, "state": "creating"}}
+  },
+  {
+    "name": "observe test scratch omits zero values",
+    "operation": "observe-test-scratch",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workflow-test-scratch/observe",
+    "input": {"request": {"task_id": "task-1", "workspace_id": "", "catalog_id": 0}},
+    "request": {"task_id": "task-1"},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"scope": "task-1", "database_name": "wf_test", "volumes": [{"id": 0, "enabled": false, "items": [], "value": null}], "tables": []}}
+  },
+  {
+    "name": "reset test scratch",
+    "operation": "reset-test-scratch",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workflow-test-scratch/reset",
+    "input": {"task_id": "task/1"},
+    "request": {"task_id": "task/1"},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"state": "released"}}
+  },
+  {
+    "name": "workitem catalog",
+    "operation": "workitem-catalog",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/workitems/catalog",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"items": [{"node_id": "moi:files/read", "display_name": "Read", "short_description": "", "category": "files", "tags": [], "source": "builtin", "provider": "moi", "preferred_version": "v1", "visibility": "user", "stream": false}], "total": 1}}
+  },
+  {
+    "name": "workitem catalog item",
+    "operation": "workitem-catalog-item",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread",
+    "input": {"node_id": "moi:files/read"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"node_id": "moi:files/read", "display_name": "Read", "versions": [{"version": "v1", "stream": false, "input": {"fields": []}, "agent_context": {"required_fields": []}}]}}
+  },
+  {
+    "name": "get workitem api service",
+    "operation": "get-workitem-api-service",
+    "method": "GET",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service",
+    "query": {"version": ["v1"]},
+    "input": {"node_id": "moi:files/read", "version": "v1"},
+    "request": null,
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"service": {"api_service_id": "api-1", "operator_id": 7, "node_id": "moi:files/read", "version": "v1", "service_name": "read-api", "status": "ready", "result_mode": "oneshot", "auth_mode": "api_key", "method": "POST", "path": "/api-service/run", "input_schema": "{}", "output_schema": "{}", "timeout_seconds": 0, "invoke": {"method": "POST", "path": "/api-service/run", "result_mode": "oneshot", "body_example": {"count": 0}}}}}
+  },
+  {
+    "name": "publish workitem api service with ui resource",
+    "operation": "publish-workitem-api-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service",
+    "input": {"node_id": "moi:files/read", "request": {"service_name": "read-api", "version": "v1", "compute_resource_id": "compute-1", "timeout_seconds": 45, "max_concurrency": 3, "rate_limit_per_min": 60, "ui_resource": {"file_id": "file/1", "mime_type": "text/html"}}},
+    "request": {"service_name": "read-api", "version": "v1", "compute_resource_id": "compute-1", "timeout_seconds": 45, "max_concurrency": 3, "rate_limit_per_min": 60, "ui_resource": {"file_id": "file/1", "mime_type": "text/html"}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"service": {"api_service_id": "api-1", "node_id": "moi:files/read", "version": "v1", "service_name": "read-api", "status": "ready", "compute_resource_id": "compute-1", "timeout_seconds": 45, "max_concurrency": 3, "rate_limit_per_min": 60, "deployment": {"ui_resource": {"file_id": "file/1", "mime_type": "text/html"}}}}}
+  },
+  {
+    "name": "publish workitem api service omits zero and empty values",
+    "operation": "publish-workitem-api-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service",
+    "input": {"node_id": "moi:files/read", "request": {"service_name": "", "version": "v1", "compute_resource_id": "", "timeout_seconds": 0, "max_concurrency": 0, "rate_limit_per_min": 0}},
+    "request": {"version": "v1"},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"service": {"api_service_id": "api-1", "node_id": "moi:files/read", "version": "v1", "service_name": "read-api", "status": "ready"}}}
+  },
+  {
+    "name": "disable workitem api service",
+    "operation": "disable-workitem-api-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service/disable",
+    "query": {"version": ["v1"]},
+    "input": {"node_id": "moi:files/read", "version": "v1"},
+    "request": {},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"service": {"api_service_id": "api-1", "version": "v1", "status": "disabled"}}}
+  },
+  {
+    "name": "enable workitem api service",
+    "operation": "enable-workitem-api-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service/enable",
+    "query": {"version": ["v1"]},
+    "input": {"node_id": "moi:files/read", "version": "v1"},
+    "request": {},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"service": {"api_service_id": "api-1", "version": "v1", "status": "ready"}}}
+  },
+  {
+    "name": "invoke workitem api service preserves payload values",
+    "operation": "invoke-workitem-api-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/workitems/catalog/moi:files%2Fread/api-service/invoke",
+    "input": {"node_id": "moi:files/read", "request": {"service_name": "read-api", "type": "operator", "version": "v1", "payload": {"text": "hello", "count": 0, "enabled": false, "items": [], "nothing": null}}},
+    "request": {"service_name": "read-api", "type": "operator", "version": "v1", "payload": {"text": "hello", "count": 0, "enabled": false, "items": [], "nothing": null}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"result": {"case_id": "case-1", "status": "succeeded", "result": {"text": "hello", "count": 0, "enabled": false, "items": [], "nothing": null}, "error": ""}}}
+  },
+  {
+    "name": "invoke workflow dynamic service multipart",
+    "operation": "invoke-workflow-dynamic-service",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/dynamic-services/invoke",
+    "input": {"filename": "input.bin", "content_base64": "AAEC/f7/", "request": {"service_name": "automation-api", "version": "v7", "payload": {"symbol": "MO", "count": 0}, "version_number": 7, "trace": {"enabled": true, "level": 1}}},
+    "request": null,
+    "multipart": {"fields": {"service_name": "automation-api", "version": "v7", "payload": "{\"symbol\": \"MO\", \"count\": 0}", "version_number": "7", "trace": "{\"enabled\": true, \"level\": 1}"}, "file": {"filename": "input.bin", "content_type": "application/octet-stream", "content_base64": "AAEC/f7/"}},
+    "status": 200,
+    "response": {"code": "OK", "msg": "ok", "data": {"case_id": "case-multipart", "status": "succeeded", "result": {"ok": true}}}
+  },
+  {
+    "name": "custom operator owner error",
+    "operation": "disable-custom-operator",
+    "method": "POST",
+    "path": "/newmoi/workflow/v2/custom-operators/7/disable",
+    "input": {"operator_id": "7"},
+    "request": null,
+    "status": 409,
+    "response_headers": {"X-Request-ID": "request-operator-1"},
+    "response": {"code": "ErrCustomOperatorStateConflict", "msg": "算子状态不允许停用", "data": null}
+  }
+]

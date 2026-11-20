@@ -1,0 +1,645 @@
+[
+  {
+    "name": "UI create omits unused fields",
+    "operation": "create-ui-session",
+    "method": "POST",
+    "path": "/newmoi/sessions",
+    "input": {
+      "title": "会话 0007"
+    },
+    "request": {
+      "title": "会话 0007"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    }
+  },
+  {
+    "name": "UI create complete fields",
+    "operation": "create-ui-session",
+    "method": "POST",
+    "path": "/newmoi/sessions",
+    "input": {
+      "title": "会话 0007",
+      "source": "moi",
+      "config": "{\"q\":\"0007\"}",
+      "tags": [
+        "tag-1"
+      ]
+    },
+    "request": {
+      "title": "会话 0007",
+      "source": "moi",
+      "config": "{\"q\":\"0007\"}",
+      "tags": [
+        "tag-1"
+      ]
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    }
+  },
+  {
+    "name": "UI update protobuf defaults omitted",
+    "operation": "update-ui-session",
+    "method": "PUT",
+    "path": "/newmoi/sessions/9007199254740993",
+    "input": {
+      "title": "新标题",
+      "config": "",
+      "tags": []
+    },
+    "request": {
+      "title": "新标题"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "UI list owner defaults",
+    "operation": "list-ui-sessions",
+    "method": "POST",
+    "path": "/newmoi/sessions/list",
+    "input": {},
+    "request": {},
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "sessions": [
+          {
+            "id": 9007199254740993,
+            "title": "会话 0007",
+            "source": "moi",
+            "user_id": "user-1",
+            "config": "{\"mode\":\"0007\"}",
+            "created_at": 1700000000,
+            "updated_at": 1700000001
+          }
+        ],
+        "total": 1,
+        "page": 1,
+        "page_size": 20
+      }
+    }
+  },
+  {
+    "name": "UI list all filters",
+    "operation": "list-ui-sessions",
+    "method": "POST",
+    "path": "/newmoi/sessions/list",
+    "input": {
+      "page": 2,
+      "page_size": 5,
+      "source": "moi",
+      "keyword": "会话 + 0007",
+      "tags": "custom:标签"
+    },
+    "request": {
+      "page": 2,
+      "page_size": 5,
+      "source": "moi",
+      "keyword": "会话 + 0007",
+      "tags": "custom:标签"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "sessions": [],
+        "total": 0,
+        "page": 2,
+        "page_size": 5
+      }
+    }
+  },
+  {
+    "name": "UI pinned pagination",
+    "operation": "list-pinned-ui-sessions",
+    "method": "POST",
+    "path": "/newmoi/sessions/pinned/list",
+    "input": {
+      "page": 1,
+      "page_size": 5
+    },
+    "request": {
+      "page": 1,
+      "page_size": 5
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "sessions": [
+          {
+            "id": 9007199254740993,
+            "title": "会话 0007",
+            "source": "moi",
+            "user_id": "user-1",
+            "config": "{\"mode\":\"0007\"}",
+            "created_at": 1700000000,
+            "updated_at": 1700000001
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "UI unpinned keyword",
+    "operation": "list-unpinned-ui-sessions",
+    "method": "POST",
+    "path": "/newmoi/sessions/unpinned/list",
+    "input": {
+      "keyword": "0007"
+    },
+    "request": {
+      "keyword": "0007"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "sessions": [],
+        "total": 0,
+        "page": 1,
+        "page_size": 20
+      }
+    }
+  },
+  {
+    "name": "UI messages exact numeric IDs",
+    "operation": "list-ui-messages",
+    "method": "POST",
+    "path": "/newmoi/messages/session/list",
+    "input": {
+      "session_id": 9007199254740993,
+      "after": 9007199254740995,
+      "source": "moi",
+      "role": "user",
+      "status": "completed",
+      "model": "model-0007",
+      "limit": 10
+    },
+    "request": {
+      "session_id": 9007199254740993,
+      "after": 9007199254740995,
+      "source": "moi",
+      "role": "user",
+      "status": "completed",
+      "model": "model-0007",
+      "limit": 10
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": [
+        {
+          "id": 9007199254740995,
+          "session_id": 9007199254740993,
+          "source": "moi",
+          "role": "user",
+          "content": "内容 0007",
+          "created_at": 1700000000
+        }
+      ]
+    }
+  },
+  {
+    "name": "UI messages zero cursor omitted",
+    "operation": "list-ui-messages",
+    "method": "POST",
+    "path": "/newmoi/messages/session/list",
+    "input": {
+      "session_id": 9007199254740993,
+      "after": 0
+    },
+    "request": {
+      "session_id": 9007199254740993
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": [
+        {
+          "id": 9007199254740995,
+          "session_id": null,
+          "source": "moi",
+          "role": "user",
+          "content": "内容 0007",
+          "created_at": 1700000000
+        }
+      ]
+    }
+  },
+  {
+    "name": "workspace create omits defaults",
+    "operation": "create-session",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions",
+    "input": {
+      "title": "会话 0007"
+    },
+    "request": {
+      "title": "会话 0007"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    }
+  },
+  {
+    "name": "workspace create complete settings",
+    "operation": "create-session",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions",
+    "input": {
+      "title": "会话 0007",
+      "source": "chat",
+      "config": "{\"mode\":\"0007\"}"
+    },
+    "request": {
+      "title": "会话 0007",
+      "source": "chat",
+      "config": "{\"mode\":\"0007\"}"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    }
+  },
+  {
+    "name": "workspace update absent condition",
+    "operation": "update-session",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "input": {
+      "title": "新标题"
+    },
+    "request": {
+      "title": "新标题"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "workspace update explicit empty condition",
+    "operation": "update-session",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "input": {
+      "title": "条件更新",
+      "expected_title": ""
+    },
+    "request": {
+      "title": "条件更新",
+      "expected_title": ""
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "workspace update expected title",
+    "operation": "update-session",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993",
+    "input": {
+      "title": "条件更新",
+      "config": "{\"x\":\"0007\"}",
+      "expected_title": "旧标题"
+    },
+    "request": {
+      "title": "条件更新",
+      "config": "{\"x\":\"0007\"}",
+      "expected_title": "旧标题"
+    },
+    "status": 200,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740993,
+        "title": "会话 0007",
+        "source": "moi",
+        "user_id": "user-1",
+        "config": "{\"mode\":\"0007\"}",
+        "created_at": 1700000000,
+        "updated_at": 1700000001
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "workspace message default user role",
+    "operation": "create-message",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages",
+    "input": {
+      "role": 0,
+      "content": "0007"
+    },
+    "request": {
+      "content": "0007"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740995,
+        "session_id": 9007199254740993,
+        "source": "moi",
+        "role": 0,
+        "content": "内容 0007",
+        "created_at": 1700000000
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "workspace message complete settings",
+    "operation": "create-message",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/messages",
+    "input": {
+      "source": "chat",
+      "role": 2,
+      "original_content": "原始内容",
+      "content": "问题",
+      "model": "model-0007",
+      "status": "completed",
+      "response": "回答 0007",
+      "modified_response": "编辑 0007",
+      "config": "{\"x\":\"0007\"}"
+    },
+    "request": {
+      "source": "chat",
+      "role": 2,
+      "original_content": "原始内容",
+      "content": "问题",
+      "model": "model-0007",
+      "status": "completed",
+      "response": "回答 0007",
+      "modified_response": "编辑 0007",
+      "config": "{\"x\":\"0007\"}"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": 9007199254740995,
+        "session_id": 9007199254740993,
+        "source": "moi",
+        "role": 2,
+        "content": "内容 0007",
+        "created_at": 1700000000,
+        "response": "回答 0007",
+        "modified_response": "编辑 0007"
+      }
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "tag creation omits relation selectors",
+    "operation": "create-tag",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/tags",
+    "input": {
+      "source": "custom",
+      "name": "标签 0007"
+    },
+    "request": {
+      "source": "custom",
+      "name": "标签 0007"
+    },
+    "status": 201,
+    "response": {
+      "code": 0,
+      "data": {
+        "source": "custom",
+        "name": "标签 0007",
+        "created_at": 1700000000
+      }
+    }
+  },
+  {
+    "name": "attach session tag",
+    "operation": "add-session-tag",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/sessions/9007199254740993/tags",
+    "input": {
+      "tag_source": "custom",
+      "tag_name": "标签 0007"
+    },
+    "request": {
+      "tag_source": "custom",
+      "tag_name": "标签 0007"
+    },
+    "status": 204,
+    "response": {
+      "code": 0,
+      "data": null
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "attach message tag",
+    "operation": "add-message-tag",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/llm/messages/9007199254740995/tags",
+    "input": {
+      "tag_source": "custom",
+      "tag_name": "标签 0007"
+    },
+    "request": {
+      "tag_source": "custom",
+      "tag_name": "标签 0007"
+    },
+    "status": 204,
+    "response": {
+      "code": 0,
+      "data": null
+    },
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "simulated missing UI session preserves owner error",
+    "operation": "update-ui-session",
+    "method": "PUT",
+    "path": "/newmoi/sessions/9007199254740993",
+    "input": {
+      "title": "新标题"
+    },
+    "request": {
+      "title": "新标题"
+    },
+    "status": 404,
+    "response": {
+      "code": "ErrNotFound",
+      "msg": "模拟：会话已不存在",
+      "data": null
+    },
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "latest UI message ID preserves int64 path and response",
+    "operation": "latest-ui-message-id",
+    "method": "GET",
+    "path": "/newmoi/messages/sessions/9007199254740993/latest",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"session_id": 9007199254740993, "message_id": 9007199254740995}},
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "get UI message preserves nullable session and tags",
+    "operation": "get-ui-message",
+    "method": "GET",
+    "path": "/newmoi/messages/9007199254740995",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"id": 9007199254740995, "user_id": "user-1", "session_id": 9007199254740993, "source": "moi", "role": "user", "original_content": "原始内容", "content": "问题", "model": "model-1", "status": "completed", "config": "{\"x\":1}", "modified_response": "", "response": "回答", "tags": [{"source": "custom", "name": "标签", "created_at": 1700000000, "updated_at": 1700000001}], "created_at": 1700000000, "updated_at": 1700000001}},
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "dislike UI message has empty body",
+    "operation": "dislike-ui-message",
+    "method": "PUT",
+    "path": "/newmoi/messages/9007199254740995/dislike",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"id": 9007199254740995, "session_id": 9007199254740993, "content": "问题", "response": "回答", "status": "completed", "tags": [{"source": "system", "name": "disliked", "created_at": 1700000002, "updated_at": 1700000002}]}},
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "like UI message has empty body",
+    "operation": "like-ui-message",
+    "method": "PUT",
+    "path": "/newmoi/messages/9007199254740995/like",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"id": 9007199254740995, "session_id": 9007199254740993, "content": "问题", "response": "回答", "status": "completed", "tags": [{"source": "system", "name": "liked", "created_at": 1700000002, "updated_at": 1700000002}]}},
+    "message_id": 9007199254740995
+  },
+  {
+    "name": "delete UI session has empty body",
+    "operation": "delete-ui-session",
+    "method": "DELETE",
+    "path": "/newmoi/sessions/9007199254740993",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"message": "deleted"}},
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "get UI session preserves typed response",
+    "operation": "get-ui-session",
+    "method": "GET",
+    "path": "/newmoi/sessions/9007199254740993",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"id": 9007199254740993, "title": "会话", "source": "moi", "user_id": "user-1", "config": "{\"mode\":\"chat\"}", "tags": [], "created_at": 1700000000, "updated_at": 1700000001}},
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "unpin UI session has empty body",
+    "operation": "unpin-ui-session",
+    "method": "DELETE",
+    "path": "/newmoi/sessions/9007199254740993/pin",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"message": "unpinned"}},
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "pin UI session has empty body",
+    "operation": "pin-ui-session",
+    "method": "PUT",
+    "path": "/newmoi/sessions/9007199254740993/pin",
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"message": "pinned"}},
+    "session_id": 9007199254740993
+  },
+  {
+    "name": "get missing UI message preserves owner error without body",
+    "operation": "get-ui-message",
+    "method": "GET",
+    "path": "/newmoi/messages/9007199254740995",
+    "request": null,
+    "status": 404,
+    "response": {"code": "ErrNotFound", "msg": "Not Found", "data": null},
+    "message_id": 9007199254740995
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "id": "conn-501",
+  "name": "orders-mysql",
+  "source_type": 9,
+  "created_at": 1760227200,
+  "updated_at": 1760486400,
+  "status": "active",
+  "username": "etl_bot",
+  "related_task_ids": ["task-9001", "task-9002"],
+  "usage_type": [1, 2],
+  "config": {"host": "mysql.internal", "port": 3306, "database": "orders"}
+}

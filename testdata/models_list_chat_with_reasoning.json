@@ -1,0 +1,9 @@
+{
+  "model": "deepseek-v4-pro",
+  "backend_id": -900001,
+  "backend_name": "TaaS",
+  "model_type": "chat",
+  "source": "system",
+  "system_default": true,
+  "reasoning_efforts": ["none", "low", "medium", "high", "max"]
+}

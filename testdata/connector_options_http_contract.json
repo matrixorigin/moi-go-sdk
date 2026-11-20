@@ -1,0 +1,32 @@
+[
+  {
+    "name": "preview omits optional fields",
+    "operation": "preview-file",
+    "method": "POST",
+    "path": "/newmoi/connectors/file/preview",
+    "input": {"connector_id": "connector-1", "uri": "s3://bucket/orders.csv"},
+    "request": {"connector_id": "connector-1", "uri": "s3://bucket/orders.csv"},
+    "response": {"code": "OK", "msg": "success", "data": {"conn_file_id": "cf-1", "file_type": 1, "rows": [], "sheets": []}},
+    "status": 200
+  },
+  {
+    "name": "preview preserves sheet name false zero and csv settings",
+    "operation": "preview-file",
+    "method": "POST",
+    "path": "/newmoi/connectors/file/preview",
+    "input": {"connector_id": "connector-1", "uri": "s3://bucket/orders.xlsx", "conn_file_id": "cf-2", "sheet_name": "Sheet 2", "is_column_name": false, "row_start": 0, "column_name_row": 0, "file_type": 0, "csv": {"separator": ",", "delimiter": "", "isEscape": false}},
+    "request": {"connector_id": "connector-1", "uri": "s3://bucket/orders.xlsx", "conn_file_id": "cf-2", "sheet_name": "Sheet 2", "isColumnName": false, "rowStart": 0, "columnNameRow": 0, "csv": {"separator": ",", "delimiter": "", "isEscape": false}, "file_type": 0},
+    "response": {"code": "OK", "msg": "success", "data": {"conn_file_id": "cf-2", "file_type": 2, "rows": [{"number": 0, "columnName": "id", "columnValues": ["1", "订单"], "charNumber": "0", "charColumnName": "id"}], "sheets": [{"name": "Sheet 2", "row_count": 0}]}},
+    "status": 200
+  },
+  {
+    "name": "mysql capability sends only capability command fields",
+    "operation": "structured-source-capability",
+    "method": "POST",
+    "path": "/newmoi/connectors/structured/v1/source/capabilities",
+    "input": {"connector_id": "mysql-1", "source_type": "SOURCE_TYPE_MYSQL", "database": "sales", "table": "orders", "schema": ""},
+    "request": {"connector_id": "mysql-1", "source": {"connector_id": "mysql-1", "source_type": "SOURCE_TYPE_MYSQL", "database": "sales", "table": "orders"}},
+    "response": {"code": "OK", "msg": "success", "data": {"capability_profile_hash": "profile-1", "mysql_cdc_available": false, "doris_cdc_available": false, "disabled_reasons": [], "doris_flight_sql_read_available": true, "doris_thrift_read_available": false, "doris_jdbc_read_available": false, "doris_read_mode": "flight_sql", "doris_read_disabled_reasons": ["DORIS_THRIFT_READ_UNAVAILABLE"]}},
+    "status": 200
+  }
+]

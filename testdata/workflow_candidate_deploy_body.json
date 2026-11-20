@@ -1,0 +1,21 @@
+{
+  "candidate_ref": {
+    "artifact_id": "workflow_candidate_0123456789abcdef0123456789abcdef",
+    "task_id": "task-123"
+  },
+  "compute_resource_id": "compute-1",
+  "default_values": {
+    "enabled": true,
+    "limit": 7
+  },
+  "description": "server-owned candidate",
+  "execution_mode": "volume_trigger",
+  "name": "candidate workflow",
+  "source_type": "nl2dsl",
+  "volume_trigger": {
+    "enabled": true,
+    "vars_json": "{\"source\":\"volume-7\"}",
+    "volume_id": 7
+  },
+  "workflow_id": "workflow-1"
+}

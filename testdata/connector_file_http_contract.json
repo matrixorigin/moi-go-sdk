@@ -1,0 +1,70 @@
+[
+  {
+    "name":"connector files query and typed result",
+    "operation":"files",
+    "method":"GET",
+    "path":"/newmoi/connectors/files/list",
+    "query":{"connector_id":["mysql-1"],"cursor":[""],"dir":[""],"limit":["0"],"file_types":["0","2"]},
+    "input":{"query_params":{"connector_id":["mysql-1"],"cursor":[""],"dir":[""],"limit":["0"],"file_types":["0","2"]}},
+    "request":null,
+    "response":{"code":"OK","msg":"success","data":{"files":[{"uri":"s3://bucket/orders.csv","filename":"orders.csv","size":9007199254740993,"type":0,"path":"orders.csv","create_time":0,"update_time":0}],"cursor":"","has_more":false}},
+    "status":200
+  },
+  {
+    "name":"connector upload multipart fields files and false",
+    "operation":"upload",
+    "method":"POST",
+    "path":"/newmoi/connectors/upload",
+    "input":{
+      "fields":{"name":"orders","VolumeID":"0","meta":"{}","file_types":"[]","unzip_keep_structure":"false","table_config":"{\"tables\":[]}"},
+      "files":[{"filename":"orders.csv","content_base64":"YSxiCjEsMgo="},{"filename":"empty.bin","content_base64":"AAEC/w=="}]
+    },
+    "request":null,
+    "multipart":{"fields":{"name":"orders","VolumeID":"0","meta":"{}","file_types":"[]","unzip_keep_structure":"false","table_config":"{\"tables\":[]}"},"files":[{"field_name":"file","filename":"orders.csv","content_type":"application/octet-stream","content_base64":"YSxiCjEsMgo="},{"field_name":"file","filename":"empty.bin","content_type":"application/octet-stream","content_base64":"AAEC/w=="}]},
+    "response":{"code":"OK","msg":"success","data":{"file_id":"file-1","message":"accepted","success":true,"results":[{"file_id":"file-1","message":"accepted","success":true}],"task_id":"task-1","file_ids":["file-1"],"acceptance_status":"accepted"}},
+    "status":200
+  },
+  {
+    "name":"connector local upload multipart",
+    "operation":"local-upload",
+    "method":"POST",
+    "path":"/newmoi/connectors/file/upload",
+    "input":{"files":[{"filename":"orders.csv","content_base64":"YSxiCjEsMgo="}]},
+    "request":null,
+    "multipart":{"fields":{},"files":[{"field_name":"file","filename":"orders.csv","content_type":"application/octet-stream","content_base64":"YSxiCjEsMgo="}]},
+    "response":{"code":"OK","msg":"success","data":{"conn_file_ids":["cf-1"],"file_ids":[]}},
+    "status":200
+  },
+  {
+    "name":"connector file download",
+    "operation":"file-download",
+    "method":"POST",
+    "path":"/newmoi/connectors/file/download",
+    "input":{"conn_file_id":"cf-1"},
+    "request":{"conn_file_id":"cf-1"},
+    "response":{"code":"OK","msg":"success","data":{"url":"/newmoi/connectors/file/stream?conn_file_id=cf-1"}},
+    "status":200
+  },
+  {
+    "name":"connector file stream",
+    "operation":"file-stream",
+    "method":"GET",
+    "path":"/newmoi/connectors/file/stream",
+    "query":{"conn_file_id":["cf/1"]},
+    "input":{"conn_file_id":"cf/1"},
+    "request":null,
+    "response":null,
+    "content_base64":"AAEC/w==",
+    "status":200
+  },
+  {
+    "name":"connector file delete",
+    "operation":"file-delete",
+    "method":"POST",
+    "path":"/newmoi/connectors/file/delete",
+    "input":{"conn_file_id":"cf-1"},
+    "request":{"conn_file_id":"cf-1"},
+    "response":{"code":"OK","msg":"success","data":null},
+    "status":200
+  }
+]

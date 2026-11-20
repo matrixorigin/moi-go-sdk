@@ -1,0 +1,223 @@
+{
+  "id": "structured-task-1",
+  "name": "structured import",
+  "config_type": 3,
+  "source_connector_id": "connector-2",
+  "source_connector_type": 2,
+  "connector_name": "mysql",
+  "volume_id": "",
+  "volume_name": "",
+  "volume_path": {
+    "id_list": [],
+    "name_list": []
+  },
+  "creator": "user-1",
+  "status": 3,
+  "source_config": {
+    "database": "source_db",
+    "table": "orders"
+  },
+  "start_at": 1767225600,
+  "end_at": 1767225660,
+  "created_at": 1767225500,
+  "updated_at": 1767225660,
+  "file_types": [],
+  "path_regex": "",
+  "unzip_keep_structure": false,
+  "dedup": {},
+  "table_path": {
+    "id_list": ["catalog-1", "database-1", "table-1"],
+    "name_list": ["catalog", "analytics", "orders"]
+  },
+  "table_paths": [
+    {
+      "id_list": ["catalog-1", "database-1", "table-1"],
+      "name_list": ["catalog", "analytics", "orders"]
+    }
+  ],
+  "load_results": [],
+  "source_files": [],
+  "load_type": 2,
+  "total_rows": 4,
+  "imported_rows": 4,
+  "success_file_count": 0,
+  "failed_file_count": 0,
+  "structured_load_config": {
+    "run_mode": "once",
+    "sync_strategy": "snapshot"
+  },
+  "structured_load_summary": {
+    "source_type": "mysql",
+    "source_object": "source_db.orders",
+    "target_database_id": "database-1",
+    "target_table_id": "table-1",
+    "target_table_name": "orders",
+    "source": {
+      "connector_id": "connector-2",
+      "connector_name": "mysql",
+      "source_type": "mysql",
+      "database": "source_db",
+      "schema": "",
+      "table": "orders",
+      "collection": "",
+      "object": "source_db.orders"
+    },
+    "target": {
+      "mode": "existing",
+      "database_id": "database-1",
+      "database_name": "analytics",
+      "table_id": "table-1",
+      "table_name": "orders"
+    },
+    "mapping_count": 2,
+    "mapping": [
+      {
+        "source": "id",
+        "target": "id"
+      }
+    ],
+    "schedule": {
+      "type": "once"
+    },
+    "backfill": {
+      "enabled": true
+    },
+    "run_mode": "once",
+    "sync_strategy": "snapshot",
+    "backfill_enabled": true,
+    "backfill_phase": "completed",
+    "backfill_progress_percent": 100,
+    "runtime_init_status": "ready",
+    "priority": "normal",
+    "config_hash": "config-hash",
+    "progress": {
+      "total_rows": 4,
+      "imported_rows": 4,
+      "progress_percent": 100
+    },
+    "checkpoint": {
+      "source_object_hash": "source-object-hash",
+      "structured_config_hash": "structured-config-hash",
+      "source_schema_hash": "source-schema-hash",
+      "capability_profile_hash": "capability-profile-hash",
+      "order_policy_hash": "order-policy-hash",
+      "consistency_proof_hash": "consistency-proof-hash",
+      "lock_owner_run_id": "run-1",
+      "lock_phase": "released",
+      "lock_expires_at": 0
+    },
+    "reconcile": {
+      "id": "reconcile-1",
+      "run_id": "run-1",
+      "phase": "completed",
+      "status": "completed",
+      "error_code": "",
+      "error_message": "",
+      "created_table_id": "",
+      "updated_at": 0,
+      "resolved_at": 0
+    }
+  },
+  "structured_runtime": {
+    "runtime_init_status": "ready",
+    "config_hash": "config-hash",
+    "run_status": "completed",
+    "checkpoint_status": "ready",
+    "backfill": {
+      "enabled": true
+    },
+    "schema_snapshot": {
+      "columns": ["id", "amount"]
+    },
+    "mapping": [
+      {
+        "source": "id",
+        "target": "id"
+      }
+    ],
+    "progress": {
+      "total_rows": 4,
+      "imported_rows": 4,
+      "progress_percent": 100
+    },
+    "checkpoint": {
+      "source_object_hash": "source-object-hash",
+      "structured_config_hash": "structured-config-hash",
+      "source_schema_hash": "source-schema-hash",
+      "capability_profile_hash": "capability-profile-hash",
+      "order_policy_hash": "order-policy-hash",
+      "consistency_proof_hash": "consistency-proof-hash",
+      "lock_owner_run_id": "run-1",
+      "lock_phase": "released",
+      "lock_expires_at": 0
+    },
+    "reconcile": {
+      "id": "reconcile-1",
+      "run_id": "run-1",
+      "phase": "completed",
+      "status": "completed",
+      "error_code": "",
+      "error_message": "",
+      "created_table_id": "",
+      "updated_at": 0,
+      "resolved_at": 0
+    },
+    "last_run": {
+      "id": "run-1",
+      "status": 3,
+      "run_status": "completed",
+      "error_message": "",
+      "row_count": 4,
+      "file_count": 0,
+      "source_schema_hash": "source-schema-hash",
+      "source_object_hash": "source-object-hash",
+      "structured_config_hash": "structured-config-hash",
+      "trigger_id": "trigger-1",
+      "trigger_source": "manual",
+      "workflow_execution_id": "workflow-execution-1",
+      "mowl_task_id": "mowl-task-1",
+      "moi_case_id": "case-1",
+      "current_phase": "completed",
+      "scheduled_fire_at": 0,
+      "started_at": 1767225600,
+      "ended_at": 1767225660,
+      "created_at": 1767225500,
+      "updated_at": 1767225660
+    }
+  },
+  "mapping": [
+    {
+      "source": "id",
+      "target": "id"
+    }
+  ],
+  "schedule": {
+    "type": "once"
+  },
+  "backfill": {
+    "enabled": true
+  },
+  "runtime_init_status": "ready",
+  "priority": "normal",
+  "config_hash": "config-hash",
+  "structured_config_hash": "structured-config-hash",
+  "latest_rows": {
+    "read_rows": 4,
+    "succeeded_rows": 4,
+    "failed_rows": 0,
+    "skipped_rows": 0,
+    "complete": true
+  },
+  "cumulative_rows": {
+    "read_rows": 4,
+    "succeeded_rows": 4,
+    "failed_rows": 0,
+    "skipped_rows": 0,
+    "complete": true
+  },
+  "error_code": "",
+  "error_summary": "",
+  "target_path_state": "resolved",
+  "target_path_error_code": "",
+  "target_path_error_summary": ""
+}

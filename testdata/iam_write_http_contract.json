@@ -1,0 +1,622 @@
+[
+  {
+    "name": "role bindings preserve empty roles and false clear",
+    "operation": "put-user-role-bindings",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/users/user%2F1/role-bindings",
+    "input": {
+      "user_id": "user/1",
+      "request": {
+        "assigned_role_ids": [],
+        "default_role_id": "",
+        "expected_binding_version": 0,
+        "expected_default_role_version": 0,
+        "request_id": "write-1",
+        "clear_default_role": false
+      }
+    },
+    "request": {
+      "assigned_role_ids": [],
+      "default_role_id": "",
+      "expected_binding_version": 0,
+      "expected_default_role_version": 0,
+      "request_id": "write-1",
+      "clear_default_role": false
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "create role preserves typed nested mutations",
+    "operation": "create-role",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles",
+    "input": {
+      "request": {
+        "name": "analyst",
+        "schema_version": "v1",
+        "request_id": "create-1",
+        "statements": [
+          {
+            "action_id": "workflow.run",
+            "resource_type": "workflow",
+            "scope_mode": "all"
+          }
+        ],
+        "data_privilege_mutations": [
+          {
+            "operation": "grant",
+            "action_id": "table.query",
+            "resource_type": "table",
+            "resource_id": "41",
+            "privilege": "select",
+            "with_grant_option": false,
+            "row_column": {
+              "mode": "keep",
+              "draft": {}
+            }
+          }
+        ]
+      }
+    },
+    "request": {
+      "name": "analyst",
+      "schema_version": "v1",
+      "request_id": "create-1",
+      "statements": [
+        {
+          "action_id": "workflow.run",
+          "resource_type": "workflow",
+          "scope_mode": "all"
+        }
+      ],
+      "data_privilege_mutations": [
+        {
+          "operation": "grant",
+          "action_id": "table.query",
+          "resource_type": "table",
+          "resource_id": "41",
+          "privilege": "select",
+          "row_column": {
+            "mode": "keep",
+            "draft": {}
+          }
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "update role preserves CAS versions and nested mutations",
+    "operation": "update-role",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "name": "analyst",
+        "schema_version": "v1",
+        "request_id": "create-1",
+        "statements": [
+          {
+            "action_id": "workflow.run",
+            "resource_type": "workflow",
+            "scope_mode": "all"
+          }
+        ],
+        "data_privilege_mutations": [
+          {
+            "operation": "grant",
+            "action_id": "table.query",
+            "resource_type": "table",
+            "resource_id": "41",
+            "privilege": "select",
+            "with_grant_option": false,
+            "row_column": {
+              "mode": "keep",
+              "draft": {}
+            }
+          }
+        ],
+        "expected_lifecycle_version": 3,
+        "expected_policy_version": 7,
+        "expected_data_privilege_version": 4
+      }
+    },
+    "request": {
+      "name": "analyst",
+      "schema_version": "v1",
+      "request_id": "create-1",
+      "statements": [
+        {
+          "action_id": "workflow.run",
+          "resource_type": "workflow",
+          "scope_mode": "all"
+        }
+      ],
+      "data_privilege_mutations": [
+        {
+          "operation": "grant",
+          "action_id": "table.query",
+          "resource_type": "table",
+          "resource_id": "41",
+          "privilege": "select",
+          "row_column": {
+            "mode": "keep",
+            "draft": {}
+          }
+        }
+      ],
+      "expected_lifecycle_version": 3,
+      "expected_policy_version": 7,
+      "expected_data_privilege_version": 4
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "validate object grants preserves false remove and empty condition",
+    "operation": "validate-object-grants",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/objects/connector/connector%2F1/roles/role%2F1/grants:validate",
+    "input": {
+      "resource_type": "connector",
+      "resource_id": "connector/1",
+      "role_id": "role/1",
+      "request": {
+        "schema_version": "v1",
+        "expected_policy_version": 7,
+        "expected_role_lifecycle_version": 5,
+        "request_id": "grant-1",
+        "changes": [
+          {
+            "remove": false,
+            "action_id": "connector.read",
+            "condition_hash": ""
+          }
+        ]
+      }
+    },
+    "request": {
+      "schema_version": "v1",
+      "expected_policy_version": 7,
+      "expected_role_lifecycle_version": 5,
+      "request_id": "grant-1",
+      "changes": [
+        {
+          "remove": false,
+          "action_id": "connector.read",
+          "condition_hash": ""
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "apply object grants preserves false remove and empty condition",
+    "operation": "apply-object-grants",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/permissions/objects/connector/connector%2F1/roles/role%2F1/grants",
+    "input": {
+      "resource_type": "connector",
+      "resource_id": "connector/1",
+      "role_id": "role/1",
+      "request": {
+        "schema_version": "v1",
+        "expected_policy_version": 7,
+        "expected_role_lifecycle_version": 5,
+        "request_id": "grant-1",
+        "changes": [
+          {
+            "remove": false,
+            "action_id": "connector.read",
+            "condition_hash": ""
+          }
+        ]
+      }
+    },
+    "request": {
+      "schema_version": "v1",
+      "expected_policy_version": 7,
+      "expected_role_lifecycle_version": 5,
+      "request_id": "grant-1",
+      "changes": [
+        {
+          "remove": false,
+          "action_id": "connector.read",
+          "condition_hash": ""
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "validate data privileges preserves false and empty nested values",
+    "operation": "validate-data-privileges",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/data-privileges:validate",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "request_id": "write-1",
+        "expected_data_privilege_version": 4,
+        "mutations": [
+          {
+            "operation": "grant",
+            "action_id": "table.query",
+            "resource_type": "table",
+            "resource_id": "41",
+            "privilege": "select",
+            "with_grant_option": false,
+            "row_column": {
+              "mode": "set",
+              "draft": {
+                "black_column_list": [
+                  "secret"
+                ],
+                "rule_list": [
+                  {
+                    "column": "id",
+                    "relation": "and",
+                    "expression_list": [
+                      {
+                        "operator": "=",
+                        "expression": [
+                          "1"
+                        ],
+                        "match_type": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "request": {
+      "request_id": "write-1",
+      "expected_data_privilege_version": 4,
+      "mutations": [
+        {
+          "operation": "grant",
+          "action_id": "table.query",
+          "resource_type": "table",
+          "resource_id": "41",
+          "privilege": "select",
+          "with_grant_option": false,
+          "row_column": {
+            "mode": "set",
+            "draft": {
+              "black_column_list": [
+                "secret"
+              ],
+              "rule_list": [
+                {
+                  "column": "id",
+                  "relation": "and",
+                  "expression_list": [
+                    {
+                      "operator": "=",
+                      "expression": [
+                        "1"
+                      ],
+                      "match_type": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "apply data privileges preserves false and empty nested values",
+    "operation": "apply-data-privileges",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/data-privileges",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "request_id": "write-1",
+        "expected_data_privilege_version": 4,
+        "mutations": [
+          {
+            "operation": "grant",
+            "action_id": "table.query",
+            "resource_type": "table",
+            "resource_id": "41",
+            "privilege": "select",
+            "with_grant_option": false,
+            "row_column": {
+              "mode": "set",
+              "draft": {
+                "black_column_list": [
+                  "secret"
+                ],
+                "rule_list": [
+                  {
+                    "column": "id",
+                    "relation": "and",
+                    "expression_list": [
+                      {
+                        "operator": "=",
+                        "expression": [
+                          "1"
+                        ],
+                        "match_type": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "request": {
+      "request_id": "write-1",
+      "expected_data_privilege_version": 4,
+      "mutations": [
+        {
+          "operation": "grant",
+          "action_id": "table.query",
+          "resource_type": "table",
+          "resource_id": "41",
+          "privilege": "select",
+          "with_grant_option": false,
+          "row_column": {
+            "mode": "set",
+            "draft": {
+              "black_column_list": [
+                "secret"
+              ],
+              "rule_list": [
+                {
+                  "column": "id",
+                  "relation": "and",
+                  "expression_list": [
+                    {
+                      "operator": "=",
+                      "expression": [
+                        "1"
+                      ],
+                      "match_type": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "repair preserves initial CAS zero",
+    "operation": "repair-data-privileges",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/data-privilege-operations/request%2F1:repair",
+    "input": {
+      "role_id": "role/1",
+      "repair_operation": "request/1:repair",
+      "request": {
+        "request_id": "repair-1",
+        "expected_data_privilege_version": 0
+      }
+    },
+    "request": {
+      "request_id": "repair-1",
+      "expected_data_privilege_version": 0
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "add inheritance preserves initial CAS zeros",
+    "operation": "add-role-inheritance",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/parents",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "parent_role_id": "parent/1",
+        "expected_child_lifecycle_version": 0,
+        "expected_parent_lifecycle_version": 0,
+        "request_id": "inherit-1"
+      }
+    },
+    "request": {
+      "parent_role_id": "parent/1",
+      "expected_child_lifecycle_version": 0,
+      "expected_parent_lifecycle_version": 0,
+      "request_id": "inherit-1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "remove inheritance preserves initial CAS zeros and escaped parent",
+    "operation": "remove-role-inheritance",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/parents/parent%2F1",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "parent_role_id": "parent/1",
+        "expected_child_lifecycle_version": 0,
+        "expected_parent_lifecycle_version": 0,
+        "request_id": "inherit-1"
+      }
+    },
+    "request": {
+      "parent_role_id": "parent/1",
+      "expected_child_lifecycle_version": 0,
+      "expected_parent_lifecycle_version": 0,
+      "request_id": "inherit-1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "validate application policy preserves all statement fields",
+    "operation": "validate-application-policy",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/application-policy:validate",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "schema_version": "v1",
+        "expected_policy_version": 0,
+        "expected_role_lifecycle_version": 0,
+        "request_id": "policy-1",
+        "statements": [
+          {
+            "statement_id": "",
+            "action_id": "table.grant.query",
+            "resource_type": "table",
+            "scope_mode": "resources",
+            "resource_id": "41",
+            "condition_hash": "",
+            "target_action_id": "table.query",
+            "grant_scope_mode": "resources",
+            "grant_resource_id": "41",
+            "grant_delegatable": false
+          }
+        ]
+      }
+    },
+    "request": {
+      "schema_version": "v1",
+      "expected_policy_version": 0,
+      "expected_role_lifecycle_version": 0,
+      "request_id": "policy-1",
+      "statements": [
+        {
+          "statement_id": "",
+          "action_id": "table.grant.query",
+          "resource_type": "table",
+          "scope_mode": "resources",
+          "resource_id": "41",
+          "condition_hash": "",
+          "target_action_id": "table.query",
+          "grant_scope_mode": "resources",
+          "grant_resource_id": "41",
+          "grant_delegatable": false
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  },
+  {
+    "name": "apply application policy preserves all statement fields",
+    "operation": "apply-application-policy",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/application-policy",
+    "input": {
+      "role_id": "role/1",
+      "request": {
+        "schema_version": "v1",
+        "expected_policy_version": 0,
+        "expected_role_lifecycle_version": 0,
+        "request_id": "policy-1",
+        "statements": [
+          {
+            "statement_id": "",
+            "action_id": "table.grant.query",
+            "resource_type": "table",
+            "scope_mode": "resources",
+            "resource_id": "41",
+            "condition_hash": "",
+            "target_action_id": "table.query",
+            "grant_scope_mode": "resources",
+            "grant_resource_id": "41",
+            "grant_delegatable": false
+          }
+        ]
+      }
+    },
+    "request": {
+      "schema_version": "v1",
+      "expected_policy_version": 0,
+      "expected_role_lifecycle_version": 0,
+      "request_id": "policy-1",
+      "statements": [
+        {
+          "statement_id": "",
+          "action_id": "table.grant.query",
+          "resource_type": "table",
+          "scope_mode": "resources",
+          "resource_id": "41",
+          "condition_hash": "",
+          "target_action_id": "table.query",
+          "grant_scope_mode": "resources",
+          "grant_resource_id": "41",
+          "grant_delegatable": false
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {}
+    },
+    "status": 200
+  }
+]

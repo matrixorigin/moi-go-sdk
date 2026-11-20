@@ -1,0 +1,63 @@
+[
+  {
+    "name": "create folder omits description and preserves int64 result",
+    "operation": "create-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/create",
+    "input": {"parent_volume_id": 1, "database_id": 2, "name": "inbox"},
+    "request": {"parent_volume_id": 1, "database_id": 2, "name": "inbox"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 9007199254740993}},
+    "status": 200
+  },
+  {
+    "name": "create folder preserves explicit empty description",
+    "operation": "create-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/create",
+    "input": {"parent_volume_id": 1, "database_id": 2, "name": "inbox", "description": ""},
+    "request": {"parent_volume_id": 1, "database_id": 2, "name": "inbox", "description": ""},
+    "response": {"code": "OK", "msg": "success", "data": {"id": 32}},
+    "status": 200
+  },
+  {
+    "name": "update folder forwards name and description",
+    "operation": "update-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/update",
+    "input": {"folder_id": 31, "name": "renamed", "description": "新说明"},
+    "request": {"id": 31, "name": "renamed", "description": "新说明"},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "update folder preserves explicit empty fields without claiming owner clear semantics",
+    "operation": "update-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/update",
+    "input": {"folder_id": 31, "name": "", "description": ""},
+    "request": {"id": 31, "name": "", "description": ""},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "delete folder forwards owner not found",
+    "operation": "delete-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/delete",
+    "input": {"folder_id": 32},
+    "request": {"id": 32},
+    "response": {"code": "ErrNotFound", "msg": "folder not found", "data": null},
+    "response_headers": {"X-Request-ID": "folder-request-1"},
+    "status": 404
+  },
+  {
+    "name": "clean folder",
+    "operation": "clean-folder",
+    "method": "POST",
+    "path": "/newmoi/catalog/folder/clean",
+    "input": {"folder_id": 33},
+    "request": {"id": 33},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  }
+]

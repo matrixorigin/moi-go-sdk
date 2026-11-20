@@ -1,0 +1,262 @@
+[
+  {
+    "name": "accept invitation escapes the resource ID",
+    "operation": "accept-invitation",
+    "method": "POST",
+    "path": "/newmoi/workspaces/invitations/invitation%2F1/accept",
+    "input": {"invitation_id": "invitation/1"},
+    "request": {},
+    "response": {"code": "OK", "msg": "success", "data": {"accepted": true}},
+    "status": 200
+  },
+  {
+    "name": "current principal decodes nested IAM state",
+    "operation": "current-principal",
+    "method": "POST",
+    "path": "/newmoi/user/info",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "user": "user-1",
+        "role": "role-1",
+        "is_admin": false,
+        "user_info": {"id": "user-1", "name": "Alice", "status": "enabled", "reserved": false},
+        "iam_context": {"roles": [], "default_role_id": "10", "default_role_version": "2", "explicit_role_id": "10", "effective_role_id": "10", "role_context_status": "ready"},
+        "iam_capabilities": {"effective_role_id": "10", "request_id": "request-1", "trace_id": "trace-1", "items": []},
+        "iam_snapshot_version": "snapshot-1"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "member list omits unset options",
+    "operation": "members",
+    "method": "POST",
+    "path": "/newmoi/user/list",
+    "input": {},
+    "request": {},
+    "response": {"code": "OK", "msg": "success", "data": {"total": 0, "user_list": []}},
+    "status": 200
+  },
+  {
+    "name": "member list preserves zero paging and empty filter values",
+    "operation": "members",
+    "method": "POST",
+    "path": "/newmoi/user/list",
+    "input": {
+      "page": 0,
+      "page_present": true,
+      "page_size": 0,
+      "page_size_present": true,
+      "filters": [
+        {"name": "name", "values": ["alice", "bob"]},
+        {"name": "status", "values": []}
+      ]
+    },
+    "request": {"page": 0, "page_size": 0, "filters": [{"name": "name", "values": ["alice", "bob"]}, {"name": "status", "values": []}]},
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "total": 1,
+        "user_list": [{
+          "id": "9007199254740993",
+          "iam_user_id": "iam-user-1",
+          "name": "Alice",
+          "description": "",
+          "status": "enabled",
+          "created_at": "2026-06-25T00:00:00Z",
+          "updated_at": "2026-06-25T00:00:00Z",
+          "reserved": false,
+          "role_list": [{"id": "10", "name": "viewer", "status": "enabled"}],
+          "tag_list": [{"id": "1", "value": ""}],
+          "allowed_actions": []
+        }]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "invite forwards explicit empty description and tags",
+    "operation": "invite",
+    "method": "POST",
+    "path": "/newmoi/user/create",
+    "input": {
+      "name": "Alice",
+      "default_role_id": 20,
+      "email": "alice@example.test",
+      "email_present": true,
+      "description": "",
+      "description_present": true,
+      "role_ids": [10, 20],
+      "auto_accept": true,
+      "tags": [{"id": 1, "value": ""}, {"id": 2, "value": "research"}]
+    },
+    "request": {
+      "name": "Alice",
+      "default_role_id": 20,
+      "email": "alice@example.test",
+      "description": "",
+      "role_id_list": [10, 20],
+      "tag_list": [{"id": 1, "value": ""}, {"id": 2, "value": "research"}],
+      "auto_accept": true
+    },
+    "response": {"code": "OK", "msg": "success", "data": {"id": "user-2"}},
+    "status": 200
+  },
+  {
+    "name": "member detail keeps a large ID as a string",
+    "operation": "member",
+    "method": "POST",
+    "path": "/newmoi/user/detail_info",
+    "input": {"user_id": "9007199254740993"},
+    "request": {"id": "9007199254740993"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "9007199254740993", "name": "Alice", "status": "enabled", "role_list": [], "tag_list": []}},
+    "status": 200
+  },
+  {
+    "name": "member update forwards tags and an empty description",
+    "operation": "update",
+    "method": "POST",
+    "path": "/newmoi/user/update_info",
+    "input": {"user_id": "user-1", "name": "Alice", "description": "", "tags": [{"id": 1, "value": ""}, {"id": 2, "value": "research"}]},
+    "request": {"id": "user-1", "name": "Alice", "description": "", "tag_list": [{"id": 1, "value": ""}, {"id": 2, "value": "research"}]},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "member update sends an empty tag list to clear tags",
+    "operation": "update",
+    "method": "POST",
+    "path": "/newmoi/user/update_info",
+    "input": {"user_id": "user-1", "name": "Alice", "description": "updated"},
+    "request": {"id": "user-1", "name": "Alice", "description": "updated", "tag_list": []},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "member delete accepts an empty acknowledgement",
+    "operation": "delete",
+    "method": "POST",
+    "path": "/newmoi/user/delete",
+    "input": {"user_id": "user-1"},
+    "request": {"id": "user-1"},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "member status update forwards the action",
+    "operation": "update-status",
+    "method": "POST",
+    "path": "/newmoi/user/update_status",
+    "input": {"user_id": "user-1", "action": "disable"},
+    "request": {"id": "user-1", "action": "disable"},
+    "response": {"code": "OK", "msg": "success", "data": null},
+    "status": 200
+  },
+  {
+    "name": "create user tag preserves an int64 response ID",
+    "operation": "create-user-tag",
+    "method": "POST",
+    "path": "/newmoi/user/tag/create",
+    "input": {"name": "department"},
+    "request": {"name": "department"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "9007199254740993"}},
+    "status": 200
+  },
+  {
+    "name": "user tag list decodes tags",
+    "operation": "user-tags",
+    "method": "POST",
+    "path": "/newmoi/user/tag/list",
+    "input": {},
+    "request": {},
+    "response": {"code": "OK", "msg": "success", "data": {"total": 1, "tag_list": [{"id": "9007199254740993", "name": "department", "description": "", "allowed_actions": []}]}},
+    "status": 200
+  },
+  {
+    "name": "update user tag forwards the numeric ID",
+    "operation": "update-user-tag",
+    "method": "POST",
+    "path": "/newmoi/user/tag/update",
+    "input": {"tag_id": 9, "name": "research"},
+    "request": {"id": 9, "name": "research"},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "9"}},
+    "status": 200
+  },
+  {
+    "name": "delete user tag forwards the numeric ID",
+    "operation": "delete-user-tag",
+    "method": "POST",
+    "path": "/newmoi/user/tag/delete",
+    "input": {"tag_id": 9},
+    "request": {"id": 9},
+    "response": {"code": "OK", "msg": "success", "data": {"id": "9"}},
+    "status": 200
+  },
+  {
+    "name": "audit logs omit unset query options and accept nullable fields",
+    "operation": "audit-logs",
+    "method": "GET",
+    "path": "/newmoi/audit/logs",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "items": [{
+          "id": "log-1",
+          "workspace_id": "workspace-1",
+          "operator_user_id": "user-1",
+          "method": "POST",
+          "path": "/newmoi/user/create",
+          "query_json": null,
+          "request_body_json": null,
+          "response_body_json": null,
+          "metadata_json": null,
+          "status_code": 200,
+          "result": "success",
+          "duration_ms": "15",
+          "created_at": "2026-06-25T00:00:00Z"
+        }],
+        "total": "9007199254740993",
+        "page": 1,
+        "page_size": 20
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "audit logs preserve explicit zero and empty query values",
+    "operation": "audit-logs",
+    "method": "GET",
+    "path": "/newmoi/audit/logs",
+    "query": {
+      "method": "",
+      "result": "failed",
+      "status_code": "0",
+      "start_time": "2026-06-25T08:00:00Z",
+      "end_time": "2026-06-25T09:00:00Z",
+      "page": "0",
+      "page_size": "0"
+    },
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"items": [], "total": "0", "page": 0, "page_size": 0}},
+    "status": 200
+  },
+  {
+    "name": "audit overview preserves int64 counts",
+    "operation": "audit-log-overview",
+    "method": "GET",
+    "path": "/newmoi/audit/logs/overview",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"total": "9007199254740993", "success": "9007199254740992", "failed": "1"}},
+    "status": 200
+  }
+]

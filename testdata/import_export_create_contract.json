@@ -1,0 +1,94 @@
+{
+  "file_imports": [
+    {
+      "name": "server supplies task name and no volume is selected",
+      "request": {
+        "source_connector_id": "connector-1",
+        "config_type": 1,
+        "source_config": {"common_file_task_config": {"uris": ["s3://bucket/资料.pdf"], "load_mode_config": {"load_interval_type": 4, "interval": 0}, "file_filter_config": {"file_types": [7]}}}
+      },
+      "response": {"task_id": "import-1"}
+    },
+    {
+      "name": "explicit name without volume",
+      "request": {
+        "source_connector_id": "connector-1",
+        "config_type": 1,
+        "name": "资料导入",
+        "source_config": {"common_file_task_config": {"uris": ["s3://bucket/资料.pdf"], "load_mode_config": {"load_interval_type": 4, "interval": 0}, "file_filter_config": {"file_types": [7]}}}
+      },
+      "response": {"task_id": "import-2"}
+    },
+    {
+      "name": "explicit volume with server supplied name",
+      "request": {
+        "source_connector_id": "connector-1",
+        "config_type": 1,
+        "volume_id": "17",
+        "source_config": {"common_file_task_config": {"uris": ["s3://bucket/资料.pdf"], "load_mode_config": {"load_interval_type": 4, "interval": 0}, "file_filter_config": {"file_types": [7]}}}
+      },
+      "response": {"task_id": "import-3"}
+    },
+    {
+      "name": "explicit name volume and false unzip option",
+      "request": {
+        "source_connector_id": "connector-1",
+        "config_type": 1,
+        "name": "资料导入",
+        "volume_id": "17",
+        "source_config": {"common_file_task_config": {"uris": ["s3://bucket/资料.pdf"], "load_mode_config": {"load_interval_type": 4, "interval": 0}, "file_filter_config": {"file_types": [7]}, "unzip_keep_structure": false, "file_storage_mode": "copy"}}
+      },
+      "response": {"task_id": "import-4"}
+    }
+  ],
+  "explicit_task_import": {
+    "name": "caller supplied task ID",
+    "request": {
+      "task_id": "chosen-import-5",
+      "source_connector_id": "connector-1",
+      "config_type": 1,
+      "source_config": {"common_file_task_config": {"uris": ["s3://bucket/资料.pdf"], "load_mode_config": {"load_interval_type": 4, "interval": 0}, "file_filter_config": {"file_types": [7]}}}
+    },
+    "response": {"task_id": "chosen-import-5"}
+  },
+  "exports": [
+    {
+      "name": "typed export with an explicit false option",
+      "request": {
+        "task_name": "导出资料",
+        "connector_id": "connector-1",
+        "connector_name": "S3",
+        "type": 2,
+        "config": {"merge_title_to_text": false, "s3_config": {"path": "/exports"}},
+        "files": [{"file_id": "file-1", "full_path": ["资料库", "资料.pdf"], "is_raw": true}]
+      },
+      "response": {"id": "export-1", "name": "导出资料", "connector_name": "S3", "type": 2, "status": 0, "export_source": [["资料库", "资料.pdf"]], "create_time": null, "end_time": null}
+    },
+    {
+      "name": "export creator label is preserved",
+      "request": {
+        "task_name": "导出财务资料",
+        "creator": "财务组",
+        "connector_id": "connector-1",
+        "connector_name": "S3",
+        "type": 2,
+        "config": {"s3_config": {"path": "/exports"}},
+        "files": [{"file_id": "file-1", "full_path": ["资料库", "资料.pdf"], "is_raw": false}]
+      },
+      "response": {"id": "export-creator-2", "name": "导出财务资料", "connector_name": "S3", "type": 2, "status": 0, "export_source": [["资料库", "资料.pdf"]], "create_time": null, "end_time": null}
+    },
+    {
+      "name": "export requires a task name",
+      "request": {
+        "task_name": "",
+        "connector_id": "connector-1",
+        "connector_name": "S3",
+        "type": 2,
+        "config": {"s3_config": {"path": "/exports"}},
+        "files": [{"file_id": "file-1", "full_path": ["资料库", "资料.pdf"], "is_raw": true}]
+      },
+      "local_error": "ErrTaskNameRequired"
+    }
+  ],
+  "owner_denial": {"status": 403, "body": {"code": "ErrForbidden", "msg": "当前角色不能操作此资源。", "details": {"action": "create"}}}
+}

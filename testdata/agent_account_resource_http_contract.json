@@ -1,0 +1,566 @@
+[
+  {
+    "name": "admin feedback list forwards filters",
+    "operation": "admin-feedback-tickets",
+    "method": "GET",
+    "path": "/newmoi/admin/feedback-tickets",
+    "auth": "token",
+    "query": {
+      "page": [
+        "0"
+      ],
+      "page_size": [
+        "0"
+      ],
+      "status": [
+        ""
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "admin-feedback-tickets",
+        "value": 1,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "admin feedback detail escapes id",
+    "operation": "admin-feedback-ticket",
+    "method": "GET",
+    "path": "/newmoi/admin/feedback-tickets/ticket%2F1",
+    "auth": "token",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "admin-feedback-ticket",
+        "value": 2,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "ticket_id": "ticket/1"
+  },
+  {
+    "name": "admin feedback update preserves explicit empty strings",
+    "operation": "update-admin-feedback-ticket",
+    "method": "PATCH",
+    "path": "/newmoi/admin/feedback-tickets/ticket%2F1",
+    "auth": "token",
+    "query": {},
+    "input": {
+      "status": "",
+      "admin_reply": ""
+    },
+    "request": {
+      "status": "",
+      "admin_reply": ""
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "update-admin-feedback-ticket",
+        "value": 3,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "ticket_id": "ticket/1"
+  },
+  {
+    "name": "admin feedback github issue preserves false",
+    "operation": "create-feedback-github-issue",
+    "method": "POST",
+    "path": "/newmoi/admin/feedback-tickets/ticket%2F1/github-issue",
+    "auth": "token",
+    "query": {},
+    "input": {
+      "kind": "bug",
+      "title": "",
+      "body": "",
+      "retry": false
+    },
+    "request": {
+      "kind": "bug",
+      "title": "",
+      "body": "",
+      "retry": false
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "create-feedback-github-issue",
+        "value": 4,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "ticket_id": "ticket/1",
+    "kind": "bug",
+    "title": "",
+    "body_text": "",
+    "retry": false
+  },
+  {
+    "name": "admin feedback github issue draft",
+    "operation": "build-feedback-github-issue-draft",
+    "method": "POST",
+    "path": "/newmoi/admin/feedback-tickets/ticket%2F1/github-issue-draft",
+    "auth": "token",
+    "query": {},
+    "input": {
+      "kind": "feature"
+    },
+    "request": {
+      "kind": "feature"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "build-feedback-github-issue-draft",
+        "value": 5,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "ticket_id": "ticket/1",
+    "kind": "feature"
+  },
+  {
+    "name": "admin feedback reward approval preserves empty status",
+    "operation": "approve-feedback-reward",
+    "method": "POST",
+    "path": "/newmoi/admin/feedback-tickets/ticket%2F1/reward-approval",
+    "auth": "token",
+    "query": {},
+    "input": {
+      "status": "",
+      "admin_reply": ""
+    },
+    "request": {
+      "status": "",
+      "admin_reply": ""
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "approve-feedback-reward",
+        "value": 6,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "ticket_id": "ticket/1"
+  },
+  {
+    "name": "create feedback preserves optional empty values",
+    "operation": "create-feedback-ticket",
+    "method": "POST",
+    "path": "/newmoi/feedback-tickets",
+    "auth": "token",
+    "query": {},
+    "input": {
+      "title": "",
+      "description": "详情",
+      "expected_behavior": "expected",
+      "actual_behavior": "actual",
+      "reproduction_steps": "steps",
+      "suggested_priority": "",
+      "messages": [
+        {
+          "role": "user",
+          "content": ""
+        }
+      ]
+    },
+    "request": {
+      "title": "",
+      "description": "详情",
+      "expected_behavior": "expected",
+      "actual_behavior": "actual",
+      "reproduction_steps": "steps",
+      "suggested_priority": "",
+      "messages": [
+        {
+          "role": "user",
+          "content": ""
+        }
+      ]
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "create-feedback-ticket",
+        "value": 7,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "my feedback tickets forwards pagination",
+    "operation": "my-feedback-tickets",
+    "method": "GET",
+    "path": "/newmoi/feedback-tickets/mine",
+    "auth": "token",
+    "query": {
+      "page": [
+        "0"
+      ],
+      "page_size": [
+        "0"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "my-feedback-tickets",
+        "value": 8,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "set default role uses IAM resource owner",
+    "operation": "resource-any",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/iam/me/default-role",
+    "auth": "api_key",
+    "query": {},
+    "input": {
+      "target_role_id": "role/2",
+      "expected_default_role_version": 0,
+      "request_id": "request/1"
+    },
+    "request": {
+      "target_role_id": "role/2",
+      "expected_default_role_version": 0,
+      "request_id": "request/1"
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 9,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "iam",
+    "tail_path": "/me/default-role"
+  },
+  {
+    "name": "role audit events forwards all filters",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/audit-events",
+    "auth": "api_key",
+    "query": {
+      "cursor": [
+        ""
+      ],
+      "limit": [
+        "1"
+      ],
+      "operation": [
+        "role.update"
+      ],
+      "actor": [
+        "user/1"
+      ],
+      "status": [
+        ""
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 10,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "iam",
+    "tail_path": "/roles/role%2F1/audit-events"
+  },
+  {
+    "name": "role ownership impact forwards resource type",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/roles/role%2F1/ownership-impact",
+    "auth": "api_key",
+    "query": {
+      "resource_type": [
+        "connector"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 11,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "iam",
+    "tail_path": "/roles/role%2F1/ownership-impact"
+  },
+  {
+    "name": "member audit events forwards cursor and limit",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/iam/users/user%2F1/audit-events",
+    "auth": "api_key",
+    "query": {
+      "cursor": [
+        ""
+      ],
+      "limit": [
+        "100"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 12,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "iam",
+    "tail_path": "/users/user%2F1/audit-events"
+  },
+  {
+    "name": "home guide files",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-home-guide/guides/guide%2F1/files",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 13,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "agent-home-guide",
+    "tail_path": "/guides/guide%2F1/files"
+  },
+  {
+    "name": "materialize home guide sample",
+    "operation": "resource-any",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-home-guide/samples/sample%2F1/files/materialize",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 14,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "agent-home-guide",
+    "tail_path": "/samples/sample%2F1/files/materialize"
+  },
+  {
+    "name": "delete workspace file",
+    "operation": "resource-any",
+    "method": "DELETE",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 15,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "files",
+    "tail_path": "/file%2F1"
+  },
+  {
+    "name": "get workspace file",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/files/file%2F1",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 16,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "files",
+    "tail_path": "/file%2F1"
+  },
+  {
+    "name": "skill tags",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/skills/tags",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 17,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "skills",
+    "tail_path": "/tags"
+  },
+  {
+    "name": "skill files",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/skills/skill%2F1/files",
+    "auth": "api_key",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 18,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "skills",
+    "tail_path": "/skill%2F1/files"
+  },
+  {
+    "name": "tool tags preserves explicit zero filters",
+    "operation": "resource-any",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/tools/tags",
+    "auth": "api_key",
+    "query": {
+      "query": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "operation": "resource-any",
+        "value": 19,
+        "large_id": 9007199254740993,
+        "empty": [],
+        "enabled": false
+      }
+    },
+    "status": 200,
+    "resource": "tools",
+    "tail_path": "/tags"
+  }
+]

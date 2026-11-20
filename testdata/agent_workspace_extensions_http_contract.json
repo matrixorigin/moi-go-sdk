@@ -1,0 +1,1298 @@
+[
+  {
+    "name": "webapp-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_id": "agent/1",
+        "enabled": false,
+        "token": "synthetic-token"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "webapp-disable",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp",
+    "input": {
+      "body": {
+        "enabled": false
+      }
+    },
+    "request": {
+      "enabled": false
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_id": "agent/1",
+        "enabled": false,
+        "token": "synthetic-token"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "webapp-conversations",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp/conversations",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp/conversations",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "status": [
+        "all"
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "webapp-messages",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp/conversations/conversation%2F1/messages",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp/conversations/conversation%2F1/messages",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [
+          {
+            "message_id": "message-1",
+            "seq": 9007199254740993,
+            "parts": [
+              {
+                "kind": "text",
+                "text": "你好"
+              }
+            ]
+          }
+        ],
+        "total": 1,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "role": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "webapp-feedback",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp/feedback",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp/feedback",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 0,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "rating": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "webapp-feedback-stats",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp/feedback/stats",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp/feedback/stats",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "total": 0,
+        "by_rating": {
+          "like": 0,
+          "dislike": 0
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "webapp-rotate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agents/agent%2F1/webapp/rotate",
+    "resource": "agents",
+    "tail_path": "/agent%2F1/webapp/rotate",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_id": "agent/1",
+        "enabled": true,
+        "token": "rotated-token"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "connection-list",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/connections",
+    "resource": "connections",
+    "tail_path": "",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "status": [
+        ""
+      ],
+      "kind": [
+        "mcp"
+      ],
+      "auth_type": [
+        "none"
+      ],
+      "visibility": [
+        "workspace"
+      ],
+      "owner_user_id": [
+        ""
+      ],
+      "query": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "connection-create",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/connections",
+    "resource": "connections",
+    "tail_path": "",
+    "input": {
+      "body": {
+        "name": "mail",
+        "description": "",
+        "kind": "mcp",
+        "endpoint_uri": "https://mcp.example.test",
+        "auth_type": "none",
+        "credential_ref": "",
+        "capabilities": [],
+        "visibility": "workspace",
+        "config": {
+          "timeout": 0,
+          "verify_tls": false
+        },
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "nullable": null
+        }
+      }
+    },
+    "request": {
+      "name": "mail",
+      "description": "",
+      "kind": "mcp",
+      "endpoint_uri": "https://mcp.example.test",
+      "auth_type": "none",
+      "credential_ref": "",
+      "capabilities": [],
+      "visibility": "workspace",
+      "config": {
+        "timeout": 0,
+        "verify_tls": false
+      },
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "nullable": null
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "connection-1",
+        "name": "mail",
+        "capabilities": [],
+        "version": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "connection-batch-create-mcp-tools",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/connections/actions/batch-create-mcp-tools",
+    "resource": "connections",
+    "tail_path": "/actions/batch-create-mcp-tools",
+    "input": {
+      "body": {
+        "connection_id": "connection-1",
+        "name": "",
+        "endpoint_uri": "",
+        "transport": "streamable_http",
+        "auth_type": "none",
+        "api_key_header": "",
+        "visibility": "workspace",
+        "items": [
+          {
+            "tool_name": "list_messages",
+            "name": "mail-list",
+            "description": "",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "integer",
+                  "default": 0
+                }
+              }
+            },
+            "output_schema": {},
+            "tags": [],
+            "category": ""
+          }
+        ]
+      }
+    },
+    "request": {
+      "connection_id": "connection-1",
+      "name": "",
+      "endpoint_uri": "",
+      "transport": "streamable_http",
+      "auth_type": "none",
+      "api_key_header": "",
+      "visibility": "workspace",
+      "items": [
+        {
+          "tool_name": "list_messages",
+          "name": "mail-list",
+          "description": "",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          },
+          "output_schema": {},
+          "tags": [],
+          "category": ""
+        }
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "connection_status": "updated",
+        "items": [
+          {
+            "tool_name": "list_messages",
+            "status": "created"
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "connection-probe-mcp",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/connections/actions/probe-mcp",
+    "resource": "connections",
+    "tail_path": "/actions/probe-mcp",
+    "input": {
+      "body": {
+        "connection_id": "connection-1",
+        "endpoint_uri": "",
+        "transport": "streamable_http",
+        "auth_type": "none",
+        "api_key_header": "",
+        "credential": {
+          "api_key": ""
+        }
+      }
+    },
+    "request": {
+      "connection_id": "connection-1",
+      "endpoint_uri": "",
+      "transport": "streamable_http",
+      "auth_type": "none",
+      "api_key_header": "",
+      "credential": {
+        "api_key": ""
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "tool_count": 0,
+        "tools": [],
+        "protocol_version": "2025-03-26"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "connection-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/connections/connection%2F1",
+    "resource": "connections",
+    "tail_path": "/connection%2F1",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "connection/1",
+        "name": "mail",
+        "version": 9007199254740993
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "connection-update",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/connections/connection%2F1",
+    "resource": "connections",
+    "tail_path": "/connection%2F1",
+    "input": {
+      "body": {
+        "name": "",
+        "description": "",
+        "auth_type": "none",
+        "credential_ref": "",
+        "capabilities": [],
+        "visibility": "workspace",
+        "config": {},
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "enabled": false,
+          "retries": 0
+        }
+      }
+    },
+    "request": {
+      "name": "",
+      "description": "",
+      "auth_type": "none",
+      "credential_ref": "",
+      "capabilities": [],
+      "visibility": "workspace",
+      "config": {},
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "enabled": false,
+        "retries": 0
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "connection/1",
+        "name": "",
+        "capabilities": [],
+        "version": 9007199254740994
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "embedding-invoke-raw",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/embeddings",
+    "resource": "embeddings",
+    "tail_path": "",
+    "input": {
+      "body": {
+        "model": "embedding-1",
+        "input": [
+          "",
+          "你好"
+        ],
+        "dimensions": 0,
+        "encoding_format": "float",
+        "user": ""
+      }
+    },
+    "request": {
+      "model": "embedding-1",
+      "input": [
+        "",
+        "你好"
+      ],
+      "dimensions": 0,
+      "encoding_format": "float",
+      "user": ""
+    },
+    "response": {
+      "object": "list",
+      "data": [
+        {
+          "object": "embedding",
+          "index": 0,
+          "embedding": [
+            0,
+            -0.5
+          ]
+        }
+      ],
+      "model": "embedding-1",
+      "usage": {
+        "prompt_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "service_slot": [
+        ""
+      ]
+    },
+    "raw_response": true
+  },
+  {
+    "name": "feedback-list",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/feedback",
+    "resource": "feedback",
+    "tail_path": "",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "agent_id": [
+        "agent-1"
+      ],
+      "rating": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "feedback-stats",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/feedback/stats",
+    "resource": "feedback",
+    "tail_path": "/stats",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "total": 0,
+        "by_rating": {
+          "like": 0,
+          "dislike": 0
+        }
+      }
+    },
+    "status": 200,
+    "query": {
+      "agent_id": [
+        "agent-1"
+      ]
+    }
+  },
+  {
+    "name": "model-config-list",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/model-configs",
+    "resource": "model-configs",
+    "tail_path": "",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "status": [
+        ""
+      ],
+      "model_category": [
+        "chat"
+      ],
+      "provider_ref": [
+        ""
+      ],
+      "query": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ],
+      "source_kind": [
+        "workspace"
+      ]
+    }
+  },
+  {
+    "name": "model-config-create",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/model-configs",
+    "resource": "model-configs",
+    "tail_path": "",
+    "input": {
+      "body": {
+        "name": "chat-default",
+        "display_name": "",
+        "description": "",
+        "model_category": "chat",
+        "model_name": "model-1",
+        "provider_ref": "provider-1",
+        "connection_ref": "",
+        "credential_ref": "",
+        "source_kind": "workspace",
+        "status": "active",
+        "capabilities": [],
+        "parameters": {
+          "temperature": 0,
+          "stream": false
+        },
+        "parameter_schema": {
+          "type": "object"
+        },
+        "limits": {},
+        "pricing_ref": "",
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "nullable": null
+        }
+      }
+    },
+    "request": {
+      "name": "chat-default",
+      "display_name": "",
+      "description": "",
+      "model_category": "chat",
+      "model_name": "model-1",
+      "provider_ref": "provider-1",
+      "connection_ref": "",
+      "credential_ref": "",
+      "source_kind": "workspace",
+      "status": "active",
+      "capabilities": [],
+      "parameters": {
+        "temperature": 0,
+        "stream": false
+      },
+      "parameter_schema": {
+        "type": "object"
+      },
+      "limits": {},
+      "pricing_ref": "",
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "nullable": null
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "model-config-1",
+        "version": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "model-config-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/model-configs/config%2F1",
+    "resource": "model-configs",
+    "tail_path": "/config%2F1",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "config/1",
+        "name": "chat-default",
+        "parameters": {
+          "temperature": 0
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "model-config-update",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/model-configs/config%2F1",
+    "resource": "model-configs",
+    "tail_path": "/config%2F1",
+    "input": {
+      "body": {
+        "display_name": "",
+        "description": "",
+        "capabilities": [],
+        "parameters": {},
+        "parameter_schema": {},
+        "limits": {},
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "active": false,
+          "weight": 0
+        },
+        "status": "disabled"
+      }
+    },
+    "request": {
+      "display_name": "",
+      "description": "",
+      "capabilities": [],
+      "parameters": {},
+      "parameter_schema": {},
+      "limits": {},
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "active": false,
+        "weight": 0
+      },
+      "status": "disabled"
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "config/1",
+        "status": "disabled",
+        "version": 9007199254740993
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "operation-list",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/operations",
+    "resource": "operations",
+    "tail_path": "",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "type": [
+        ""
+      ],
+      "resource_type": [
+        "agent"
+      ],
+      "resource_id": [
+        "agent-1"
+      ],
+      "status": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "operation-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/operations/operation%2F1",
+    "resource": "operations",
+    "tail_path": "/operation%2F1",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "operation_id": "operation/1",
+        "status": "running",
+        "progress": 0,
+        "result": {
+          "count": 9007199254740993
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "operation-cancel",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/operations/operation%2F1/cancel",
+    "resource": "operations",
+    "tail_path": "/operation%2F1/cancel",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "operation_id": "operation/1",
+        "status": "canceled",
+        "progress": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "published-mcp-tools-list",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/published-mcp",
+    "resource": "published-mcp",
+    "tail_path": "",
+    "input": {
+      "body": {
+        "jsonrpc": "2.0",
+        "id": 9007199254740993,
+        "method": "tools/list",
+        "params": {
+          "cursor": ""
+        }
+      }
+    },
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 9007199254740993,
+      "method": "tools/list",
+      "params": {
+        "cursor": ""
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 9007199254740993,
+      "result": {
+        "tools": [],
+        "nextCursor": ""
+      }
+    },
+    "status": 200,
+    "raw_response": true
+  },
+  {
+    "name": "runtime-policy-list",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/runtime-policy-profiles",
+    "resource": "runtime-policy-profiles",
+    "tail_path": "",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [],
+        "total": 9007199254740993,
+        "limit": 0,
+        "offset": 0
+      }
+    },
+    "status": 200,
+    "query": {
+      "status": [
+        ""
+      ],
+      "scope_type": [
+        "workspace"
+      ],
+      "scope_ref": [
+        ""
+      ],
+      "query": [
+        ""
+      ],
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ]
+    }
+  },
+  {
+    "name": "runtime-policy-create",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/runtime-policy-profiles",
+    "resource": "runtime-policy-profiles",
+    "tail_path": "",
+    "input": {
+      "body": {
+        "name": "default",
+        "description": "",
+        "scope_type": "workspace",
+        "scope_ref": "",
+        "status": "active",
+        "admission": {
+          "allow": false
+        },
+        "provider_constraints": {},
+        "budgets": {
+          "tokens": 0
+        },
+        "retry": {
+          "attempts": 0
+        },
+        "artifact_policy": {},
+        "data_policy": {
+          "redact": false
+        },
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "nullable": null
+        }
+      }
+    },
+    "request": {
+      "name": "default",
+      "description": "",
+      "scope_type": "workspace",
+      "scope_ref": "",
+      "status": "active",
+      "admission": {
+        "allow": false
+      },
+      "provider_constraints": {},
+      "budgets": {
+        "tokens": 0
+      },
+      "retry": {
+        "attempts": 0
+      },
+      "artifact_policy": {},
+      "data_policy": {
+        "redact": false
+      },
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "nullable": null
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "policy-1",
+        "version": 0
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "runtime-policy-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/runtime-policy-profiles/policy%2F1",
+    "resource": "runtime-policy-profiles",
+    "tail_path": "/policy%2F1",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "policy/1",
+        "name": "default",
+        "budgets": {
+          "tokens": 0
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "runtime-policy-update",
+    "method": "PATCH",
+    "path": "/newmoi/workspaces/workspace-1/runtime-policy-profiles/policy%2F1",
+    "resource": "runtime-policy-profiles",
+    "tail_path": "/policy%2F1",
+    "input": {
+      "body": {
+        "name": "",
+        "description": "",
+        "scope_type": "workspace",
+        "scope_ref": "",
+        "status": "disabled",
+        "admission": {},
+        "provider_constraints": {},
+        "budgets": {},
+        "retry": {},
+        "artifact_policy": {},
+        "data_policy": {},
+        "labels": {},
+        "annotations": {},
+        "metadata": {
+          "enabled": false,
+          "priority": 0
+        }
+      }
+    },
+    "request": {
+      "name": "",
+      "description": "",
+      "scope_type": "workspace",
+      "scope_ref": "",
+      "status": "disabled",
+      "admission": {},
+      "provider_constraints": {},
+      "budgets": {},
+      "retry": {},
+      "artifact_policy": {},
+      "data_policy": {},
+      "labels": {},
+      "annotations": {},
+      "metadata": {
+        "enabled": false,
+        "priority": 0
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "id": "policy/1",
+        "status": "disabled",
+        "version": 9007199254740993
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "system-agent-setup-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/system-agent-setups/agent%2F1",
+    "resource": "system-agent-setups",
+    "tail_path": "/agent%2F1",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_id": "agent/1",
+        "enabled": false,
+        "channels": [],
+        "knowledge_bases": [],
+        "suites": []
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "system-agent-setup-update",
+    "method": "PUT",
+    "path": "/newmoi/workspaces/workspace-1/system-agent-setups/agent%2F1",
+    "resource": "system-agent-setups",
+    "tail_path": "/agent%2F1",
+    "input": {
+      "body": {
+        "enabled": true,
+        "model": {
+          "model_config_ref": "config-1",
+          "default_model": "model-1",
+          "params_override": {
+            "temperature": 0
+          }
+        },
+        "channels": {
+          "github": {
+            "create": {
+              "name": "github",
+              "description": "",
+              "config": {
+                "installation_id": "9007199254740993"
+              },
+              "secrets": {
+                "token": "synthetic-token"
+              }
+            }
+          }
+        },
+        "knowledge_bases": {
+          "docs": {
+            "id": "kb-1"
+          }
+        },
+        "project_scope": {
+          "project_id": "project-1",
+          "owner": "matrixorigin",
+          "owner_type": "organization",
+          "number": 1,
+          "title": "Matrixflow",
+          "url": "https://github.com/matrixorigin/matrixflow",
+          "host": "github.com"
+        },
+        "reconciliation_task": {
+          "cron_expression": "0 * * * *"
+        },
+        "suites": [
+          {
+            "suite_id": "suite-1",
+            "display_name": "",
+            "namespace": "default",
+            "log_namespace": "",
+            "containers": [],
+            "enabled": false
+          }
+        ]
+      }
+    },
+    "request": {
+      "enabled": true,
+      "model": {
+        "model_config_ref": "config-1",
+        "default_model": "model-1",
+        "params_override": {
+          "temperature": 0
+        }
+      },
+      "channels": {
+        "github": {
+          "create": {
+            "name": "github",
+            "description": "",
+            "config": {
+              "installation_id": "9007199254740993"
+            },
+            "secrets": {
+              "token": "synthetic-token"
+            }
+          }
+        }
+      },
+      "knowledge_bases": {
+        "docs": {
+          "id": "kb-1"
+        }
+      },
+      "project_scope": {
+        "project_id": "project-1",
+        "owner": "matrixorigin",
+        "owner_type": "organization",
+        "number": 1,
+        "title": "Matrixflow",
+        "url": "https://github.com/matrixorigin/matrixflow",
+        "host": "github.com"
+      },
+      "reconciliation_task": {
+        "cron_expression": "0 * * * *"
+      },
+      "suites": [
+        {
+          "suite_id": "suite-1",
+          "display_name": "",
+          "namespace": "default",
+          "log_namespace": "",
+          "containers": [],
+          "enabled": false
+        }
+      ]
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "agent_id": "agent/1",
+        "enabled": true,
+        "channels": {},
+        "knowledge_bases": {},
+        "suites": [
+          {
+            "suite_id": "suite-1",
+            "display_name": "",
+            "namespace": "default",
+            "log_namespace": "",
+            "containers": [],
+            "enabled": false
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "system-agent-github-projects-get",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/system-agent-setups/agent%2F1/github-projects",
+    "resource": "system-agent-setups",
+    "tail_path": "/agent%2F1/github-projects",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 0,
+      "data": {
+        "items": []
+      }
+    },
+    "status": 200,
+    "query": {
+      "channel_instance_id": [
+        "channel-1"
+      ]
+    }
+  },
+  {
+    "name": "system-agent-github-projects-create",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/system-agent-setups/agent%2F1/github-projects",
+    "resource": "system-agent-setups",
+    "tail_path": "/agent%2F1/github-projects",
+    "input": {
+      "body": {
+        "name": "github",
+        "description": "",
+        "config": {
+          "installation_id": "9007199254740993",
+          "owner": "matrixorigin",
+          "repository": "matrixflow"
+        },
+        "secrets": {
+          "token": "synthetic-token"
+        }
+      }
+    },
+    "request": {
+      "name": "github",
+      "description": "",
+      "config": {
+        "installation_id": "9007199254740993",
+        "owner": "matrixorigin",
+        "repository": "matrixflow"
+      },
+      "secrets": {
+        "token": "synthetic-token"
+      }
+    },
+    "response": {
+      "code": 0,
+      "data": {
+        "items": [
+          {
+            "project_id": "project-1",
+            "owner": "matrixorigin",
+            "owner_type": "organization",
+            "number": 1,
+            "title": "Matrixflow",
+            "url": "https://github.com/matrixorigin/matrixflow",
+            "host": "github.com"
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "model-config-owner-error",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/model-configs/missing",
+    "resource": "model-configs",
+    "tail_path": "/missing",
+    "input": {},
+    "request": null,
+    "response": {
+      "code": 3,
+      "message": "模型配置不存在",
+      "data": null
+    },
+    "status": 404,
+    "response_headers": {
+      "X-Request-ID": "request-workspace-extensions"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "input": {
+    "model": "model-1",
+    "messages": [
+      {"role": "user", "content": [{"type": "text", "text": "hello"}]}
+    ],
+    "temperature": 0,
+    "top_p": 0,
+    "max_tokens": 0,
+    "tools": [null, {"type": "function", "function": {"name": "lookup", "parameters": {"type": "object"}}}],
+    "tool_choice": null,
+    "proxy": {"mock_response": ""},
+    "backend_id": 9007199254740993
+  },
+  "expected": {
+    "model": "model-1",
+    "messages": [
+      {"role": "user", "content": [{"type": "text", "text": "hello"}]}
+    ],
+    "tools": [null, {"type": "function", "function": {"name": "lookup", "parameters": {"type": "object"}}}],
+    "tool_choice": null,
+    "proxy": {},
+    "backend_id": 9007199254740993
+  },
+  "query": {"service_slot": "slot/1"},
+  "response": {"code": "OK", "data": {"id": "chat-1", "choices": []}},
+  "stream": "data: {\"id\":\"chat-1\",\"choices\":[]}\n\ndata: [DONE]\n\n"
+}

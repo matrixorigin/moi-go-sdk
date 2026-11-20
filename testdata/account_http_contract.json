@@ -1,0 +1,174 @@
+[
+  {
+    "name": "current credit decodes the available amount",
+    "operation": "current-credit",
+    "method": "GET",
+    "path": "/newmoi/billing/credits/current",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"credit_available": "12.50"}},
+    "status": 200
+  },
+  {
+    "name": "DB connection preserves workspace scope and role projection",
+    "operation": "db-connection",
+    "method": "GET",
+    "path": "/newmoi/user/me/db-connection",
+    "workspace_scope": "workspace-1",
+    "input": {"workspace_id": "workspace-1"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"host": "mo.example.test", "port": 6001, "database": "orders", "account_name": "workspace-account", "username": "workspace-user", "password": "synthetic-password", "session_init_sqls": ["SET ROLE `viewer`"], "effective_role_id": "10", "effective_role_db_role": "viewer", "effective_role_source": "direct_binding", "effective_role_version": "2"}},
+    "status": 200
+  },
+  {
+    "name": "browser login preserves the return target without following redirects",
+    "operation": "begin-browser-login",
+    "method": "GET",
+    "path": "/newmoi/auth/login",
+    "query": {"return_to": "https://app.example.test/callback?next=/spaces/1&x=配方"},
+    "input": {"return_to": "https://app.example.test/callback?next=/spaces/1&x=配方"},
+    "request": null,
+    "response": null,
+    "response_headers": {"Location": "https://uc.example.test/login?request=abc"},
+    "stream": true,
+    "status": 302
+  },
+  {
+    "name": "browser callback preserves empty code and error state",
+    "operation": "complete-browser-login",
+    "method": "GET",
+    "path": "/newmoi/auth/callback",
+    "query": {"code": "", "state": "state/1", "error": "access_denied"},
+    "input": {"browser_login": {"code": "", "state": "state/1", "error": "access_denied"}},
+    "request": null,
+    "response": null,
+    "response_headers": {"Location": "https://app.example.test/login?error=access_denied"},
+    "stream": true,
+    "status": 302
+  },
+  {
+    "name": "browser logout callback retains an explicit empty state",
+    "operation": "complete-browser-logout",
+    "method": "GET",
+    "path": "/newmoi/auth/logout/callback",
+    "query": {"state": ""},
+    "input": {"state": ""},
+    "request": null,
+    "response": null,
+    "response_headers": {"Location": "https://app.example.test/login"},
+    "stream": true,
+    "status": 302
+  },
+  {
+    "name": "browser session decodes the current identity",
+    "operation": "browser-session",
+    "method": "GET",
+    "path": "/newmoi/auth/me",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"uc_sub": "uc-user-1", "uid": "user-1", "email": "alice@example.test", "display_name": "Alice", "csrf_token": "synthetic-csrf"}},
+    "status": 200
+  },
+  {
+    "name": "browser logout retains an explicitly empty locale",
+    "operation": "logout-browser-session",
+    "method": "POST",
+    "path": "/newmoi/auth/logout",
+    "input": {"browser_logout": {"locale": ""}},
+    "request": {"locale": ""},
+    "response": {"code": "OK", "msg": "success", "data": {"logout_url": "https://uc.example.test/logout?request=abc"}},
+    "status": 200
+  },
+  {
+    "name": "preferences decode locale and timezone",
+    "operation": "preferences",
+    "method": "GET",
+    "path": "/newmoi/auth/preferences",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"locale": "zh-CN", "timezone": "Asia/Shanghai", "updated_at": "2026-06-25T00:00:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "preference update retains explicit empty and set fields",
+    "operation": "update-preferences",
+    "method": "PATCH",
+    "path": "/newmoi/auth/preferences",
+    "input": {"preferences": {"locale": "", "timezone": "Asia/Shanghai"}},
+    "request": {"locale": "", "timezone": "Asia/Shanghai"},
+    "response": {"code": "OK", "msg": "success", "data": {"locale": "", "timezone": "Asia/Shanghai", "updated_at": "2026-06-25T00:01:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "preference update omits unset optional fields",
+    "operation": "update-preferences",
+    "method": "PATCH",
+    "path": "/newmoi/auth/preferences",
+    "input": {"preferences": {}},
+    "request": {},
+    "response": {"code": "OK", "msg": "success", "data": {"locale": "zh-CN", "timezone": "Asia/Shanghai", "updated_at": "2026-06-25T00:01:00Z"}},
+    "status": 200
+  },
+  {
+    "name": "checkin status preserves raw browser data",
+    "operation": "checkin-status",
+    "method": "GET",
+    "path": "/newmoi/user/me/checkin",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"checked_in": false, "reward": {"amount": 0}}},
+    "status": 200
+  },
+  {
+    "name": "registration invite preserves raw browser data",
+    "operation": "registration-invite",
+    "method": "GET",
+    "path": "/newmoi/user/me/registration-invite",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"invite_code": "invite-1", "eligible": true}},
+    "status": 200
+  },
+  {
+    "name": "reward items preserve array data",
+    "operation": "reward-center-items",
+    "method": "GET",
+    "path": "/newmoi/user/me/reward-center/items",
+    "input": {},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": [{"id": "reward-1", "amount": 0}]},
+    "status": 200
+  },
+  {
+    "name": "reward events preserve exact event type encoding",
+    "operation": "reward-center-events",
+    "method": "GET",
+    "path": "/newmoi/user/me/reward-center/events",
+    "query": {"event_type": "account.checkin & reward"},
+    "input": {"event_type": "account.checkin & reward"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": [{"event_type": "account.checkin", "count": 1}]},
+    "status": 200
+  },
+  {
+    "name": "reward invitations preserve string pagination",
+    "operation": "reward-center-invitations",
+    "method": "GET",
+    "path": "/newmoi/user/me/reward-center/invitations",
+    "query": {"page": "0", "page_size": "20"},
+    "input": {"page": "0", "page_size": "20"},
+    "request": null,
+    "response": {"code": "OK", "msg": "success", "data": {"items": [], "total": 0}},
+    "status": 200
+  },
+  {
+    "name": "checkin retains an explicit empty source",
+    "operation": "checkin",
+    "method": "POST",
+    "path": "/newmoi/user/me/checkin",
+    "input": {"source": ""},
+    "request": {"source": ""},
+    "response": {"code": "OK", "msg": "success", "data": {"accepted": true, "amount": 0}},
+    "status": 200
+  }
+]

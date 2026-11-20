@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Builder current agent preserves target workspace and editable config",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/agents/agent-1/versions/1.0.0/current-agent",
+    "resource": "agent-builder",
+    "tail_path": "/agents/agent-1/versions/1.0.0/current-agent",
+    "query": {"agent_workspace_id": ["system"]},
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "agent_workspace_id": "system", "version": "1.0.0", "base_revision": "sha256:base", "config": {"name": "Agent", "description": "", "model_name": "model-1", "agent_md": "", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "items": [], "object": {}, "nothing": null}}}}
+  },
+  {
+    "name": "Builder propose preserves complete create candidate",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/candidates",
+    "resource": "agent-builder",
+    "tail_path": "/candidates",
+    "input": {"body": {"mode": "create", "conversation_id": "conv-1", "task_id": "", "raw_advice": "", "advice_user_id": "", "resources": {"models": [{"name": "model-1"}], "tools": [], "skills": [], "knowledge_bases": []}, "candidate": {"agent_id": "agent-1", "name": "Agent", "description": "", "model_name": "model-1", "tool_names": [], "skill_names": [], "knowledge_base_names": [], "catalog_files": [], "channel_bindings": [], "agent_md": "", "change_reason": ""}, "resource_refs": {"tools": [], "skills": [], "knowledge_bases": []}}},
+    "request": {"mode": "create", "conversation_id": "conv-1", "task_id": "", "raw_advice": "", "advice_user_id": "", "resources": {"models": [{"name": "model-1"}], "tools": [], "skills": [], "knowledge_bases": []}, "candidate": {"agent_id": "agent-1", "name": "Agent", "description": "", "model_name": "model-1", "tool_names": [], "skill_names": [], "knowledge_base_names": [], "catalog_files": [], "channel_bindings": [], "agent_md": "", "change_reason": ""}, "resource_refs": {"tools": [], "skills": [], "knowledge_bases": []}},
+    "status": 200,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "candidate_version": "0.1.0", "status": "valid", "source_digest": "sha256:candidate", "candidate": {"name": "Agent", "description": "", "tool_names": [], "skill_names": [], "knowledge_base_names": [], "catalog_files": [], "channel_bindings": []}, "metadata": {"big": 9007199254740993}}}
+  },
+  {
+    "name": "Builder cancel preserves source digest",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/candidates/agent-1/candidate-versions/0.1.0/cancel",
+    "resource": "agent-builder",
+    "tail_path": "/candidates/agent-1/candidate-versions/0.1.0/cancel",
+    "input": {"body": {"source_digest": "sha256:candidate"}},
+    "request": {"source_digest": "sha256:candidate"},
+    "status": 200,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "candidate_version": "0.1.0", "status": "canceled", "source_digest": "sha256:candidate"}}
+  },
+  {
+    "name": "Builder commit preserves metadata and explicit empty bindings",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/candidates/agent-1/candidate-versions/0.1.0/commit",
+    "resource": "agent-builder",
+    "tail_path": "/candidates/agent-1/candidate-versions/0.1.0/commit",
+    "input": {"body": {"source_digest": "sha256:candidate", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "empty": "", "items": [], "object": {}, "nothing": null}, "binding": {"skill_refs": [], "tool_refs": [], "knowledge_base_refs": [], "channel_bindings": [], "connector_bindings": []}}},
+    "request": {"source_digest": "sha256:candidate", "metadata": {"big": 9007199254740993, "zero": 0, "enabled": false, "empty": "", "items": [], "object": {}, "nothing": null}, "binding": {"skill_refs": [], "tool_refs": [], "knowledge_base_refs": [], "channel_bindings": [], "connector_bindings": []}},
+    "status": 200,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "load_version": "1.0.0", "candidate_version": "0.1.0", "status": "committed", "metadata": {"big": 9007199254740993, "enabled": false}}}
+  },
+  {
+    "name": "Builder commit preserves owner conflict",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/candidates/agent-1/candidate-versions/0.1.0/commit",
+    "resource": "agent-builder",
+    "tail_path": "/candidates/agent-1/candidate-versions/0.1.0/commit",
+    "input": {"body": {"source_digest": "sha256:stale"}},
+    "request": {"source_digest": "sha256:stale"},
+    "status": 409,
+    "response_headers": {"X-Request-ID": "request-agent-builder-1"},
+    "response": {"code": 4, "message": "candidate state conflict", "reason": "AGENT_BUILDER_STATE_CONFLICT"}
+  },
+  {
+    "name": "Builder repropose preserves changes and explicit empty values",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/candidates/agent-1/candidate-versions/0.1.0/repropose",
+    "resource": "agent-builder",
+    "tail_path": "/candidates/agent-1/candidate-versions/0.1.0/repropose",
+    "input": {"body": {"source_digest": "sha256:candidate", "changes": {"base_revision": "sha256:base", "change_reason": "", "name": "", "description": "", "model_name": "", "agent_md": "", "add_tools": [], "remove_tools": [], "add_skills": [], "remove_skills": [], "add_knowledge_bases": [], "remove_knowledge_bases": [], "add_channel_bindings": [], "remove_channel_bindings": []}}},
+    "request": {"source_digest": "sha256:candidate", "changes": {"base_revision": "sha256:base", "change_reason": "", "name": "", "description": "", "model_name": "", "agent_md": "", "add_tools": [], "remove_tools": [], "add_skills": [], "remove_skills": [], "add_knowledge_bases": [], "remove_knowledge_bases": [], "add_channel_bindings": [], "remove_channel_bindings": []}},
+    "status": 200,
+    "response": {"code": 0, "data": {"agent_id": "agent-1", "candidate_version": "0.1.1", "status": "valid", "source_digest": "sha256:next", "changes": {"base_revision": "sha256:base", "change_reason": "", "add_tools": [], "remove_tools": []}}}
+  },
+  {
+    "name": "Builder resources preserves complete inventory",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/resources",
+    "resource": "agent-builder",
+    "tail_path": "/resources",
+    "input": {},
+    "request": null,
+    "status": 200,
+    "response": {"code": 0, "data": {"models": [{"name": "model-1", "metadata": {"big": 9007199254740993}}], "tools": [], "skills": [], "knowledge_bases": [], "catalog_files": [], "channels": []}}
+  },
+  {
+    "name": "Builder runtime preserves operation and arbitrary input",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/agent-builder/runtime",
+    "resource": "agent-builder",
+    "tail_path": "/runtime",
+    "input": {"body": {"operation": "workspace_mcp", "input": {"operation": "import", "config": {"big": 9007199254740993, "zero": 0, "enabled": false, "empty": "", "items": [], "object": {}, "nothing": null}}}},
+    "request": {"operation": "workspace_mcp", "input": {"operation": "import", "config": {"big": 9007199254740993, "zero": 0, "enabled": false, "empty": "", "items": [], "object": {}, "nothing": null}}},
+    "status": 200,
+    "response": {"code": 0, "data": {"content": [], "structuredContent": {"big": 9007199254740993, "enabled": false}, "isError": false}}
+  }
+]

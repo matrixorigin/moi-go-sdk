@@ -1,0 +1,55 @@
+[
+  {
+    "name": "catalog tree defaults",
+    "command": "tree", "path": "/catalog/tree",
+    "input": {}, "request": {},
+    "response": {"tree": []}
+  },
+  {
+    "name": "catalog tree search pagination and table leaf exclusion",
+    "command": "tree", "path": "/catalog/tree",
+    "input": {"page_size": 25, "page_token": "5", "search": "订单", "resource_types": ["table", "volume"], "include_table_leaves": false},
+    "request": {"page_size": 25, "page_token": "5", "search": "订单", "resource_types": ["table", "volume"], "include_table_leaves": false},
+    "response": {"tree": [{"id": "79", "type": "volume", "name": "订单", "node_list": [], "allowed_actions": ["read"]}], "next_page_token": "80"}
+  },
+  {
+    "name": "catalog exact lookup preserves int64 resource ID",
+    "command": "tree", "path": "/catalog/tree",
+    "input": {"resource_id": 9007199254740993, "resource_types": ["table"]},
+    "request": {"resource_id": 9007199254740993, "resource_types": ["table"]},
+    "response": {"tree": [{"id": "9007199254740993", "type": "table", "name": "orders", "node_list": [], "allowed_actions": ["read"]}]}
+  },
+  {
+    "name": "empty resource type filter follows Go omitempty",
+    "command": "tree", "path": "/catalog/tree",
+    "input": {"resource_types": []}, "request": {},
+    "response": {"tree": []}
+  },
+  {
+    "name": "system tree selection and explicit false",
+    "command": "system-tree", "path": "/catalog/system/tree",
+    "input": {"page_size": 25, "page_token": "5", "search": "order", "include_table_leaves": false, "database_name": "sales", "table_name": "orders"},
+    "request": {"page_size": 25, "page_token": "5", "search": "order", "include_table_leaves": false, "database_name": "sales", "table_name": "orders"},
+    "response": {"tree": [{"id": "sales", "type": "database", "name": "sales", "node_list": [], "allowed_actions": ["read"]}], "next_page_token": "10"}
+  },
+  {
+    "name": "database table leaf pagination",
+    "command": "database-table-leaves", "path": "/catalog/database/table-leaves",
+    "input": {"database_id": 20, "page_size": 25, "page_token": "5", "search": "ord"},
+    "request": {"database_id": 20, "page_size": 25, "page_token": "5", "search": "ord"},
+    "response": {"items": [{"table_id": 79, "table_name": "orders", "database_id": 20}], "total": 2, "next_page_token": "10"}
+  },
+  {
+    "name": "dashboard cross database table search",
+    "command": "search-data-dashboard-tables", "path": "/catalog/data-dashboard/table-search",
+    "input": {"page_size": 25, "page_token": "5", "search": "ord"},
+    "request": {"page_size": 25, "page_token": "5", "search": "ord"},
+    "response": {"items": [{"table_id": 79, "table_name": "orders", "database_id": 20, "database_name": "sales", "catalog_id": 30, "catalog_name": "internal", "matched_fields": ["table_name"], "matched_columns": ["order_id"], "metadata_match": true}], "total": 2, "next_page_token": "10"}
+  },
+  {
+    "name": "dashboard search leaves defaults to owner",
+    "command": "search-data-dashboard-tables", "path": "/catalog/data-dashboard/table-search",
+    "input": {}, "request": {},
+    "response": {"items": [], "total": 0, "next_page_token": ""}
+  }
+]

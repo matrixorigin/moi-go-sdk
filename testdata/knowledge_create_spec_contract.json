@@ -1,0 +1,174 @@
+[
+  {
+    "name": "all create controls",
+    "spec": {
+      "name": "drawing-full",
+      "preserve_embedding": true,
+      "text_send_dimensions": true,
+      "image_send_dimensions": true,
+      "drawing_structured_enabled": true,
+      "drawing_number_policy": "keep_versions"
+    },
+    "options": {
+      "description": "图纸知识库",
+      "tables": [],
+      "files": {
+        "embedding_model": "text-embedding-model",
+        "embedding_dimension": 1024,
+        "vector_table": "kb_text_vectors",
+        "image_embedding_model": "image-embedding-model",
+        "image_embedding_dimension": 512,
+        "image_vector_table": "kb_image_vectors"
+      }
+    },
+    "request": {
+      "name": "drawing-full",
+      "preserve_embedding": true,
+      "text_send_dimensions": true,
+      "image_send_dimensions": true,
+      "drawing_structured_enabled": true,
+      "drawing_number_policy": "keep_versions",
+      "description": "图纸知识库",
+      "tables": [],
+      "files": {
+        "embedding_model": "text-embedding-model",
+        "embedding_dimension": 1024,
+        "vector_table": "kb_text_vectors",
+        "image_embedding_model": "image-embedding-model",
+        "image_embedding_dimension": 512,
+        "image_vector_table": "kb_image_vectors"
+      }
+    },
+    "status": 201,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "name": "drawing-full",
+        "tables": [],
+        "semantic_model_kind": "drawing",
+        "drawing_structured_enabled": true,
+        "drawing_number_policy": "keep_versions",
+        "files": {
+          "embedding_model": "text-embedding-model",
+          "embedding_dimension": 1024,
+          "vector_table": "kb_text_vectors",
+          "image_embedding_model": "image-embedding-model",
+          "image_embedding_dimension": 512,
+          "image_vector_table": "kb_image_vectors"
+        }
+      }
+    }
+  },
+  {
+    "name": "explicit false still requests drawing",
+    "spec": {
+      "name": "drawing-disabled",
+      "preserve_embedding": false,
+      "text_send_dimensions": false,
+      "image_send_dimensions": false,
+      "drawing_structured_enabled": false
+    },
+    "options": {
+      "description": "",
+      "tables": []
+    },
+    "request": {
+      "name": "drawing-disabled",
+      "preserve_embedding": false,
+      "text_send_dimensions": false,
+      "image_send_dimensions": false,
+      "drawing_structured_enabled": false,
+      "description": "",
+      "tables": []
+    },
+    "status": 201,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "name": "drawing-disabled",
+        "tables": [],
+        "semantic_model_kind": "drawing",
+        "drawing_structured_enabled": false,
+        "drawing_number_policy": "overwrite_current"
+      }
+    }
+  },
+  {
+    "name": "omitted controls create standard model",
+    "spec": {
+      "name": "standard"
+    },
+    "options": {
+      "tables": []
+    },
+    "request": {
+      "name": "standard",
+      "tables": []
+    },
+    "status": 201,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "name": "standard",
+        "tables": [],
+        "semantic_model_kind": "standard",
+        "drawing_number_policy": "overwrite_current"
+      }
+    }
+  },
+  {
+    "name": "drawing policy without enable",
+    "spec": {
+      "name": "drawing-policy",
+      "drawing_number_policy": "keep_versions"
+    },
+    "options": {
+      "tables": []
+    },
+    "request": {
+      "name": "drawing-policy",
+      "drawing_number_policy": "keep_versions",
+      "tables": []
+    },
+    "status": 201,
+    "response": {
+      "code": "OK",
+      "msg": "ok",
+      "data": {
+        "id": 101,
+        "name": "drawing-policy",
+        "tables": [],
+        "semantic_model_kind": "drawing",
+        "drawing_structured_enabled": false,
+        "drawing_number_policy": "keep_versions"
+      }
+    }
+  },
+  {
+    "name": "owner rejects unsupported policy",
+    "spec": {
+      "name": "invalid-policy",
+      "drawing_number_policy": "invalid"
+    },
+    "options": {
+      "tables": []
+    },
+    "request": {
+      "name": "invalid-policy",
+      "drawing_number_policy": "invalid",
+      "tables": []
+    },
+    "status": 400,
+    "response": {
+      "code": "ErrParamInvalid",
+      "msg": "图纸编号策略无效",
+      "data": null
+    }
+  }
+]

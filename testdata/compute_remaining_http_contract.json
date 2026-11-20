@@ -1,0 +1,723 @@
+[
+  {
+    "name": "administrator delete compute resource",
+    "api_id": "API-0637",
+    "operation": "admin-delete",
+    "cli_command": "compute admin-delete --id cr-资源 1 --query-param force=false",
+    "cli_args": [
+      "admin-delete",
+      "--id",
+      "cr-资源 1",
+      "--query-param",
+      "force=false"
+    ],
+    "method": "DELETE",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201",
+    "query": {
+      "force": [
+        "false"
+      ]
+    },
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "resource_id": "cr-资源 1",
+        "status": "TERMINATING"
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_DELETE_BLOCKED",
+        "message": "compute resource deletion is blocked"
+      }
+    }
+  },
+  {
+    "name": "administrator preflight delete compute resource",
+    "api_id": "API-0639",
+    "operation": "admin-preflight-delete",
+    "cli_command": "compute admin-preflight-delete --id cr-资源 1",
+    "cli_args": [
+      "admin-preflight-delete",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "GET",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201/preflight-delete",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "active_tasks": 2,
+        "active_task_ids": [
+          "task/1",
+          "task/2"
+        ],
+        "bound_workflows": 1,
+        "bound_workflow_details": [
+          {
+            "id": "workflow/1",
+            "name": "workflow",
+            "node_names": []
+          }
+        ]
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 403,
+      "response": {
+        "code": "COMPUTE_RESOURCE_ADMIN_REQUIRED",
+        "message": "administrator permission is required"
+      }
+    }
+  },
+  {
+    "name": "administrator resume compute resource",
+    "api_id": "API-0640",
+    "operation": "admin-resume",
+    "cli_command": "compute admin-resume --id cr-资源 1",
+    "cli_args": [
+      "admin-resume",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201/resume",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "running",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_RESUME_CONFLICT",
+        "message": "compute resource cannot resume while deleting"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "administrator retry compute resource",
+    "api_id": "API-0641",
+    "operation": "admin-retry",
+    "cli_command": "compute admin-retry --id cr-资源 1",
+    "cli_args": [
+      "admin-retry",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201/retry",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "provisioning",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_RETRY_CONFLICT",
+        "message": "compute resource retry requires a failed status"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "administrator read compute resource runtime",
+    "api_id": "API-0642",
+    "operation": "admin-runtime",
+    "cli_command": "compute admin-runtime --compute-resource-id cr-资源 1",
+    "cli_args": [
+      "admin-runtime",
+      "--compute-resource-id",
+      "cr-资源 1"
+    ],
+    "method": "GET",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201/runtime",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "runtimes": []
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 403,
+      "response": {
+        "code": "COMPUTE_RESOURCE_ADMIN_REQUIRED",
+        "message": "administrator permission is required"
+      }
+    }
+  },
+  {
+    "name": "administrator suspend compute resource",
+    "api_id": "API-0643",
+    "operation": "admin-suspend",
+    "cli_command": "compute admin-suspend --id cr-资源 1",
+    "cli_args": [
+      "admin-suspend",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/admin/compute-resources/cr-%E8%B5%84%E6%BA%90%201/suspend",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "suspended",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_SUSPEND_CONFLICT",
+        "message": "compute resource cannot suspend while provisioning"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "list compute resource specs",
+    "api_id": "API-0644",
+    "operation": "specs",
+    "cli_command": "compute specs",
+    "cli_args": [
+      "specs"
+    ],
+    "method": "GET",
+    "path": "/compute-resource-specs",
+    "query": {},
+    "input": {},
+    "request": null,
+    "response": {
+      "data": [
+        {
+          "id": "spec-资源 1",
+          "kind": "task",
+          "cpu_milli": 2000,
+          "enabled": false
+        }
+      ],
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 401,
+      "response": {
+        "code": "UNAUTHENTICATED",
+        "message": "authentication is required"
+      }
+    }
+  },
+  {
+    "name": "read compute resource spec management permission",
+    "api_id": "API-0646",
+    "operation": "spec-management-permission",
+    "cli_command": "compute spec-management-permission",
+    "cli_args": [
+      "spec-management-permission"
+    ],
+    "method": "GET",
+    "path": "/compute-resource-specs/management-permission",
+    "query": {},
+    "input": {},
+    "request": null,
+    "response": {
+      "data": {
+        "can_manage_specs": false
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 403,
+      "response": {
+        "code": "COMPUTE_RESOURCE_ADMIN_REQUIRED",
+        "message": "administrator permission is required"
+      }
+    }
+  },
+  {
+    "name": "set compute resource spec enabled",
+    "api_id": "API-0648",
+    "operation": "set-spec-enabled",
+    "cli_command": "compute set-spec-enabled --spec-id spec-资源 1 --enabled=false",
+    "cli_args": [
+      "set-spec-enabled",
+      "--spec-id",
+      "spec-资源 1",
+      "--enabled=false"
+    ],
+    "method": "PATCH",
+    "path": "/compute-resource-specs/spec-%E8%B5%84%E6%BA%90%201/enabled",
+    "query": {},
+    "input": {
+      "id": "spec-资源 1"
+    },
+    "request": {
+      "enabled": false
+    },
+    "enabled": false,
+    "response": {
+      "data": {
+        "id": "spec-资源 1",
+        "enabled": false
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_SPEC_IN_USE",
+        "message": "spec is used by running resources"
+      }
+    }
+  },
+  {
+    "name": "list compute resources",
+    "api_id": "API-0649",
+    "operation": "list",
+    "cli_command": "compute list --query-param limit=0 --query-param offset=0 --query-param kind=task",
+    "cli_args": [
+      "list",
+      "--query-param",
+      "limit=0",
+      "--query-param",
+      "offset=0",
+      "--query-param",
+      "kind=task"
+    ],
+    "method": "GET",
+    "path": "/compute-resources",
+    "query": {
+      "limit": [
+        "0"
+      ],
+      "offset": [
+        "0"
+      ],
+      "kind": [
+        "task"
+      ]
+    },
+    "input": {},
+    "request": null,
+    "response": {
+      "data": [],
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 401,
+      "response": {
+        "code": "UNAUTHENTICATED",
+        "message": "authentication is required"
+      }
+    }
+  },
+  {
+    "name": "read compute python dependency limits",
+    "api_id": "API-0651",
+    "operation": "py-deps-limits",
+    "cli_command": "compute py-deps-limits",
+    "cli_args": [
+      "py-deps-limits"
+    ],
+    "method": "GET",
+    "path": "/compute-resources/py-deps-limits",
+    "query": {},
+    "input": {},
+    "request": null,
+    "response": {
+      "data": {
+        "enabled": false,
+        "max_bytes": 65536,
+        "max_lines": 0,
+        "allowed_index_hosts": [],
+        "pip_index_url": "",
+        "install_timeout_seconds": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 401,
+      "response": {
+        "code": "UNAUTHENTICATED",
+        "message": "authentication is required"
+      }
+    }
+  },
+  {
+    "name": "list compute worker images",
+    "api_id": "API-0652",
+    "operation": "worker-images",
+    "cli_command": "compute worker-images --query-param platform=linux/amd64",
+    "cli_args": [
+      "worker-images",
+      "--query-param",
+      "platform=linux/amd64"
+    ],
+    "method": "GET",
+    "path": "/compute-resources/worker-images",
+    "query": {
+      "platform": [
+        "linux/amd64"
+      ]
+    },
+    "input": {},
+    "request": null,
+    "response": {
+      "data": [
+        {
+          "worker_type": "python-worker",
+          "image_key": "python-default",
+          "type": "python-default",
+          "is_default": true
+        }
+      ],
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 401,
+      "response": {
+        "code": "UNAUTHENTICATED",
+        "message": "authentication is required"
+      }
+    }
+  },
+  {
+    "name": "delete compute resource",
+    "api_id": "API-0653",
+    "operation": "delete",
+    "cli_command": "compute delete --id cr-资源 1 --query-param force=false",
+    "cli_args": [
+      "delete",
+      "--id",
+      "cr-资源 1",
+      "--query-param",
+      "force=false"
+    ],
+    "method": "DELETE",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201",
+    "query": {
+      "force": [
+        "false"
+      ]
+    },
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "resource_id": "cr-资源 1",
+        "status": "TERMINATING"
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_DELETE_BLOCKED",
+        "message": "compute resource deletion is blocked"
+      }
+    }
+  },
+  {
+    "name": "adopt legacy compute resource ownership",
+    "api_id": "API-0656",
+    "operation": "adopt-legacy-ownership",
+    "cli_command": "compute adopt-legacy-ownership --id cr-资源 1",
+    "cli_args": [
+      "adopt-legacy-ownership",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/adopt-legacy-ownership",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": {},
+    "response": {
+      "data": {
+        "workspace_id": "workspace-1",
+        "resource_type": "compute_resource",
+        "resource_id": "cr-资源 1",
+        "owner_role_id": "role/owner",
+        "authorized_role_id": "role/effective",
+        "status": "active",
+        "ownership_version": 0,
+        "idempotent_replay": false
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_OWNERSHIP_CONFLICT",
+        "message": "legacy ownership has already been adopted"
+      }
+    }
+  },
+  {
+    "name": "preflight delete compute resource",
+    "api_id": "API-0657",
+    "operation": "preflight-delete",
+    "cli_command": "compute preflight-delete --id cr-资源 1",
+    "cli_args": [
+      "preflight-delete",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "GET",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/preflight-delete",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "active_tasks": 2,
+        "active_task_ids": [
+          "task/1",
+          "task/2"
+        ],
+        "bound_workflows": 1,
+        "bound_workflow_details": [
+          {
+            "id": "workflow/1",
+            "name": "workflow",
+            "node_names": []
+          }
+        ]
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 404,
+      "response": {
+        "code": "COMPUTE_RESOURCE_NOT_FOUND",
+        "message": "compute resource not found"
+      }
+    }
+  },
+  {
+    "name": "resume compute resource",
+    "api_id": "API-0658",
+    "operation": "resume",
+    "cli_command": "compute resume --id cr-资源 1",
+    "cli_args": [
+      "resume",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/resume",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "running",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_RESUME_CONFLICT",
+        "message": "compute resource cannot resume while deleting"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "retry compute resource",
+    "api_id": "API-0659",
+    "operation": "retry",
+    "cli_command": "compute retry --id cr-资源 1",
+    "cli_args": [
+      "retry",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/retry",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "provisioning",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_RETRY_CONFLICT",
+        "message": "compute resource retry requires a failed status"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "read compute resource runtime",
+    "api_id": "API-0660",
+    "operation": "runtime",
+    "cli_command": "compute runtime --compute-resource-id cr-资源 1",
+    "cli_args": [
+      "runtime",
+      "--compute-resource-id",
+      "cr-资源 1"
+    ],
+    "method": "GET",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/runtime",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "runtimes": []
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 404,
+      "response": {
+        "code": "COMPUTE_RESOURCE_NOT_FOUND",
+        "message": "compute resource not found"
+      }
+    }
+  },
+  {
+    "name": "suspend compute resource",
+    "api_id": "API-0661",
+    "operation": "suspend",
+    "cli_command": "compute suspend --id cr-资源 1",
+    "cli_args": [
+      "suspend",
+      "--id",
+      "cr-资源 1"
+    ],
+    "method": "POST",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/suspend",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": {
+        "id": "cr-资源 1",
+        "status": "suspended",
+        "current_replicas": 0
+      },
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 409,
+      "response": {
+        "code": "COMPUTE_RESOURCE_SUSPEND_CONFLICT",
+        "message": "compute resource cannot suspend while provisioning"
+      }
+    },
+    "bodyless": true
+  },
+  {
+    "name": "list compute resource workers",
+    "api_id": "API-0662",
+    "operation": "workers",
+    "cli_command": "compute workers --compute-resource-id cr-资源 1",
+    "cli_args": [
+      "workers",
+      "--compute-resource-id",
+      "cr-资源 1"
+    ],
+    "method": "GET",
+    "path": "/compute-resources/cr-%E8%B5%84%E6%BA%90%201/workers",
+    "query": {},
+    "input": {
+      "id": "cr-资源 1"
+    },
+    "request": null,
+    "response": {
+      "data": [],
+      "code": "OK"
+    },
+    "status": 200,
+    "error": {
+      "status": 404,
+      "response": {
+        "code": "COMPUTE_RESOURCE_NOT_FOUND",
+        "message": "compute resource not found"
+      }
+    }
+  }
+]

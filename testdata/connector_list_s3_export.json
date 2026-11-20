@@ -1,0 +1,12 @@
+{
+  "id": "conn-502",
+  "name": "archive-s3",
+  "source_type": 5,
+  "created_at": 1760313600,
+  "updated_at": 1760572800,
+  "status": "failed",
+  "username": "",
+  "related_task_ids": [],
+  "usage_type": [2],
+  "config": {"bucket": "dw-archive", "region": "ap-shanghai"}
+}

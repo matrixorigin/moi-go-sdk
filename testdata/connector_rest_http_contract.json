@@ -1,0 +1,32 @@
+[
+  {
+    "name":"REST draft probe preserves config values",
+    "operation":"probe-rest-draft",
+    "method":"POST",
+    "path":"/newmoi/connectors/rest-api/probe",
+    "input":{"config":{"rest_api":{"base_url":"https://example.test","request_timeout_seconds":0,"probe":{"enabled":false,"path":"","method":"GET"}}}},
+    "request":{"config":{"rest_api":{"base_url":"https://example.test","request_timeout_seconds":0,"probe":{"enabled":false,"path":"","method":"GET"}}}},
+    "response":{"code":"OK","msg":"success","data":{"valid":true}},
+    "status":200
+  },
+  {
+    "name":"REST saved probe escapes connector id and omits body",
+    "operation":"probe-rest",
+    "method":"POST",
+    "path":"/newmoi/connectors/connector%2F1/rest-api/probe",
+    "input":{"connector_id":"connector/1"},
+    "request":null,
+    "response":{"code":"OK","msg":"success","data":{"valid":true}},
+    "status":200
+  },
+  {
+    "name":"REST preview preserves request zero empty values and typed records",
+    "operation":"preview-rest",
+    "method":"POST",
+    "path":"/newmoi/connectors/connector%2F1/rest-api/preview",
+    "input":{"connector_id":"connector/1","body":{"path":"/items","method":"POST","headers":[{"name":"X-Empty","value":""}],"json":"","data":[{"name":"zero","value":"0"}],"read_only_post":false,"records_path":"items","schema_path":"","schema_format":"columns","pagination":{"type":"offset","param":"offset","start":0,"step":0,"next_path":"","total_path":""},"cursor_param":"","initial_cursor":"0"}},
+    "request":{"path":"/items","method":"POST","headers":[{"name":"X-Empty","value":""}],"data":[{"name":"zero","value":"0"}],"records_path":"items","schema_format":"columns","pagination":{"type":"offset","param":"offset","start":0},"initial_cursor":"0"},
+    "response":{"code":"OK","msg":"success","data":{"status_code":200,"records":[{"id":0,"name":"","ok":false}],"fields":[{"name":"id","path":"$.id","source_type":"integer","suggested_target_type":"","nullable":false,"required":true}]}},
+    "status":200
+  }
+]

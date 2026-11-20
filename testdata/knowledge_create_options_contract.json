@@ -1,0 +1,7 @@
+[
+  {"name":"default catalog","request":{"name":"资料库","sources":[{"source_type":"catalog_file","file_id":"file-1"}]},"status":201,"response":{"code":"OK","data":{"model":{"id":101,"name":"资料库"},"data_domain":{"model_id":101,"catalog_id":17},"sources":[],"jobs":[]}}},
+  {"name":"explicit catalog","request":{"name":"资料库","target_catalog_id":17,"sources":[{"source_type":"catalog_file","file_id":"file-1"}]},"status":201,"response":{"code":"OK","data":{"model":{"id":101,"name":"资料库"},"data_domain":{"model_id":101,"catalog_id":17},"sources":[],"jobs":[]}}},
+  {"name":"explicit zero reaches owner","request":{"name":"资料库","target_catalog_id":0,"sources":[{"source_type":"catalog_file","file_id":"file-1"}]},"status":400,"response":{"code":"ErrParamInvalid","msg":"参数无效。","data":null}},
+  {"name":"volume selection","request":{"name":"资料库","target_catalog_id":17,"sources":[],"source_selections":[{"kind":"volume_files","volume_id":23,"all_selected":true}]},"status":201,"response":{"code":"OK","data":{"model":{"id":101,"name":"资料库"},"data_domain":{"model_id":101,"catalog_id":17},"sources":[],"jobs":[]}}},
+  {"name":"explicit empty selection","request":{"name":"资料库","sources":[{"source_type":"catalog_file","file_id":"file-1"}],"source_selections":[]},"status":201,"response":{"code":"OK","data":{"model":{"id":101,"name":"资料库"},"data_domain":{"model_id":101,"catalog_id":17},"sources":[],"jobs":[]}}}
+]

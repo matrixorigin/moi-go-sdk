@@ -1,0 +1,195 @@
+[
+  {
+    "name": "upload workspace file preserves multipart",
+    "operation": "upload-workspace-file",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/files",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "file_id": "file/1",
+        "size": 12
+      }
+    },
+    "status": 200,
+    "filename": "workspace.bin",
+    "content_base64": "d29ya3NwYWNlAP8K",
+    "content_type": "application/octet-stream"
+  },
+  {
+    "name": "get skill file preserves path query and bytes",
+    "operation": "get-skill-file",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/skills/skill%2F1/files/content",
+    "query": {
+      "path": [
+        "references/guide.md"
+      ]
+    },
+    "input": null,
+    "request": null,
+    "response": null,
+    "status": 200,
+    "response_base64": "Z3VpZGUA/wo=",
+    "response_content_type": "application/octet-stream",
+    "skill_id": "skill/1",
+    "file_path": "references/guide.md"
+  },
+  {
+    "name": "connector catalog preserves configured false",
+    "operation": "list-connector-catalog",
+    "method": "GET",
+    "path": "/newmoi/workspaces/workspace-1/connector-catalog",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "items": [
+          {
+            "provider": "wecom",
+            "name": "WeCom",
+            "description": "",
+            "configured": false
+          }
+        ]
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "invoke dynamic service preserves false zero and null",
+    "operation": "invoke-dynamic-service",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/dynamic-services/invoke",
+    "query": {},
+    "input": {
+      "service_name": "service/1",
+      "payload": {
+        "enabled": false
+      },
+      "version_number": 0,
+      "trace": null
+    },
+    "request": {
+      "service_name": "service/1",
+      "payload": {
+        "enabled": false
+      },
+      "trace": null
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "case_id": "case/1",
+        "status": "completed",
+        "result": {
+          "total": 9007199254740993
+        }
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "garbage collection zero values follow proto omission",
+    "operation": "garbage-collection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/garbage-collection",
+    "query": {},
+    "input": {
+      "orphan_file_threshold_hours": 0,
+      "batch_size": 0
+    },
+    "request": {},
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "orphan_files_cleaned": "0",
+        "deleted_volumes_cleaned": "0",
+        "message": ""
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "garbage collection explicit values",
+    "operation": "garbage-collection",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/garbage-collection",
+    "query": {},
+    "input": {
+      "orphan_file_threshold_hours": 25,
+      "batch_size": 10
+    },
+    "request": {
+      "orphan_file_threshold_hours": 25,
+      "batch_size": 10
+    },
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "orphan_files_cleaned": "9007199254740993",
+        "deleted_volumes_cleaned": "2",
+        "message": "done"
+      }
+    },
+    "status": 200
+  },
+  {
+    "name": "upload runtime artifact preserves multipart and runtime proof",
+    "operation": "upload-runtime-artifact",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/runtime-artifacts",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "file_id": "file/1",
+        "original_name": "artifact.bin",
+        "size": 12,
+        "md5": "md5",
+        "artifact_id": "artifact/1",
+        "sha256": "sha256"
+      }
+    },
+    "status": 200,
+    "filename": "artifact.bin",
+    "content_base64": "d29ya3NwYWNlAP8K",
+    "content_type": "application/octet-stream",
+    "runtime_authorization": "runtime-grant"
+  },
+  {
+    "name": "analyze runtime image preserves question multipart and runtime proof",
+    "operation": "analyze-runtime-image",
+    "method": "POST",
+    "path": "/newmoi/workspaces/workspace-1/runtime-image-analysis",
+    "query": {},
+    "input": null,
+    "request": null,
+    "response": {
+      "code": "OK",
+      "msg": "success",
+      "data": {
+        "answer": "图片内容"
+      }
+    },
+    "status": 200,
+    "filename": "image.jpg",
+    "content_base64": "d29ya3NwYWNlAP8K",
+    "content_type": "application/octet-stream",
+    "question": "说明图片",
+    "runtime_authorization": "runtime-grant"
+  }
+]
